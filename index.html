@@ -496,7 +496,7 @@
       isServerMode = false;
       const localLinks = getLocalLinks();
       try {
-        const resStatic = await fetch('./data/games.json');
+        const resStatic = await fetch(`./data/games.json?t=${Date.now()}`, { cache: 'no-store' });
         const staticList = resStatic.ok ? await resStatic.json() : DEFAULT_GAMES;
         allGames = [...localLinks, ...(Array.isArray(staticList) && staticList.length ? staticList : DEFAULT_GAMES)];
       } catch (err) {
@@ -618,7 +618,7 @@
           } else if (hasGithubSync()) {
             try {
               const cfg = getGithubConfig();
-              const meta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
+              const meta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}&t=${Date.now()}`, cfg.token);
               const list = JSON.parse(base64ToUtf8(meta.content));
               const remaining = list.filter(x => x.id !== id);
               await ghApiFetch(cfg.repo, '/contents/data/games.json', cfg.token, {
@@ -745,6 +745,7 @@
 
     async function ghApiFetch(repo, apiPath, token, options = {}) {
       const res = await fetch(`https://api.github.com/repos/${repo}${apiPath}`, {
+        cache: 'no-store',
         ...options,
         headers: {
           'Accept': 'application/vnd.github+json',
@@ -764,7 +765,7 @@
       let existingSha = undefined;
 
       try {
-        const catalogMeta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
+        const catalogMeta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}&t=${Date.now()}`, cfg.token);
         currentList = JSON.parse(base64ToUtf8(catalogMeta.content));
         existingSha = catalogMeta.sha;
       } catch (err) {
