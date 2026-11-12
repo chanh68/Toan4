@@ -1,0 +1,2598 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trạm Cân Thông Minh Gấu AI - Hành Trình Xe Nông Sản (Toán Lớp 4)</title>
+  <!-- Google Fonts: Lexend & Quicksand with full Vietnamese glyphs -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS 3.4.17 -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Lexend', 'Quicksand', 'Segoe UI', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              green: '#27ae60',
+              lightGreen: '#e8f8f0',
+              primaryOrange: '#ff6b35',
+              yellow: '#ffd32a',
+              darkBlue: '#13395e',
+              softBg: '#f0f9f5',
+            }
+          },
+          boxShadow: {
+            'card': '0 10px 25px -5px rgba(19, 57, 94, 0.08), 0 8px 10px -6px rgba(19, 57, 94, 0.04)',
+            'pop': '0 6px 0 #d35400',
+            'pop-green': '0 6px 0 #1e8449',
+            'pop-blue': '0 6px 0 #1f4e78',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Lexend', 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #e8f5e9 0%, #e0f2f1 40%, #fff8e1 100%);
+      min-height: 100vh;
+      color: #13395e;
+      overflow-x: hidden;
+    }
+    
+    /* Animation effects */
+    @keyframes bounceTruck {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(-1deg); }
+    }
+    .animate-truck {
+      animation: bounceTruck 2s infinite ease-in-out;
+    }
+
+    @keyframes map-pulse {
+      0%, 100% { box-shadow: 0 0 0 8px rgba(255, 210, 107, 0.35), 0 6px 11px rgba(41, 98, 117, 0.25); }
+      50% { box-shadow: 0 0 0 14px rgba(255, 210, 107, 0.6), 0 6px 15px rgba(41, 98, 117, 0.35); }
+    }
+
+    /* ChatGPT Exact Roadmap Component */
+    .journey-road {
+      position: relative;
+      height: 420px;
+      margin: 18px 0 14px;
+      border-radius: 24px;
+      background: linear-gradient(165deg, #aee5f0 0 34%, #d9f7bd 35% 100%);
+      overflow: hidden;
+      border: 3px solid #bce6bc;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.04);
+    }
+
+    @media (max-width: 760px) {
+      .journey-road {
+        height: 480px;
+      }
+    }
+
+    .journey-road::before {
+      content: "☁️";
+      position: absolute;
+      top: 8%;
+      left: 9%;
+      font-size: 48px;
+      opacity: 0.75;
+      pointer-events: none;
+    }
+
+    .journey-road::after {
+      content: "🌳 🌳 🌳 🌳";
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      right: 0;
+      font-size: 34px;
+      word-spacing: 45px;
+      opacity: 0.75;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .road-curve {
+      position: absolute;
+      top: 46%;
+      left: -6%;
+      right: -5%;
+      height: 70px;
+      border-top: 6px dashed #fff7df;
+      border-bottom: 6px dashed #fff7df;
+      border-radius: 50%;
+      background: #e9b767;
+      transform: rotate(-4deg);
+      z-index: 1;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .road-river {
+      position: absolute;
+      top: 0;
+      right: -5%;
+      color: #58cbe6;
+      font-size: 36px;
+      letter-spacing: -5px;
+      opacity: 0.9;
+      transform: rotate(72deg);
+      pointer-events: none;
+    }
+
+    @media (max-width: 760px) {
+      .road-river {
+        display: none;
+      }
+    }
+
+    .road-truck {
+      position: absolute;
+      top: 43%;
+      font-size: 56px;
+      filter: drop-shadow(0 6px 3px rgba(38, 93, 110, 0.35));
+      transform: translate(-50%) scaleX(-1);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    @media (max-width: 760px) {
+      .road-truck {
+        font-size: 42px;
+      }
+    }
+
+    .road-stop {
+      position: absolute;
+      width: 110px;
+      border: 0;
+      background: transparent;
+      color: #245f75;
+      text-align: center;
+      transform: translate(-50%);
+      cursor: pointer;
+      z-index: 4;
+      transition: transform 0.2s;
+      outline: none;
+    }
+
+    .road-stop:hover:not([disabled]) {
+      transform: translate(-50%) scale(1.08);
+      z-index: 6;
+    }
+
+    @media (max-width: 760px) {
+      .road-stop {
+        width: 82px;
+      }
+    }
+
+    .road-stop span {
+      display: grid;
+      place-items: center;
+      width: 61px;
+      height: 61px;
+      margin: auto;
+      border-radius: 50%;
+      border: 4px solid #41a8c5;
+      background: #fff;
+      font-size: 29px;
+      box-shadow: 0 6px 11px rgba(41, 98, 117, 0.25);
+      transition: all 0.3s;
+    }
+
+    @media (max-width: 760px) {
+      .road-stop span {
+        width: 51px;
+        height: 51px;
+        font-size: 23px;
+      }
+    }
+
+    .road-stop b {
+      display: inline-grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      margin-top: 4px;
+      border-radius: 50%;
+      background: #176077;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .road-stop small,
+    .road-stop em {
+      display: block;
+      font-style: normal;
+      line-height: 1.15;
+    }
+
+    .road-stop small {
+      margin-top: 3px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #13395e;
+    }
+
+    @media (max-width: 760px) {
+      .road-stop small {
+        font-size: 9px;
+      }
+    }
+
+    .road-stop em {
+      margin-top: 2px;
+      color: #e1761e;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 760px) {
+      .road-stop em {
+        display: none;
+      }
+    }
+
+    .road-stop.active span {
+      border-color: #f08b27;
+      animation: map-pulse 1.6s infinite;
+    }
+
+    .road-stop.active b {
+      background: #f08b27;
+    }
+
+    .road-stop.done span {
+      border-color: #27ae60;
+      box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+    }
+
+    .road-stop.done b {
+      background: #27ae60;
+    }
+
+    .road-stop.locked {
+      opacity: 0.65;
+      filter: grayscale(1);
+      cursor: not-allowed;
+    }
+
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .map-legend .chip {
+      font-size: 12px;
+      font-weight: 700;
+      color: #397084;
+      background: #edf9fb;
+      border: 1px solid #c9ecf2;
+      border-radius: 12px;
+      padding: 8px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Print styles for Certificate */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #certificate-card, #certificate-card * {
+        visibility: visible;
+      }
+      #certificate-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Top Navigation Header -->
+  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-emerald-100 shadow-sm py-2 px-3 sm:px-6">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <!-- Logo & Title -->
+      <div class="flex items-center space-x-2.5 cursor-pointer" id="nav-home-btn">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-amber-200">
+          🐻
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-black text-emerald-800 leading-tight flex items-center gap-1.5">
+            TRẠM CÂN GẤU AI
+            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">Toán 4</span>
+          </h1>
+          <p class="text-xs text-slate-500 font-medium">Hành trình nông sản • Yến, Tạ, Tấn</p>
+        </div>
+      </div>
+
+      <!-- User Info & Game Stats -->
+      <div class="flex items-center flex-wrap gap-2 sm:gap-3">
+        <!-- Student Badge -->
+        <div id="student-badge" class="bg-emerald-50 border border-emerald-200 text-emerald-900 px-3 py-1 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5">
+          <span>👦</span>
+          <span id="badge-name">Học sinh</span>
+          <span class="text-emerald-400">|</span>
+          <span id="badge-class">Lớp 4</span>
+        </div>
+
+        <!-- Star Score Badge -->
+        <div class="bg-amber-50 border border-amber-300 text-amber-900 px-3 py-1 rounded-xl text-xs sm:text-sm font-black flex items-center gap-1.5 shadow-sm">
+          <span class="text-sky-600 text-base">💎</span>
+          <span id="total-score-display">0</span>
+          <span class="text-amber-400 text-xs">/ 1 000</span>
+        </div>
+
+        <!-- Audio Toggle -->
+        <button type="button" id="sound-toggle-btn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1 transition">
+          <span id="sound-icon">🔊</span>
+          <span class="hidden sm:inline">Âm thanh</span>
+        </button>
+
+        <!-- Back to Map button -->
+        
+        <button type="button" id="header-map-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1 shadow transition">
+          <span>🗺️</span>
+          <span class="hidden sm:inline">Bản đồ</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6">
+    
+    <!-- ============================================== -->
+    <!-- SCREEN 1: WELCOME & REGISTRATION               -->
+    <!-- ============================================== -->
+    <section id="screen-welcome" class="max-w-xl mx-auto my-6 sm:my-10 bg-white rounded-3xl p-6 sm:p-10 shadow-card border-2 border-emerald-100 text-center">
+      <div class="w-24 h-24 bg-gradient-to-tr from-amber-200 to-amber-100 rounded-3xl flex items-center justify-center text-5xl mx-auto mb-4 shadow-inner border-2 border-amber-300">
+        🐻
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-black text-emerald-900 mb-2">Trạm Cân Thông Minh Gấu AI</h2>
+      <p class="text-slate-600 text-sm sm:text-base mb-6 leading-relaxed">
+        Chào mừng bạn đến với chuyến xe vận chuyển nông sản! Hãy cùng Gấu AI khám phá thế giới <strong class="text-sky-600">Yến, Tạ, Tấn</strong> qua các chặng thử thách kỳ thú nhé!
+      </p>
+
+      <form id="start-form" class="space-y-4 text-left">
+        <div>
+          <label for="input-student-name" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Họ và tên của em:</label>
+          <input type="text" id="input-student-name" required placeholder="Ví dụ: Nguyễn Văn An" 
+                 class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-800 font-semibold transition" />
+        </div>
+        <div>
+          <label for="input-student-class" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Lớp:</label>
+          <input type="text" id="input-student-class" required placeholder="Ví dụ: 4A1" 
+                 class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-800 font-semibold transition" />
+        </div>
+        <div>
+          <label for="input-student-school" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Trường:</label>
+          <input type="text" id="input-student-school" required placeholder="Nhập tên trường của em (Bắt buộc)" 
+                 class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-800 font-semibold transition" />
+        </div>
+
+        <button type="submit" id="btn-start-journey" class="w-full mt-4 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black py-4 px-6 rounded-2xl text-lg shadow-pop transition-transform active:translate-y-1">
+          🚀 Khởi hành ngay nào!
+        </button>
+      </form>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SCREEN 2: ROADMAP JOURNEY (CHATGPT ROADMAP)     -->
+    <!-- ============================================== -->
+    <section id="screen-roadmap" class="hidden space-y-4">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-emerald-100">
+        <!-- Eyebrow & Title like ChatGPT -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
+          <div>
+            <p class="text-xs font-black uppercase tracking-wider text-orange-600 mb-1">BẢN ĐỒ HỌC TẬP • HÀNH TRÌNH XE NÔNG SẢN</p>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-800">
+              Chào <span id="roadmap-user-name">bạn</span>! Xe đã sẵn sàng.
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">Cùng chú Gấu AI vận chuyển nông sản qua các trạm cân để rinh Cúp may mắn và nhận Giấy chứng nhận nhé!</p>
+          </div>
+          <div class="flex items-center gap-2 bg-amber-50 border border-amber-300 px-4 py-2 rounded-2xl self-start sm:self-auto">
+            <span class="text-2xl">💎</span>
+            <div>
+              <div class="text-[10px] font-bold text-amber-800 uppercase">Tổng kim cương tích lũy</div>
+              <div class="text-lg font-black text-amber-900" id="roadmap-score">💎 0 / 1 000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ChatGPT Exact Journey Road Visualizer -->
+        <div class="journey-road">
+          <!-- Winding Dirt Road Curve -->
+          <div class="road-curve"></div>
+
+          <!-- Decorative River Effect -->
+          <div class="road-river">~~~~~~</div>
+
+          <!-- Moving Truck Icon -->
+          <div class="road-truck" id="moving-truck" style="left: 8%;">🚚</div>
+
+          <!-- Stage 1 (Stop 1: left 8%, top 26%) -->
+          <button type="button" class="road-stop active" id="road-stop-1" data-stage="1" style="left: 8%; top: 26%;">
+            <span id="stop-icon-1">🌾</span>
+            <b>1</b>
+            <small>Nông trại Gấu Nâu</small>
+            <em>Nhận biết</em>
+          </button>
+
+          <!-- Stage 2 (Stop 2: left 29%, top 59%) -->
+          <button type="button" disabled class="road-stop locked" id="road-stop-2" data-stage="2" style="left: 29%; top: 59%;">
+            <span id="stop-icon-2">🔒</span>
+            <b>2</b>
+            <small>Cầu Cân Thông Minh</small>
+            <em>Thông hiểu</em>
+          </button>
+
+          <!-- Stage 3 (Stop 3: left 50%, top 26%) -->
+          <button type="button" disabled class="road-stop locked" id="road-stop-3" data-stage="3" style="left: 50%; top: 26%;">
+            <span id="stop-icon-3">🔒</span>
+            <b>3</b>
+            <small>Kho Hàng Vàng</small>
+            <em>Vận dụng</em>
+          </button>
+
+          <!-- Stage 4 (Stop 4: left 71%, top 59%) -->
+          <button type="button" disabled class="road-stop locked" id="road-stop-4" data-stage="4" style="left: 71%; top: 59%;">
+            <span id="stop-icon-4">🔒</span>
+            <b>4</b>
+            <small>Ngày hội Thụy Lâm</small>
+            <em>Vận dụng cao</em>
+          </button>
+
+          <!-- Stage 5 (Stop 5: left 92%, top 26%) -->
+          <button type="button" disabled class="road-stop locked" id="road-stop-5" data-stage="5" style="left: 92%; top: 26%;">
+            <span id="stop-icon-5">🔒</span>
+            <b>5</b>
+            <small>Sân khấu đồng dao</small>
+            <em>Tổng kết</em>
+          </button>
+        </div>
+
+        <!-- ChatGPT Exact Map Legend -->
+        <div class="map-legend">
+          <span class="chip" id="chip-truck-owner">🚚 Xe của học sinh</span>
+          <span class="chip" id="chip-completed-stages">💎 Hoàn thành: 0/5 chặng</span>
+          <span class="chip">🔒 Mở khoá khi hoàn thành chặng trước</span>
+        </div>
+
+        <!-- Action button to enter current stage -->
+        <div class="mt-5 flex items-center justify-between flex-wrap gap-3 pt-4 border-t border-slate-100">
+          <div class="text-xs sm:text-sm text-slate-600 font-semibold flex items-center gap-1.5">
+            <span>📍</span> Vị trí xe hiện tại: <strong id="current-truck-location" class="text-emerald-800">Chặng 1 - Nông trại Gấu Nâu</strong>
+          </div>
+          <button type="button" id="btn-resume-journey" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black px-6 py-3 rounded-2xl shadow-pop text-sm transition-transform active:translate-y-1">
+            Vào chặng đang mở ➔
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SCREEN 3: STAGE 1 THEORY (4 BÀI LÍ THUYẾT GỌN GÀNG) -->
+    <!-- ============================================== -->
+                <section id="screen-theory" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-sky-100">
+        <!-- Top bar with lesson badge -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-4 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-black uppercase tracking-wider bg-sky-100 text-sky-800 px-3 py-1.5 rounded-full" id="lessonCounter">Bài 1 / 4</span>
+            <span class="text-xs text-slate-500 font-semibold hidden sm:inline">• Khám phá kiến thức theo Bài giảng điện tử</span>
+          </div>
+        </div>
+
+        <!-- Slide 1: Khởi động ôn tập các đơn vị đã học -->
+        <div class="single-lesson-view" id="lesson1">
+          <div class="space-y-4">
+            <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 rounded-2xl p-4 text-center">
+              <div class="text-4xl mb-1">🐒 🍌 ✏️</div>
+              <h3 class="text-lg sm:text-xl font-black text-amber-900">Các đơn vị đo khối lượng đã học?</h3>
+              <p class="text-xs text-slate-600">Hai đơn vị đo khối lượng quen thuộc mà em đã được học ở lớp dưới:</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-5 text-center flex flex-col items-center justify-center">
+                <div class="w-16 h-16 rounded-full bg-sky-500 text-white text-3xl flex items-center justify-center font-black shadow-md mb-2">
+                  ⚖️
+                </div>
+                <div class="text-2xl font-black text-sky-900 my-1">1 kg</div>
+                <div class="text-sm font-bold text-sky-700 uppercase tracking-wider">Ki-lô-gam</div>
+                <div class="text-xs text-slate-500 mt-1">Dùng đo quả dưa, giỏ quả, con gà...</div>
+              </div>
+
+              <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-5 text-center flex flex-col items-center justify-center">
+                <div class="w-16 h-16 rounded-full bg-emerald-500 text-white text-3xl flex items-center justify-center font-black shadow-md mb-2">
+                  ⚖️
+                </div>
+                <div class="text-2xl font-black text-emerald-900 my-1">1 g</div>
+                <div class="text-sm font-bold text-emerald-700 uppercase tracking-wider">Gam</div>
+                <div class="text-xs text-slate-500 mt-1">Dùng đo gói kẹo, lá thư, vật rất nhỏ...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: Khám phá đơn vị Yến (Cân đĩa 1 yến = 10 kg) -->
+        <div class="single-lesson-view hidden" id="lesson2">
+          <div class="space-y-4">
+            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-2xl p-4 text-center">
+              <div class="text-xs font-black uppercase tracking-wider text-emerald-800 mb-1">KHÁM PHÁ ĐƠN VỊ MỚI</div>
+              <h3 class="text-xl sm:text-2xl font-black text-emerald-900">1. Đơn vị Yến</h3>
+              <p class="text-xs text-slate-600 mt-0.5">Để đo khối lượng các vật nặng hàng chục ki-lô-gam, người ta dùng đơn vị: <strong>yến</strong>.</p>
+            </div>
+
+            <!-- Balance Scale Illustration -->
+            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-5 text-center shadow-sm">
+              <div class="text-sm font-bold text-slate-700 mb-3 flex items-center justify-center gap-2">
+                <span>⚖️</span> Chiếc cân đĩa thăng bằng: 1 quả cân 1 yến = 10 quả cân 1 kg
+              </div>
+              <div class="flex items-center justify-center gap-3 sm:gap-6 flex-wrap py-2">
+                <div class="bg-emerald-100 border-2 border-emerald-400 px-4 py-3 rounded-2xl text-center">
+                  <div class="text-3xl">⚖️</div>
+                  <div class="text-base font-black text-emerald-900 mt-1">1 yến</div>
+                  <div class="text-[11px] text-emerald-700 font-bold">(1 quả cân)</div>
+                </div>
+                <div class="text-2xl font-black text-emerald-600">=</div>
+                <div class="bg-sky-50 border-2 border-sky-300 px-4 py-3 rounded-2xl text-center">
+                  <div class="text-2xl">⚖️ ⚖️ ⚖️ ⚖️ ⚖️ ⚖️ ⚖️ ⚖️ ⚖️ ⚖️</div>
+                  <div class="text-base font-black text-sky-900 mt-1">10 kg</div>
+                  <div class="text-[11px] text-sky-700 font-bold">(10 quả cân 1 kg)</div>
+                </div>
+              </div>
+
+              <!-- Formula Banner -->
+              <div class="mt-4 bg-emerald-600 text-white rounded-2xl p-4 text-center shadow-md space-y-1">
+                <div class="text-xl sm:text-2xl font-black tracking-wide">1 yến = 10 kg</div>
+                <div class="text-sm sm:text-base font-bold text-emerald-100">10 kg = 1 yến</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 & 4: Khám phá đơn vị Tạ (1 tạ = 10 yến = 100 kg) -->
+        <div class="single-lesson-view hidden" id="lesson3">
+          <div class="space-y-4">
+            <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 rounded-2xl p-4 text-center">
+              <div class="text-xs font-black uppercase tracking-wider text-amber-800 mb-1">KHÁM PHÁ ĐƠN VỊ MỚI</div>
+              <h3 class="text-xl sm:text-2xl font-black text-amber-900">2. Đơn vị Tạ</h3>
+              <p class="text-xs text-slate-600 mt-0.5">Để đo khối lượng các vật nặng hàng trăm ki-lô-gam, người ta dùng đơn vị: <strong>tạ</strong>.</p>
+            </div>
+
+            <!-- Scale & Animals Illustration -->
+            <div class="bg-white border-2 border-amber-200 rounded-2xl p-5 text-center shadow-sm">
+              <div class="text-sm font-bold text-slate-700 mb-3 flex items-center justify-center gap-2">
+                <span>⚖️</span> Gom 10 quả cân 1 yến thành 1 quả cân 1 tạ
+              </div>
+              <div class="flex items-center justify-center gap-3 sm:gap-6 flex-wrap py-2">
+                <div class="bg-amber-100 border-2 border-amber-400 px-4 py-3 rounded-2xl text-center">
+                  <div class="text-3xl">⚖️</div>
+                  <div class="text-base font-black text-amber-900 mt-1">1 tạ</div>
+                </div>
+                <div class="text-2xl font-black text-amber-600">=</div>
+                <div class="bg-emerald-50 border-2 border-emerald-300 px-4 py-3 rounded-2xl text-center">
+                  <div class="text-xl">⚖️ 10 quả cân (1 yến)</div>
+                  <div class="text-base font-black text-emerald-900 mt-1">10 yến = 100 kg</div>
+                </div>
+              </div>
+
+              <!-- Animal Icons from Slide 4 -->
+              <div class="flex items-center justify-center gap-4 my-3 text-xs font-bold text-slate-700">
+                <span class="bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl">🐃 Con trâu nặng khoảng 4 - 5 tạ</span>
+                <span class="bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl">🐄 Con bò sữa nặng khoảng 3 - 4 tạ</span>
+              </div>
+
+              <!-- Formula Banner -->
+              <div class="mt-3 bg-amber-500 text-white rounded-2xl p-4 text-center shadow-md space-y-1">
+                <div class="text-xl sm:text-2xl font-black tracking-wide">1 tạ = 10 yến</div>
+                <div class="text-sm sm:text-base font-bold text-amber-100">10 yến = 1 tạ &nbsp;•&nbsp; 1 tạ = 100 kg &nbsp;•&nbsp; 100 kg = 1 tạ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5, 6, 7: Khám phá đơn vị Tấn (1 tấn = 10 tạ = 1 000 kg) -->
+        <div class="single-lesson-view hidden" id="lesson4">
+          <div class="space-y-4">
+            <div class="bg-gradient-to-r from-sky-50 to-blue-50 border-2 border-sky-300 rounded-2xl p-4 text-center">
+              <div class="text-xs font-black uppercase tracking-wider text-blue-800 mb-1">KHÁM PHÁ ĐƠN VỊ MỚI</div>
+              <h3 class="text-xl sm:text-2xl font-black text-blue-900">3. Đơn vị Tấn</h3>
+              <p class="text-xs text-slate-600 mt-0.5">Để đo khối lượng các vật nặng hàng nghìn ki-lô-gam, người ta dùng đơn vị: <strong>tấn</strong>.</p>
+            </div>
+
+            <!-- Scale & Truck/Elephant Illustration -->
+            <div class="bg-white border-2 border-sky-200 rounded-2xl p-5 text-center shadow-sm">
+              <div class="text-sm font-bold text-slate-700 mb-3 flex items-center justify-center gap-2">
+                <span>⚖️</span> Cân thăng bằng: 1 quả cân 1 tấn = 10 quả cân 1 tạ = 1 000 kg
+              </div>
+              <div class="flex items-center justify-center gap-3 sm:gap-6 flex-wrap py-2">
+                <div class="bg-blue-100 border-2 border-blue-400 px-4 py-3 rounded-2xl text-center">
+                  <div class="text-3xl">⚖️</div>
+                  <div class="text-base font-black text-blue-900 mt-1">1 tấn</div>
+                </div>
+                <div class="text-2xl font-black text-blue-600">=</div>
+                <div class="bg-amber-50 border-2 border-amber-300 px-4 py-3 rounded-2xl text-center">
+                  <div class="text-xl">10 quả cân 1 tạ</div>
+                  <div class="text-base font-black text-amber-900 mt-1">10 tạ</div>
+                </div>
+                <div class="text-2xl font-black text-blue-600">=</div>
+                <div class="bg-sky-50 border-2 border-sky-300 px-4 py-3 rounded-2xl text-center">
+                  <div class="text-xl">1 000 quả cân 1 kg</div>
+                  <div class="text-base font-black text-sky-900 mt-1">1 000 kg</div>
+                </div>
+              </div>
+
+              <!-- Vehicle & Animals from Slide 6, 7 -->
+              <div class="flex items-center justify-center gap-4 my-3 text-xs font-bold text-slate-700 flex-wrap">
+                <span class="bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl">🚛 Xe tải chở hàng: 2 - 5 tấn</span>
+                <span class="bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl">🐘 Con voi: 3 - 6 tấn</span>
+                <span class="bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl">🐋 Cá voi xanh: 190 tấn</span>
+              </div>
+
+              <!-- Formula Banner -->
+              <div class="mt-3 bg-blue-600 text-white rounded-2xl p-4 text-center shadow-md space-y-1">
+                <div class="text-xl sm:text-2xl font-black tracking-wide">1 tấn = 10 tạ = 1 000 kg</div>
+                <div class="text-sm sm:text-base font-bold text-blue-100">10 tạ = 1 tấn &nbsp;•&nbsp; 1 000 kg = 1 tấn</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-5 mt-5 border-t border-slate-100">
+          <button type="button" id="btnLsnPrev" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl transition disabled:opacity-40 disabled:cursor-not-allowed">
+            ⬅ Bài trước
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" id="btnLsnNext" class="bg-sky-600 hover:bg-sky-700 text-white font-black px-6 py-2.5 rounded-xl shadow-pop-blue transition-transform active:translate-y-1">
+              Bài tiếp theo ➡
+            </button>
+            <button type="button" id="btnEnterQuiz" class="hidden bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black px-6 py-2.5 rounded-xl shadow-pop transition-transform active:translate-y-1">
+              🎯 Vào thử thách 10 câu Chặng 1 ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SCREEN 4: QUIZ ENGINE (HIỂN THỊ TỪNG BÀI 1)    -->
+    <!-- ============================================== -->
+    <section id="screen-quiz" class="hidden space-y-5">
+      <!-- Quiz Header Banner -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <span id="quiz-stage-icon" class="text-2xl p-2 bg-emerald-50 rounded-xl border border-emerald-200">🌾</span>
+          <div>
+            <div id="quiz-stage-name" class="font-extrabold text-emerald-900 text-sm sm:text-base">Chặng 1: Nông trại Gấu Nâu</div>
+            <div id="quiz-stage-desc" class="text-xs text-slate-500">Thử thách nhận biết đơn vị đo</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="text-xs font-bold text-slate-500">Câu hỏi:</div>
+          <div class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-xl text-xs sm:text-sm font-black">
+            <span id="quiz-question-current">1</span> / <span id="quiz-question-total">10</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Progress Bar -->
+      <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+        <div id="quiz-progress-fill" class="bg-gradient-to-r from-emerald-500 to-amber-500 h-2.5 rounded-full transition-all duration-300" style="width: 10%;"></div>
+      </div>
+
+      <!-- Question Card Container -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-emerald-100">
+        
+        <!-- Question Content with pretty stickers and tags -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+            <div class="flex items-center gap-2">
+              <span id="q-sticker" class="text-3xl p-2 bg-amber-100 rounded-2xl border border-amber-200 shadow-sm">🐔</span>
+              <div>
+                <span id="q-tag" class="text-[11px] font-black uppercase tracking-wider text-orange-600 bg-orange-50 border border-orange-200 px-2.5 py-0.5 rounded-full">
+                  🐔 ƯỚC LƯỢNG KHỐI LƯỢNG
+                </span>
+                <div class="text-xs font-bold text-slate-500 mt-0.5">Câu hỏi số <span id="q-number-badge">1</span></div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-xl text-xs font-bold text-emerald-800">
+              <span>🐻 Gấu AI đồng hành</span>
+            </div>
+          </div>
+          <h3 id="question-text" class="text-lg sm:text-xl font-black text-slate-800 leading-relaxed bg-slate-50/80 p-4 rounded-2xl border border-slate-200">
+            <!-- Question text inserted by JS -->
+          </h3>
+        </div>
+
+        <!-- Option Container (Type: Multiple Choice) -->
+        <div id="mcq-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Input Container (Type: Text/Number Fill-in-the-blank) -->
+        <div id="input-answer-container" class="hidden mb-6 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+          <label for="student-fill-input" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+            Nhập số hoặc đáp án đúng vào ô trống:
+          </label>
+          <div class="flex items-center gap-3">
+            <input type="text" id="student-fill-input" placeholder="Ví dụ: 20" 
+                   class="max-w-xs w-full text-xl font-black px-4 py-3 rounded-xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none text-slate-800 transition" />
+            <span id="input-unit-label" class="text-base font-bold text-slate-700"></span>
+          </div>
+        </div>
+
+        <!-- Action Buttons Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+          <div></div>
+          <div class="flex items-center gap-2">
+            <!-- Check Answer Button -->
+            <button type="button" id="btn-check-answer" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 py-3 rounded-2xl shadow-pop-green transition-transform active:translate-y-1 flex items-center gap-2">
+              <span>Kiểm tra đáp án</span>
+              <span>✓</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Feedback Panel (Success or Error with Retry Button) -->
+        <div id="feedback-panel" class="hidden mt-6 rounded-2xl p-5 border-2 transition-all">
+          <div class="flex items-start gap-3">
+            <div id="feedback-icon" class="text-3xl">🎉</div>
+            <div class="flex-1">
+              <h4 id="feedback-title" class="font-black text-base sm:text-lg"></h4>
+              <p id="feedback-explanation" class="text-xs sm:text-sm text-slate-700 mt-1"></p>
+
+              <!-- Button actions in feedback: retry or next -->
+              <div class="mt-4 flex flex-wrap items-center gap-3">
+                <!-- RETRY BUTTON: Critical requirement -->
+                <button type="button" id="btn-retry-question" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-black px-5 py-2.5 rounded-xl shadow-pop text-sm transition-transform active:translate-y-1 flex items-center gap-1.5">
+                  <span>🔄 Làm lại câu này</span>
+                </button>
+                
+                <!-- NEXT QUESTION BUTTON -->
+                <button type="button" id="btn-next-question" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-black px-5 py-2.5 rounded-xl shadow-pop-green text-sm transition-transform active:translate-y-1 flex items-center gap-1.5">
+                  <span>Câu tiếp theo ➔</span>
+                </button>
+
+                <!-- FINISH STAGE BUTTON -->
+                <button type="button" id="btn-finish-stage" class="hidden bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black px-6 py-2.5 rounded-xl shadow-pop text-sm transition-transform active:translate-y-1 flex items-center gap-1.5">
+                  <span>Hoàn thành chặng này! 🏁</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SCREEN 5: STAGE 5 CELEBRATION & CERTIFICATE    -->
+    <!-- ============================================== -->
+        <section id="screen-stage5" class="hidden space-y-6">
+      <!-- Stage 5 Top Hero -->
+      <div class="bg-gradient-to-br from-sky-500 via-blue-600 to-emerald-600 text-white rounded-3xl p-6 sm:p-8 shadow-card text-center relative overflow-hidden">
+        <div class="text-5xl sm:text-6xl mb-2 animate-bounce">🏆</div>
+        <div class="inline-block bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full text-xs font-black text-sky-100 uppercase tracking-wider mb-2">
+          CHẶNG 5: SÂN KHẤU ĐỒNG DAO & ĐẠI HỘI VINH DANH
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black">Chúc mừng Điều phối viên tài ba!</h2>
+        <p class="text-sky-100 text-sm sm:text-base mt-2 max-w-xl mx-auto">
+          Em đã đồng hành cùng chú Gấu AI vận chuyển toàn bộ nông sản về đích an toàn và đạt thành tích xuất sắc!
+        </p>
+      </div>
+
+      <!-- Synchronized Karaoke Rhyme Player -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-sky-100">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🎤</span>
+            <div>
+              <h3 class="font-black text-lg text-slate-800">Đồng dao Cân Nặng (Giai điệu vui tươi)</h3>
+              <p class="text-xs text-slate-500">Từng câu hát nhấp nháy theo điệu nhạc gõ rộn rã</p>
+            </div>
+          </div>
+          <button type="button" id="btn-play-rhyme" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black px-5 py-2.5 rounded-2xl text-xs sm:text-sm shadow-pop flex items-center gap-2 transition active:scale-95">
+            <span id="rhyme-play-icon">▶️</span>
+            <span id="rhyme-play-text">Bật giai điệu đồng dao</span>
+          </button>
+        </div>
+
+        <!-- Karaoke lyrics lines -->
+        <div id="karaoke-container" class="bg-gradient-to-b from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200 text-center font-bold text-slate-700 text-base sm:text-lg leading-relaxed space-y-2">
+          <div class="text-xs font-extrabold uppercase tracking-widest text-orange-600 mb-2">🌾 BÀI VÈ CÂN NẶNG LỚP 4 🌾</div>
+          <div id="rhyme-line-0" class="rhyme-line py-1 px-3 rounded-xl transition-all duration-300">Nghe vẻ nghe ve, nghe vè cân nặng 🥁</div>
+          <div id="rhyme-line-1" class="rhyme-line py-1 px-3 rounded-xl transition-all duration-300">Mười cân gom lại, được một <strong class="text-emerald-700">YẾN</strong> tròn (1 yến = 10 kg) 🥔</div>
+          <div id="rhyme-line-2" class="rhyme-line py-1 px-3 rounded-xl transition-all duration-300">Mười yến thành hàng, gọi ngay một <strong class="text-amber-700">TẠ</strong> (1 tạ = 10 yến) 🌽</div>
+          <div id="rhyme-line-3" class="rhyme-line py-1 px-3 rounded-xl transition-all duration-300">Mười tạ lên xe, là một <strong class="text-blue-700">TẤN</strong> lớn (1 tấn = 10 tạ) 🚚</div>
+          <div id="rhyme-line-4" class="rhyme-line py-1 px-3 rounded-xl transition-all duration-300">Cân thóc cân ngô, chuyến xe chở về 🌾</div>
+          <div id="rhyme-line-5" class="rhyme-line py-1 px-3 rounded-xl transition-all duration-300">Mỗi lần gấp mười, em hãy nhớ nhé! 🌟</div>
+        </div>
+      </div>
+
+      <!-- Lucky Farm Wheel & Student Backpack (Ba Lô Phần Thưởng) -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+        <!-- Lucky Wheel Card -->
+        <div class="md:col-span-7 bg-white rounded-3xl p-6 shadow-card border-2 border-amber-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-2xl">🎡</span>
+              <h3 class="font-black text-lg text-slate-800">Vòng Quay Cúp Nông Sản May Mắn</h3>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">
+              Mỗi bạn được quay <strong>duy nhất 1 lần</strong> để rinh Cúp danh dự siêu đáng yêu về Ba lô của mình!
+            </p>
+
+            <!-- Visual Wheel -->
+            <div class="relative w-64 h-64 mx-auto my-2 flex items-center justify-center">
+              <div class="absolute -top-3 z-20 text-3xl text-rose-600 filter drop-shadow animate-bounce">🔻</div>
+              
+              <div id="wheel-disc" class="w-60 h-60 rounded-full border-4 border-amber-400 shadow-2xl relative overflow-hidden transition-all duration-[3800ms] cubic-bezier(0.15, 0.85, 0.2, 0.99) flex items-center justify-center" style="background: conic-gradient(#f87171 0deg 45deg, #fbbf24 45deg 90deg, #34d399 90deg 135deg, #60a5fa 135deg 180deg, #a78bfa 180deg 225deg, #f472b6 225deg 270deg, #38bdf8 270deg 315deg, #fb923c 315deg 360deg);">
+                <!-- Wheel center peg -->
+                <div class="w-16 h-16 rounded-full bg-white border-4 border-amber-400 flex items-center justify-center text-xl font-black text-amber-600 shadow-md z-10">
+                  🎯
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spin Action -->
+          <div class="text-center mt-4">
+            <button type="button" id="btn-spin-wheel" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black px-6 py-3 rounded-2xl shadow-pop text-sm transition-transform active:translate-y-1">
+              🎡 Quay Thưởng Ngay! (1 lượt)
+            </button>
+            <div id="wheel-status-txt" class="text-xs text-slate-500 font-semibold mt-2">
+              Bấm để bắt đầu quay nhận cúp
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Backpack (Ba Lô Phần Thưởng Của Em) -->
+        <div class="md:col-span-5 bg-white rounded-3xl p-6 shadow-card border-2 border-emerald-100 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-2xl">🎒</span>
+              <h3 class="font-black text-lg text-slate-800">Ba Lô Phần Thưởng Của Em</h3>
+            </div>
+            <p class="text-xs text-slate-500 mb-3">Nơi cất giữ Cúp may mắn và các Huy hiệu danh dự em đã đạt được</p>
+
+            <div class="space-y-3">
+              <!-- Won Cup Slot from Wheel -->
+              <div id="backpack-prize-slot" class="bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl p-4 text-center transition-all">
+                <div id="backpack-empty-txt" class="text-xs font-bold text-amber-800 py-3">
+                  🎁 [Ô CÚP MAY MẮN TRỐNG]<br>
+                  <span class="font-normal text-[11px] text-slate-500">Hãy bấm vòng quay bên cạnh để rinh Cúp vào đây nhé!</span>
+                </div>
+                <div id="backpack-won-card" class="hidden flex items-center gap-3 text-left">
+                  <div class="w-14 h-14 bg-amber-200 rounded-2xl flex items-center justify-center text-3xl shadow-sm border border-amber-300" id="backpack-prize-icon">🏆</div>
+                  <div>
+                    <span class="text-[10px] font-black uppercase text-orange-600 bg-white px-2 py-0.5 rounded-full border border-orange-200">CÚP DANH DỰ ĐÃ NHẬN</span>
+                    <div class="text-sm font-black text-slate-800 mt-0.5" id="backpack-prize-name">Cúp Gấu Con Siêu Đẳng</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Journey Achievement Badges -->
+              <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center gap-3">
+                <span class="text-3xl">🌟</span>
+                <div>
+                  <div class="text-xs font-black text-emerald-900">Huy hiệu: Điều Phối Viên Xuất Sắc</div>
+                  <div class="text-[11px] text-slate-600">Đã vượt qua cả 5 chặng hành trình</div>
+                </div>
+              </div>
+              <div class="bg-sky-50 border border-sky-200 rounded-2xl p-3 flex items-center gap-3">
+                <span class="text-3xl">⚡</span>
+                <div>
+                  <div class="text-xs font-black text-sky-900">Huy hiệu: Bậc Thầy Đo Lường</div>
+                  <div class="text-[11px] text-slate-600">Làm chủ hoàn hảo Yến, Tạ, Tấn</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 text-center">
+            <span class="inline-block bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-xl">
+              🎒 Ba lô đã sẵn sàng khoe với bố mẹ & cô giáo
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Authentic Realistic Certificate (GIẤY CHỨNG NHẬN CHUẨN THỰC TẾ) -->
+      <div id="certificate-card" class="bg-gradient-to-b from-amber-50/70 via-white to-amber-50/70 rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-amber-500 relative text-center">
+        <!-- Inner decorative double border -->
+        <div class="border-4 border-double border-amber-400 rounded-2xl p-6 sm:p-10 bg-white shadow-inner relative">
+          <!-- National Header -->
+          <div class="text-xs uppercase font-extrabold tracking-widest text-slate-700">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+          <div class="text-xs font-bold text-slate-600 mb-2">Độc lập - Tự do - Hạnh phúc</div>
+          <div class="w-32 h-0.5 bg-red-500 mx-auto mb-4"></div>
+
+          <div class="text-xs font-extrabold uppercase tracking-wider text-amber-800 mb-2">
+            HỌC LIỆU SỐ TOÁN 4 • BÀI 17: YẾN, TẠ, TẤN
+          </div>
+
+          <!-- Main Certificate Title -->
+          <h2 class="text-3xl sm:text-5xl font-black text-red-600 tracking-wider my-2 uppercase font-serif drop-shadow-sm">
+            GIẤY CHỨNG NHẬN
+          </h2>
+          <div class="text-xs sm:text-sm font-bold text-slate-600 mb-4 tracking-wide uppercase">
+            TRAO TẶNG DANH HIỆU: ĐIỀU PHỐI VIÊN NÔNG SẢN XUẤT SẮC
+          </div>
+
+          <!-- Student Name & Info -->
+          <div class="my-4">
+            <div class="text-xs text-slate-500 font-semibold mb-1">Chứng nhận em:</div>
+            <div class="text-2xl sm:text-4xl font-black text-emerald-800 bg-emerald-50/80 inline-block px-8 py-2 rounded-2xl border-2 border-emerald-300 shadow-sm" id="cert-student-name">
+              NGUYỄN VĂN AN
+            </div>
+          </div>
+
+          <p class="text-xs sm:text-base text-slate-700 max-w-lg mx-auto mb-6 leading-relaxed">
+            Học sinh lớp <strong id="cert-student-class" class="text-emerald-700 font-extrabold">4A1</strong> - <strong id="cert-student-school" class="text-emerald-700 font-extrabold">Trường Tiểu học</strong><br>
+            Đã xuất sắc hoàn thành toàn bộ 5 chặng hành trình và làm chủ các đơn vị đo <strong>Yến, Tạ, Tấn</strong> trong năm học <strong>2026 - 2027</strong>.
+          </p>
+
+          <!-- Score & Rating Badges -->
+          <div class="flex items-center justify-center gap-6 my-4 flex-wrap">
+            <div class="bg-sky-50 border-2 border-sky-300 px-5 py-2.5 rounded-2xl shadow-sm">
+              <div class="text-[11px] text-sky-800 font-bold uppercase">Thành tích kim cương</div>
+              <div class="text-2xl font-black text-sky-900" id="cert-stars">💎 1 000 / 1 000</div>
+            </div>
+            <div class="bg-amber-50 border-2 border-amber-300 px-5 py-2.5 rounded-2xl shadow-sm">
+              <div class="text-[11px] text-amber-800 font-bold uppercase">Xếp loại đánh giá</div>
+              <div class="text-2xl font-black text-amber-900">XUẤT SẮC 🏅</div>
+            </div>
+          </div>
+
+          <!-- Signatures & Authentic Red Stamp -->
+          <div class="mt-8 flex items-center justify-between text-xs text-slate-600 pt-6 border-t border-slate-200 flex-wrap gap-4">
+            <div class="text-left space-y-1">
+              <div>Ngày cấp: <span id="cert-date" class="font-bold">--/--/----</span></div>
+              <div class="text-slate-400 text-[11px]">Mã tra cứu: <span id="cert-code" class="font-mono font-bold text-slate-600">TC-2026-001</span></div>
+            </div>
+
+            <!-- Signature & Red Official Seal -->
+            <div class="text-center relative pr-4">
+              <div class="font-bold text-slate-700">TRƯỞNG TRẠM CÂN GẤU AI</div>
+              <div class="text-xs text-slate-500 italic mb-2">(Ký tên & xác nhận)</div>
+              
+              <!-- Red Seal SVG/Badge -->
+              <div class="w-20 h-20 rounded-full border-2 border-red-500 bg-red-50/30 text-red-600 flex flex-col items-center justify-center p-1 mx-auto rotate-[-12deg] shadow-sm pointer-events-none select-none">
+                <div class="text-[8px] font-black uppercase text-center leading-tight">ĐÃ XÁC NHẬN</div>
+                <div class="text-lg">🐻</div>
+                <div class="text-[7px] font-bold">NĂM HỌC 2026-2027</div>
+              </div>
+              <div class="font-black text-emerald-800 text-sm mt-1">Gấu AI Thông Thái</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons for certificate -->
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3 no-print">
+          <button type="button" id="btn-print-cert" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 py-3 rounded-2xl shadow-pop-green flex items-center gap-2 transition active:scale-95">
+            <span>🖨️ In Giấy Chứng Nhận (A4)</span>
+          </button>
+          <button type="button" id="btn-replay-game" class="bg-amber-500 hover:bg-amber-600 text-white font-black px-6 py-3 rounded-2xl shadow-pop flex items-center gap-2 transition active:scale-95">
+            <span>🔄 Khám phá lại từ đầu</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white/80 border-t border-emerald-100 py-4 px-4 text-center text-xs text-slate-500 mt-auto">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>Trạm Cân Thông Minh Gấu AI • Mô phỏng giáo dục Toán 4</div>
+            <div class="font-semibold text-emerald-700">Yến • Tạ • Tấn</div>
+    </div>
+  </footer>
+
+  
+  
+  <!-- Big Center Prize Celebration Modal -->
+  <div id="prize-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-4 border-amber-400 text-center relative animate-bounce">
+      <div class="text-6xl mb-2" id="modal-prize-icon">🏆</div>
+      <div class="inline-block bg-amber-100 text-amber-900 text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full mb-2">
+        🎉 CHÚC MỪNG BẠN ĐÃ TRÚNG THƯỞNG!
+      </div>
+      <h3 class="text-2xl font-black text-slate-800 mb-1" id="modal-prize-name">
+        Cúp Gấu Con Siêu Đẳng
+      </h3>
+      <p class="text-xs text-slate-600 mb-5 leading-relaxed">
+        Phần thưởng vinh dự đã được chuyển ngay vào <strong>Ba Lô Của Em</strong> để lưu lại làm kỉ niệm chuyến xe nông sản!
+      </p>
+
+      <button type="button" id="btn-claim-prize" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black py-3.5 px-6 rounded-2xl shadow-pop text-sm transition-transform active:translate-y-1">
+        🎁 Nhận ngay vào Ba Lô của em ➔
+      </button>
+    </div>
+  </div>
+
+  <!-- In-page Toast Notification -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur-md text-white font-bold px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 z-50 transition-all duration-300 opacity-0 pointer-events-none translate-y-2">
+    <span id="toast-icon" class="text-xl">⚠️</span>
+    <span id="toast-msg" class="text-sm"></span>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- JAVASCRIPT APP LOGIC                           -->
+  <!-- ============================================== -->
+  <script>
+    function showToast(msg, icon = '⚠️') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      if (toastIcon) toastIcon.textContent = icon;
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+      }, 2600);
+    }
+
+    // Audio Synthesizer (Lively sound effects for responses only)
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playRight() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        // Loud, lively arpeggio fanfare: C5, E5, G5, C6
+        const now = this.ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        
+        notes.forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + i * 0.08);
+
+          gain.gain.setValueAtTime(0.01, now + i * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.6, now + i * 0.08 + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.35);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now + i * 0.08);
+          osc.stop(now + i * 0.08 + 0.4);
+        });
+      }
+
+      playWrong() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        // Energetic "wobble-buzz" boing for incorrect answers
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(260, now);
+        osc.frequency.exponentialRampToValueAtTime(130, now + 0.28);
+
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.exponentialRampToValueAtTime(0.55, now + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.38);
+      }
+
+      playVictory() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        // Triumphant victory fanfare!
+        const now = this.ctx.currentTime;
+        const melody = [
+          { f: 523.25, t: 0.0, d: 0.15 },
+          { f: 523.25, t: 0.15, d: 0.15 },
+          { f: 523.25, t: 0.30, d: 0.15 },
+          { f: 659.25, t: 0.45, d: 0.35 },
+          { f: 783.99, t: 0.85, d: 0.35 },
+          { f: 1046.50, t: 1.25, d: 0.70 }
+        ];
+
+        melody.forEach(item => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(item.f, now + item.t);
+
+          gain.gain.setValueAtTime(0.01, now + item.t);
+          gain.gain.exponentialRampToValueAtTime(0.65, now + item.t + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + item.t + item.d);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now + item.t);
+          osc.stop(now + item.t + item.d + 0.05);
+        });
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    // ==============================================
+    // APPLICATION STATE
+    // ==============================================
+    const appState = {
+      student: {
+        name: 'Học sinh',
+        class: 'Lớp 4',
+        school: ''
+      },
+      hasRegistered: false,
+      currentStage: 1,
+      unlockedStages: [1],
+      stageScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+      currentQuestionIndex: 0,
+      activeQuestion: null,
+      selectedAnswer: null,
+      questionAnswered: false,
+      theoryStep: 1,
+      questionAttempt: 1
+    };
+
+    // ==============================================
+    // QUESTION REPOSITORY (CHẶNG 1 - 4)
+    // ==============================================
+    const stageQuestions = {
+      // --------------------------------------------
+      // CHẶNG 1: Nông trại Gấu Nâu (10 câu nhận biết chuẩn)
+      // --------------------------------------------
+      1: [
+        {
+          id: '1-1',
+          type: 'mcq',
+          tag: '🐔 ƯỚC LƯỢNG KHỐI LƯỢNG',
+          sticker: '🐔',
+          text: 'Con gà nặng khoảng 2 ___.',
+          options: ['kg', 'tạ', 'tấn'],
+          correct: 'kg',
+          hint: 'Con gà nhỏ nhẹ, em có thể bế bằng hai tay. Đơn vị phù hợp nhất là ki-lô-gam (kg).',
+          explanation: 'Chính xác! Con gà nặng khoảng 2 kg. Đơn vị tạ và tấn quá lớn đối với con gà.'
+        },
+        {
+          id: '1-2',
+          type: 'mcq',
+          tag: '🌾 BAO THÓC NÔNG TRẠI',
+          sticker: '🌾',
+          text: 'Một bao thóc nặng khoảng 5 ___.',
+          options: ['kg', 'yến', 'tấn'],
+          correct: 'yến',
+          hint: '1 bao thóc thường nặng khoảng 50 kg. Hãy nhớ 50 kg = 5 yến nhé!',
+          explanation: 'Rất chuẩn! Một bao thóc nặng khoảng 5 yến (tương đương 50 kg).'
+        },
+        {
+          id: '1-3',
+          type: 'mcq',
+          tag: '🐃 ĐỘNG VẬT CỠ LỚN',
+          sticker: '🐃',
+          text: 'Một con trâu nặng khoảng 5 ___.',
+          options: ['kg', 'tạ', 'tấn'],
+          correct: 'tạ',
+          hint: 'Con trâu to lớn nặng khoảng 500 kg. Đổi sang tạ là 5 tạ!',
+          explanation: 'Chính xác! Một con trâu nặng khoảng 5 tạ (khoảng 500 kg).'
+        },
+        {
+          id: '1-4',
+          type: 'mcq',
+          tag: '🚛 TẢI TRỌNG XE HÀNG',
+          sticker: '🚛',
+          text: 'Xe tải chở 3 000 kg gạo. Cách nói gọn là 3 ___.',
+          options: ['yến', 'tạ', 'tấn'],
+          correct: 'tấn',
+          hint: '1 000 kg = 1 tấn. Vậy 3 000 kg gạo ta nói gọn là 3 tấn!',
+          explanation: 'Đúng rồi! 3 000 kg = 3 tấn. Xe tải chở nặng dùng đơn vị tấn.'
+        },
+        {
+          id: '1-5',
+          type: 'mcq',
+          tag: '🏆 SO SÁNH ĐƠN VỊ',
+          sticker: '🏆',
+          text: 'Đơn vị đo khối lượng nào là lớn nhất?',
+          options: ['kg', 'yến', 'tạ', 'tấn'],
+          correct: 'tấn',
+          hint: 'Thứ tự từ bé đến lớn: kg < yến < tạ < tấn.',
+          explanation: 'Chính xác! Tấn là đơn vị lớn nhất trong các đơn vị đã học (1 tấn = 1 000 kg).'
+        },
+        {
+          id: '1-6',
+          type: 'mcq',
+          tag: '⚖️ ĐƠN VỊ YẾN',
+          sticker: '🥔',
+          text: '1 yến bằng bao nhiêu ki-lô-gam?',
+          options: ['1 kg', '10 kg', '100 kg', '1 000 kg'],
+          correct: '10 kg',
+          hint: '1 yến = 10 kg (và 10 kg = 1 yến).',
+          explanation: 'Tuyệt vời! 1 yến = 10 kg.'
+        },
+        {
+          id: '1-7',
+          type: 'mcq',
+          tag: '⚖️ ĐƠN VỊ TẤN VÀ TẠ',
+          sticker: '🚚',
+          text: '1 tấn bằng bao nhiêu tạ?',
+          options: ['10 tạ', '100 tạ', '1 tạ', '1 000 tạ'],
+          correct: '10 tạ',
+          hint: '10 tạ gom lại thành 1 tấn. Vậy 1 tấn = 10 tạ.',
+          explanation: 'Rất tốt! 1 tấn = 10 tạ.'
+        },
+        {
+          id: '1-8',
+          type: 'mcq',
+          tag: '🔍 NHẬN BIẾT ĐƠN VỊ ĐO',
+          sticker: '📏',
+          text: 'Đơn vị nào sau đây không dùng để đo khối lượng?',
+          options: ['Tạ', 'Yến', 'Tấn', 'Mét'],
+          correct: 'Mét',
+          hint: 'Tạ, Yến, Tấn dùng đo khối lượng cân nặng. Mét là đơn vị đo độ dài!',
+          explanation: 'Quá đỉnh! Mét là đơn vị đo độ dài, không phải đơn vị đo khối lượng.'
+        },
+        {
+          id: '1-9',
+          type: 'mcq',
+          tag: '⚖️ ĐƠN VỊ TẠ VÀ YẾN',
+          sticker: '🌽',
+          text: '1 tạ bằng bao nhiêu yến?',
+          options: ['1 yến', '5 yến', '10 yến', '100 yến'],
+          correct: '10 yến',
+          hint: '1 tạ = 10 yến = 100 kg.',
+          explanation: 'Chính xác! 1 tạ = 10 yến.'
+        },
+        {
+          id: '1-10',
+          type: 'mcq',
+          tag: '⚖️ ĐƠN VỊ TẤN VÀ KI-LÔ-GAM',
+          sticker: '🐘',
+          text: '1 tấn bằng bao nhiêu ki-lô-gam?',
+          options: ['10 kg', '100 kg', '500 kg', '1 000 kg'],
+          correct: '1 000 kg',
+          hint: '1 tấn = 10 tạ = 100 yến = 1 000 kg.',
+          explanation: 'Xuất sắc 100%! 1 tấn = 1 000 kg.'
+        }
+      ],
+
+      // --------------------------------------------
+      // CHẶNG 2: Cầu Cân Thông Minh (10 câu đổi đơn vị đo hấp dẫn, dễ hiểu)
+      // --------------------------------------------
+      2: [
+        {
+          id: '2-1',
+          type: 'input',
+          tag: '🥔 NÔNG SẢN THỎ TRẮNG',
+          sticker: '🥔',
+          text: '2 yến = [ ? ] kg',
+          unit: 'kg',
+          correct: '20',
+          hint: '1 yến = 10 kg, vậy 2 yến = 2 × 10 = ?',
+          explanation: 'Đúng rồi! 2 yến = 20 kg.'
+        },
+        {
+          id: '2-2',
+          type: 'input',
+          tag: '🎃 THU HOẠCH BÍ ĐỎ',
+          sticker: '🎃',
+          text: '6 yến = [ ? ] kg',
+          unit: 'kg',
+          correct: '60',
+          hint: 'Đổi từ yến sang kg ta nhân với 10.',
+          explanation: 'Chính xác! 6 yến = 60 kg.'
+        },
+        {
+          id: '2-3',
+          type: 'input',
+          tag: '🌽 XE NGÔ BÁC GẤU',
+          sticker: '🌽',
+          text: '4 tạ = [ ? ] kg',
+          unit: 'kg',
+          correct: '400',
+          hint: '1 tạ = 100 kg, đổi từ tạ sang kg ta nhân với 100.',
+          explanation: 'Tuyệt vời! 4 tạ = 400 kg.'
+        },
+        {
+          id: '2-4',
+          type: 'input',
+          tag: '🍉 XE DƯA THỤY LÂM',
+          sticker: '🍉',
+          text: '3 tấn = [ ? ] kg',
+          unit: 'kg',
+          correct: '3000',
+          hint: '1 tấn = 1 000 kg, đổi từ tấn sang kg ta thêm 3 chữ số 0.',
+          explanation: 'Rất tốt! 3 tấn = 3 000 kg.'
+        },
+        {
+          id: '2-5',
+          type: 'input',
+          tag: '🥕 GIỎ CÀ RỐT TƯƠI',
+          sticker: '🥕',
+          text: '50 kg = [ ? ] yến',
+          unit: 'yến',
+          correct: '5',
+          hint: '10 kg = 1 yến, 50 kg đổi sang yến ta bớt đi 1 chữ số 0.',
+          explanation: 'Đúng rồi! 50 kg = 5 yến.'
+        },
+        {
+          id: '2-6',
+          type: 'input',
+          tag: '🌾 THÓC NẾP VÀNG',
+          sticker: '🌾',
+          text: '300 kg = [ ? ] tạ',
+          unit: 'tạ',
+          correct: '3',
+          hint: '100 kg = 1 tạ, đổi từ kg sang tạ ta bớt đi 2 chữ số 0.',
+          explanation: 'Xuất sắc! 300 kg = 3 tạ.'
+        },
+        {
+          id: '2-7',
+          type: 'input',
+          tag: '🚛 TRỌNG LƯỢNG XE TẢI',
+          sticker: '🚛',
+          text: '2 000 kg = [ ? ] tấn',
+          unit: 'tấn',
+          correct: '2',
+          hint: '1 000 kg = 1 tấn, 2 000 kg ta chia cho 1 000.',
+          explanation: 'Chính xác! 2 000 kg = 2 tấn.'
+        },
+        {
+          id: '2-8',
+          type: 'input',
+          tag: '🥜 LẠC CỦ ĐẦY BAO',
+          sticker: '🥜',
+          text: '7 tạ = [ ? ] yến',
+          unit: 'yến',
+          correct: '70',
+          hint: '1 tạ = 10 yến, 7 tạ = 7 × 10 = ?',
+          explanation: 'Đúng rồi! 7 tạ = 70 yến.'
+        },
+        {
+          id: '2-9',
+          type: 'input',
+          tag: '🍈 BƯỞI XUẤT KHẨU',
+          sticker: '🍈',
+          text: '5 tấn = [ ? ] tạ',
+          unit: 'tạ',
+          correct: '50',
+          hint: '1 tấn = 10 tạ, vậy 5 tấn = 5 × 10 = ?',
+          explanation: 'Tuyệt cú mèo! 5 tấn = 50 tạ.'
+        },
+        {
+          id: '2-10',
+          type: 'input',
+          tag: '📦 ĐỔI HỖN HỢP THÔNG MINH',
+          sticker: '📦',
+          text: '2 tấn 3 tạ = [ ? ] kg',
+          unit: 'kg',
+          correct: '2300',
+          hint: 'Đổi từng phần: 2 tấn = 2 000 kg, 3 tạ = 300 kg. Sau đó cộng lại.',
+          explanation: 'Quá đỉnh! 2 tấn = 2 000 kg; 3 tạ = 300 kg; 2000 + 300 = 2 300 kg.'
+        }
+      ],
+
+      // --------------------------------------------
+      // CHẶNG 3: Kho Hàng Vàng (10 câu tính toán khối lượng - CHỈ CỘNG TRỪ NHÂN CHIA SỐ 1 CHỮ SỐ)
+      // --------------------------------------------
+      3: [
+        {
+          id: '3-1',
+          type: 'input',
+          tag: '➕ CỘNG KHỐI LƯỢNG TẠ',
+          sticker: '🧺',
+          text: '17 tạ + 36 tạ = [ ? ] tạ',
+          unit: 'tạ',
+          correct: '53',
+          hint: '17 + 36 = ?',
+          explanation: 'Đúng rồi! 17 tạ + 36 tạ = 53 tạ.'
+        },
+        {
+          id: '3-2',
+          type: 'input',
+          tag: '➖ TRỪ KHỐI LƯỢNG TẤN',
+          sticker: '🍉',
+          text: '45 tấn - 18 tấn = [ ? ] tấn',
+          unit: 'tấn',
+          correct: '27',
+          hint: '45 - 18 = ?',
+          explanation: 'Chính xác! 45 tấn - 18 tấn = 27 tấn.'
+        },
+        {
+          id: '3-3',
+          type: 'input',
+          tag: '✖️ NHÂN VỚI SỐ CÓ 1 CHỮ SỐ',
+          sticker: '🌽',
+          text: '25 yến × 4 = [ ? ] yến',
+          unit: 'yến',
+          correct: '100',
+          hint: '25 × 4 = ?',
+          explanation: 'Tuyệt vời! 25 yến × 4 = 100 yến.'
+        },
+        {
+          id: '3-4',
+          type: 'input',
+          tag: '➗ CHIA CHO SỐ CÓ 1 CHỮ SỐ',
+          sticker: '🌾',
+          text: '138 tấn : 3 = [ ? ] tấn',
+          unit: 'tấn',
+          correct: '46',
+          hint: '138 : 3 = ?',
+          explanation: 'Rất giỏi! 138 tấn : 3 = 46 tấn.'
+        },
+        {
+          id: '3-5',
+          type: 'input',
+          tag: '⚖️ ĐỔI VỀ CÙNG ĐƠN VỊ ĐỂ TRỪ',
+          sticker: '🥔',
+          text: '3 tạ - 80 kg = [ ? ] kg',
+          unit: 'kg',
+          correct: '220',
+          hint: '3 tạ = 300 kg. Lấy 300 - 80 = ?',
+          explanation: 'Đúng rồi! 3 tạ = 300 kg; 300 - 80 = 220 kg.'
+        },
+        {
+          id: '3-6',
+          type: 'input',
+          tag: '⚖️ ĐỔI VỀ CÙNG ĐƠN VỊ ĐỂ CỘNG',
+          sticker: '🥬',
+          text: '2 tấn + 500 kg = [ ? ] kg',
+          unit: 'kg',
+          correct: '2500',
+          hint: '2 tấn = 2 000 kg. Lấy 2000 + 500 = ?',
+          explanation: 'Chính xác! 2 tấn = 2 000 kg; 2000 + 500 = 2 500 kg.'
+        },
+        {
+          id: '3-7',
+          type: 'input',
+          tag: '⚖️ CỘNG TẤN TẠ VỚI KG',
+          sticker: '🌾',
+          text: '1 tấn 5 tạ + 200 kg = [ ? ] kg',
+          unit: 'kg',
+          correct: '1700',
+          hint: '1 tấn 5 tạ = 1 500 kg. Lấy 1 500 + 200 = ?',
+          explanation: 'Tuyệt cú mèo! 1 tấn 5 tạ = 1 500 kg; 1500 + 200 = 1 700 kg.'
+        },
+        {
+          id: '3-8',
+          type: 'input',
+          tag: '✖️ GẤP ĐÔI KHỐI LƯỢNG',
+          sticker: '🍠',
+          text: '42 yến × 2 = [ ? ] yến',
+          unit: 'yến',
+          correct: '84',
+          hint: '42 × 2 = ?',
+          explanation: 'Xuất sắc! 42 yến × 2 = 84 yến.'
+        },
+        {
+          id: '3-9',
+          type: 'input',
+          tag: '➗ CHIA ĐỀU BẮP CẢI',
+          sticker: '🥦',
+          text: '180 tạ : 6 = [ ? ] tạ',
+          unit: 'tạ',
+          correct: '30',
+          hint: '180 : 6 = ?',
+          explanation: 'Quá chuẩn! 180 tạ : 6 = 30 tạ.'
+        },
+        {
+          id: '3-10',
+          type: 'input',
+          tag: '➖ TRỪ HAI SỐ ĐO HỖN HỢP',
+          sticker: '🍉',
+          text: '5 tấn 4 tạ - 1 tấn 2 tạ = [ ? ] tạ',
+          unit: 'tạ',
+          correct: '42',
+          hint: '54 - 12 = ?',
+          explanation: 'Chính xác! 54 tạ - 12 tạ = 42 tạ.'
+        }
+      ],
+
+      // --------------------------------------------
+      // CHẶNG 4: Ngày hội Thụy Lâm (10 câu toán thực tế)
+      // --------------------------------------------
+      4: [
+        {
+          id: '4-1',
+          type: 'input',
+          tag: '🏪 KHO GẠO THỤY LÂM',
+          sticker: '🌾',
+          text: 'Kho lương thực có 3 tấn gạo. Buổi sáng chuyển đi 8 tạ gạo, buổi chiều chuyển đi 950 kg gạo. Hỏi trong kho còn lại bao nhiêu ki-lô-gam gạo?',
+          unit: 'kg',
+          correct: '1250',
+          hint: 'Đổi về kg: 3 tấn = 3 000 kg; 8 tạ = 800 kg. Tổng chuyển đi: 800 + 950 = 1 750 kg.',
+          explanation: 'Chính xác! 3 tấn = 3 000 kg; 8 tạ = 800 kg. Tổng số gạo đã chuyển đi: 800 + 950 = 1 750 kg. Trong kho còn lại: 3000 - 1750 = 1 250 kg gạo.'
+        },
+        {
+          id: '4-2',
+          type: 'input',
+          tag: '📦 ĐÓNG BAO GẠO',
+          sticker: '🛍️',
+          text: 'Một cửa hàng có 2 tấn 4 yến gạo. Người ta đóng đều số gạo đó vào các bao, mỗi bao đựng 6 yến gạo. Hỏi cửa hàng cần chuẩn bị bao nhiêu bao để đóng hết số gạo trên?',
+          unit: 'bao',
+          correct: '34',
+          hint: 'Đổi về yến: 2 tấn 4 yến = 204 yến. Chia cho 6: 204 : 6 = ?',
+          explanation: 'Tuyệt vời! Đổi 2 tấn 4 yến = 204 yến. Số bao cần chuẩn bị là: 204 : 6 = 34 bao gạo.'
+        },
+        {
+          id: '4-3',
+          type: 'input',
+          tag: '❤️ THIỆN NGUYỆN Ý NGHĨA',
+          sticker: '🎁',
+          text: 'Để tổ chức hoạt động thiện nguyện giúp đỡ các bạn học sinh có hoàn cảnh khó khăn, lớp 4A quyên góp được 3 tạ 50 kg gạo, lớp 4B quyên góp được 280 kg gạo. Hỏi cả hai lớp quyên góp được tất cả bao nhiêu ki-lô-gam gạo?',
+          unit: 'kg',
+          correct: '630',
+          hint: '3 tạ 50 kg = 350 kg. Lấy 350 + 280 = ?',
+          explanation: 'Rất giỏi! 3 tạ 50 kg = 350 kg. Cả hai lớp quyên góp được: 350 + 280 = 630 kg gạo.'
+        },
+        {
+          id: '4-4',
+          type: 'input',
+          tag: '🌽 THU GOM NGÔ',
+          sticker: '🌽',
+          text: 'Một tổ nông dân thu gom được 9 bao ngô, mỗi bao cân nặng đúng 4 yến. Hỏi tổ đó đã thu gom được tất cả bao nhiêu ki-lô-gam ngô?',
+          unit: 'kg',
+          correct: '360',
+          hint: '9 × 4 = 36 yến. Đổi 36 yến ra kg: 36 × 10 = ?',
+          explanation: 'Chính xác! 9 × 4 = 36 yến. Đổi 36 yến = 360 kg ngô.'
+        },
+        {
+          id: '4-5',
+          type: 'input',
+          tag: '🚚 CHUYẾN XE NÔNG SẢN',
+          sticker: '🎃',
+          text: 'Chuyến xe tải thứ nhất chở được 3 tấn bí đỏ, chuyến thứ hai chở được 45 tạ bí đỏ. Hỏi cả hai chuyến chở được tất cả bao nhiêu tạ bí đỏ?',
+          unit: 'tạ',
+          correct: '75',
+          hint: '3 tấn = 30 tạ. Lấy 30 + 45 = ?',
+          explanation: 'Đúng rồi! 3 tấn = 30 tạ; 30 + 45 = 75 tạ bí đỏ.'
+        },
+        {
+          id: '4-6',
+          type: 'input',
+          tag: '🍠 CHIA KHOAI XE THỒ',
+          sticker: '🍠',
+          text: 'Bác Gấu thu hoạch được 8 tạ khoai lang. Bác chia đều số khoai đó vào 8 xe thồ nhỏ. Hỏi mỗi xe thồ chở được bao nhiêu yến khoai lang?',
+          unit: 'yến',
+          correct: '10',
+          hint: '8 tạ = 80 yến. Lấy 80 : 8 = ?',
+          explanation: 'Rất tốt! 8 tạ = 80 yến; 80 : 8 = 10 yến khoai lang.'
+        },
+        {
+          id: '4-7',
+          type: 'mcq',
+          tag: '🌉 AN TOÀN QUA CẦU TREO',
+          sticker: '🌉',
+          text: 'Cầu treo qua sông Thụy Lâm có biển báo tải trọng tối đa là 5 tấn. Một xe tải nặng 3 tấn đang chở thêm 15 tạ ngô. Hỏi xe có được phép qua cầu không?',
+          options: ['Được phép qua cầu', 'Không được phép'],
+          correct: 'Được phép qua cầu',
+          hint: '3 tấn + 15 tạ = 45 tạ = 4,5 tấn <= 5 tấn.',
+          explanation: 'Chính xác! Tổng khối lượng xe và ngô là 45 tạ (4,5 tấn), nhỏ hơn tải trọng 5 tấn của cầu nên xe được phép qua cầu an toàn!'
+        },
+        {
+          id: '4-8',
+          type: 'input',
+          tag: '🏪 CỬA HÀNG GẠO',
+          sticker: '🌾',
+          text: 'Một cửa hàng có 4 tạ gạo nếp và 80 kg gạo tẻ. Hỏi cửa hàng có tất cả bao nhiêu ki-lô-gam gạo?',
+          unit: 'kg',
+          correct: '480',
+          hint: 'Đổi 4 tạ = 400 kg. Lấy 400 + 80 = ?',
+          explanation: 'Chính xác! 4 tạ = 400 kg gạo nếp; 400 + 80 = 480 kg gạo.'
+        },
+        {
+          id: '4-9',
+          type: 'input',
+          tag: '🍈 ĐỘI XE XUẤT KHẨU BƯỞI',
+          sticker: '🍈',
+          text: 'Hợp tác xã nông sản Thụy Lâm xuất khẩu 4 xe tải bưởi Diễn, mỗi xe chở đúng 2 tấn bưởi. Hỏi cả 4 xe chở được tất cả bao nhiêu tạ bưởi?',
+          unit: 'tạ',
+          correct: '80',
+          hint: '4 × 2 = 8 tấn. Đổi 8 tấn ra tạ = 80 tạ.',
+          explanation: 'Quá đỉnh! 4 × 2 = 8 tấn; 8 tấn = 80 tạ bưởi.'
+        },
+        {
+          id: '4-10',
+          type: 'input',
+          tag: '🌽 BÁN NGÔ TẠI CHỢ',
+          sticker: '🌽',
+          text: 'Bác nông dân chở 1 tấn 2 tạ ngô ra chợ Thụy Lâm. Buổi sáng bác đã bán được 5 tạ ngô. Hỏi bác nông dân còn lại bao nhiêu tạ ngô?',
+          unit: 'tạ',
+          correct: '7',
+          hint: '1 tấn 2 tạ = 12 tạ. Lấy 12 - 5 = ?',
+          explanation: 'Chính xác! 1 tấn 2 tạ = 12 tạ; 12 - 5 = 7 tạ ngô.'
+        }
+      ]
+    };
+
+    // ==============================================
+    // DOM ELEMENTS
+    // ==============================================
+    const screens = {
+      welcome: document.getElementById('screen-welcome'),
+      roadmap: document.getElementById('screen-roadmap'),
+      theory: document.getElementById('screen-theory'),
+      quiz: document.getElementById('screen-quiz'),
+      stage5: document.getElementById('screen-stage5')
+    };
+
+    const startForm = document.getElementById('start-form');
+    const inputStudentName = document.getElementById('input-student-name');
+    const inputStudentClass = document.getElementById('input-student-class');
+    const inputStudentSchool = document.getElementById('input-student-school');
+
+    const badgeName = document.getElementById('badge-name');
+    const badgeClass = document.getElementById('badge-class');
+    const totalScoreDisplay = document.getElementById('total-score-display');
+    const soundToggleBtn = document.getElementById('sound-toggle-btn');
+    const soundIcon = document.getElementById('sound-icon');
+    const headerMapBtn = document.getElementById('header-map-btn');
+    const navHomeBtn = document.getElementById('nav-home-btn');
+
+    const roadmapScore = document.getElementById('roadmap-score');
+    const currentTruckLocation = document.getElementById('current-truck-location');
+    const btnResumeJourney = document.getElementById('btn-resume-journey');
+
+    const quizStageIcon = document.getElementById('quiz-stage-icon');
+    const quizStageName = document.getElementById('quiz-stage-name');
+    const quizStageDesc = document.getElementById('quiz-stage-desc');
+    const quizQuestionCurrent = document.getElementById('quiz-question-current');
+    const quizQuestionTotal = document.getElementById('quiz-question-total');
+    const quizProgressFill = document.getElementById('quiz-progress-fill');
+    const qNumberBadge = document.getElementById('q-number-badge');
+    const questionText = document.getElementById('question-text');
+    const mcqOptionsContainer = document.getElementById('mcq-options-container');
+    const inputAnswerContainer = document.getElementById('input-answer-container');
+    const studentFillInput = document.getElementById('student-fill-input');
+    const inputUnitLabel = document.getElementById('input-unit-label');
+    const btnCheckAnswer = document.getElementById('btn-check-answer');
+    const feedbackPanel = document.getElementById('feedback-panel');
+    const feedbackIcon = document.getElementById('feedback-icon');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const feedbackExplanation = document.getElementById('feedback-explanation');
+    const btnRetryQuestion = document.getElementById('btn-retry-question');
+    const btnNextQuestion = document.getElementById('btn-next-question');
+    const btnFinishStage = document.getElementById('btn-finish-stage');
+
+    const btnPlayRhyme = document.getElementById('btn-play-rhyme');
+    const certStudentName = document.getElementById('cert-student-name');
+    const certStudentClass = document.getElementById('cert-student-class');
+    const certStudentSchool = document.getElementById('cert-student-school');
+    const certStars = document.getElementById('cert-stars');
+    const certDate = document.getElementById('cert-date');
+    const btnPrintCert = document.getElementById('btn-print-cert');
+    const btnReplayGame = document.getElementById('btn-replay-game');
+
+    // ==============================================
+    // NAVIGATION GUARD: BẮT BUỘC ĐIỀN ĐỦ THÔNG TIN TRƯỚC KHI VÀO HÀNH TRÌNH
+    // ==============================================
+    function requireRegistration() {
+      if (!appState.hasRegistered || !appState.student.name || !appState.student.class || !appState.student.school) {
+        showScreen('welcome');
+        showToast('Em cần điền đầy đủ Họ tên, Lớp và Trường rồi bấm "Khởi hành ngay nào!" trước nhé!', '⚠️');
+        return false;
+      }
+      return true;
+    }
+
+    // ==============================================
+    // SCREEN SWITCHER HELPER
+    // ==============================================
+    function showScreen(screenKey) {
+      if (screenKey !== 'welcome' && !appState.hasRegistered) {
+        screenKey = 'welcome';
+        showToast('Vui lòng điền đủ Họ tên, Lớp, Trường để bắt đầu nhé!', '⚠️');
+      }
+
+      Object.keys(screens).forEach(key => {
+        if (key === screenKey) {
+          screens[key].classList.remove('hidden');
+        } else {
+          screens[key].classList.add('hidden');
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==============================================
+    // SCORE & ROADMAP DISPLAY UPDATE
+    // ==============================================
+    function updateScoreDisplays() {
+      let total = 0;
+      let completedCount = 0;
+      for (let s = 1; s <= 5; s++) {
+        total += appState.stageScores[s];
+        if (appState.stageScores[s] > 0) completedCount++;
+      }
+      totalScoreDisplay.textContent = total;
+      
+      const roadmapScoreEl = document.getElementById('roadmap-score');
+      if (roadmapScoreEl) roadmapScoreEl.textContent = `💎 ${total} / 1 000`;
+
+      const roadmapUserName = document.getElementById('roadmap-user-name');
+      if (roadmapUserName) roadmapUserName.textContent = appState.student.name || 'bạn';
+
+      const chipTruckOwner = document.getElementById('chip-truck-owner');
+      if (chipTruckOwner) chipTruckOwner.textContent = `🚚 Xe của ${appState.student.name || 'học sinh'}`;
+
+      const chipCompleted = document.getElementById('chip-completed-stages');
+      if (chipCompleted) chipCompleted.textContent = `💎 Hoàn thành: ${completedCount}/5 chặng`;
+
+      const truckPositions = {
+        1: '8%',
+        2: '29%',
+        3: '50%',
+        4: '71%',
+        5: '92%'
+      };
+      const movingTruck = document.getElementById('moving-truck');
+      if (movingTruck) {
+        movingTruck.style.left = truckPositions[appState.currentStage] || '8%';
+      }
+
+      const defaultIcons = {
+        1: '🌾',
+        2: '⚖️',
+        3: '🧺',
+        4: '🎪',
+        5: '🎤'
+      };
+
+      for (let s = 1; s <= 5; s++) {
+        const stopBtn = document.getElementById(`road-stop-${s}`);
+        const stopIcon = document.getElementById(`stop-icon-${s}`);
+        if (!stopBtn || !stopIcon) continue;
+
+        if (appState.unlockedStages.includes(s)) {
+          stopBtn.disabled = false;
+          stopBtn.classList.remove('locked');
+
+          if (s === appState.currentStage) {
+            stopBtn.classList.add('active');
+            stopBtn.classList.remove('done');
+            stopIcon.textContent = defaultIcons[s];
+          } else if (appState.stageScores[s] > 0) {
+            stopBtn.classList.remove('active');
+            stopBtn.classList.add('done');
+            stopIcon.textContent = '✅';
+          } else {
+            stopBtn.classList.remove('active', 'done');
+            stopIcon.textContent = defaultIcons[s];
+          }
+        } else {
+          stopBtn.disabled = true;
+          stopBtn.classList.add('locked');
+          stopBtn.classList.remove('active', 'done');
+          stopIcon.textContent = '🔒';
+        }
+      }
+
+      const stageNames = {
+        1: 'Nông trại Gấu Nâu (Lí thuyết & Nhận biết)',
+        2: 'Cầu Cân Thông Minh (Đổi đơn vị đo)',
+        3: 'Kho Hàng Vàng (Tính toán khối lượng)',
+        4: 'Ngày hội Thụy Lâm (Toán thực tế có lời văn)',
+        5: 'Sân khấu đồng dao & Vinh danh'
+      };
+      const truckLoc = document.getElementById('current-truck-location');
+      if (truckLoc) {
+        truckLoc.textContent = `Chặng ${appState.currentStage} - ${stageNames[appState.currentStage] || ''}`;
+      }
+    }
+
+    // ==============================================
+    // INITIALIZATION & USER REGISTRATION
+    // ==============================================
+    startForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = inputStudentName.value.trim();
+      const studentClass = inputStudentClass.value.trim();
+      const school = inputStudentSchool.value.trim();
+
+      if (!name || !studentClass || !school) {
+        showToast('Vui lòng điền đầy đủ cả 3 thông tin: Họ tên, Lớp và Trường nhé!', '⚠️');
+        return;
+      }
+
+      appState.hasRegistered = true;
+      appState.student.name = name;
+      appState.student.class = studentClass;
+      appState.student.school = school;
+
+      
+
+      badgeName.textContent = name;
+      badgeClass.textContent = studentClass;
+
+      sound.init();
+      sound.playRight();
+
+      showScreen('roadmap');
+      updateScoreDisplays();
+    });
+
+    soundToggleBtn.addEventListener('click', () => {
+      sound.enabled = !sound.enabled;
+      if (sound.enabled) {
+        sound.init();
+        soundIcon.textContent = '🔊';
+        sound.playRight();
+      } else {
+        soundIcon.textContent = '🔇';
+      }
+    });
+
+    headerMapBtn.addEventListener('click', () => {
+      if (!requireRegistration()) return;
+      showScreen('roadmap');
+      updateScoreDisplays();
+    });
+
+    navHomeBtn.addEventListener('click', () => {
+      if (!requireRegistration()) return;
+      showScreen('roadmap');
+      updateScoreDisplays();
+    });
+
+    btnResumeJourney.addEventListener('click', () => {
+      if (!requireRegistration()) return;
+      openStage(appState.currentStage);
+    });
+
+    document.querySelectorAll('.road-stop').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const stageNum = parseInt(btn.dataset.stage, 10);
+        if (appState.unlockedStages.includes(stageNum)) {
+          sound.playRight();
+          openStage(stageNum);
+        } else {
+          sound.playWrong();
+          showToast('Chặng này đang tạm khóa! Em hãy hoàn thành chặng trước để mở khóa nhé.', '🔒');
+        }
+      });
+    });
+
+    // ==============================================
+    // OPEN STAGE HANDLER
+    // ==============================================
+    function openStage(stageNum) {
+      appState.currentStage = stageNum;
+      updateScoreDisplays();
+
+      if (stageNum === 1) {
+        // Show Stage 1 Theory (4 lessons)
+        showLesson(1);
+        showScreen('theory');
+      } else if (stageNum >= 2 && stageNum <= 4) {
+        startQuizForStage(stageNum);
+      } else if (stageNum === 5) {
+        showStage5();
+      }
+    }
+
+    // ==============================================
+    // STAGE 1 THEORY DISPLAY CONTROLLER (4 BÀI LÍ THUYẾT)
+    // ==============================================
+    let currentLesson = 1;
+    const totalLessons = 4;
+
+    function showLesson(lessonIdx) {
+      currentLesson = lessonIdx;
+      appState.theoryStep = lessonIdx;
+      
+      const lessonCounter = document.getElementById('lessonCounter');
+      if (lessonCounter) lessonCounter.textContent = `Bài ${lessonIdx} / ${totalLessons}`;
+
+      for (let i = 1; i <= totalLessons; i++) {
+        const el = document.getElementById(`lesson${i}`);
+        if (el) {
+          if (i === lessonIdx) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        }
+      }
+
+      const nameFills = document.querySelectorAll('.student-name-fill');
+      nameFills.forEach(el => {
+        el.textContent = appState.student.name || 'em';
+      });
+
+      const btnPrev = document.getElementById('btnLsnPrev');
+      const btnNext = document.getElementById('btnLsnNext');
+      const btnEnter = document.getElementById('btnEnterQuiz');
+
+      if (btnPrev) btnPrev.disabled = (lessonIdx === 1);
+
+      if (lessonIdx === totalLessons) {
+        if (btnNext) btnNext.classList.add('hidden');
+        if (btnEnter) btnEnter.classList.remove('hidden');
+      } else {
+        if (btnNext) btnNext.classList.remove('hidden');
+        if (btnEnter) btnEnter.classList.add('hidden');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeLesson(delta) {
+      const target = currentLesson + delta;
+      if (target >= 1 && target <= totalLessons) {
+        sound.playRight();
+        showLesson(target);
+      }
+    }
+
+    const btnLsnPrev = document.getElementById('btnLsnPrev');
+    const btnLsnNext = document.getElementById('btnLsnNext');
+    const btnEnterQuiz = document.getElementById('btnEnterQuiz');
+
+    if (btnLsnPrev) btnLsnPrev.addEventListener('click', () => changeLesson(-1));
+    if (btnLsnNext) btnLsnNext.addEventListener('click', () => changeLesson(1));
+    if (btnEnterQuiz) {
+      btnEnterQuiz.addEventListener('click', () => {
+        sound.playRight();
+        appState.currentQuestionIndex = 0;
+        startQuizForStage(1);
+      });
+    }
+
+    // ==============================================
+    // QUIZ ENGINE CONTROLLER
+    // ==============================================
+    function startQuizForStage(stageNum) {
+      appState.currentStage = stageNum;
+      appState.currentQuestionIndex = 0;
+
+      const stageMeta = {
+        1: { icon: '🌾', name: 'Chặng 1: Nông trại Gấu Nâu', desc: '10 câu nhận biết đơn vị đo' },
+        2: { icon: '⚖️', name: 'Chặng 2: Cầu Cân Thông Minh', desc: '10 câu điền số đổi đơn vị đo' },
+        3: { icon: '🧺', name: 'Chặng 3: Kho Hàng Vàng', desc: '10 câu tính toán khối lượng' },
+        4: { icon: '🎪', name: 'Chặng 4: Ngày hội Thụy Lâm', desc: '10 câu toán thực tế có lời văn' }
+      };
+
+      const meta = stageMeta[stageNum];
+      quizStageIcon.textContent = meta.icon;
+      quizStageName.textContent = meta.name;
+      quizStageDesc.textContent = meta.desc;
+
+      showScreen('quiz');
+      renderCurrentQuestion();
+    }
+
+    function renderCurrentQuestion() {
+      const qList = stageQuestions[appState.currentStage];
+      const q = qList[appState.currentQuestionIndex];
+      appState.activeQuestion = q;
+      appState.selectedAnswer = null;
+      appState.questionAnswered = false;
+      appState.questionAttempt = 1;
+
+      // Update counts and progress
+      quizQuestionCurrent.textContent = appState.currentQuestionIndex + 1;
+      quizQuestionTotal.textContent = qList.length;
+      qNumberBadge.textContent = appState.currentQuestionIndex + 1;
+      
+      const pct = Math.round(((appState.currentQuestionIndex + 1) / qList.length) * 100);
+      quizProgressFill.style.width = `${pct}%`;
+
+      const qSticker = document.getElementById('q-sticker');
+      if (qSticker) qSticker.textContent = q.sticker || '🌾';
+
+      const qTag = document.getElementById('q-tag');
+      if (qTag) qTag.textContent = `${q.tag || '⚖️ THỬ THÁCH NÔNG SẢN'} • 💎 25 điểm`;
+
+      questionText.textContent = q.text;
+
+      feedbackPanel.classList.add('hidden');
+      btnRetryQuestion.classList.add('hidden');
+      btnNextQuestion.classList.add('hidden');
+      btnFinishStage.classList.add('hidden');
+      btnCheckAnswer.classList.remove('hidden');
+
+      mcqOptionsContainer.innerHTML = '';
+      studentFillInput.value = '';
+
+      if (q.type === 'mcq') {
+        mcqOptionsContainer.classList.remove('hidden');
+        inputAnswerContainer.classList.add('hidden');
+
+        const letters = ['A', 'B', 'C', 'D'];
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'mcq-opt-btn w-full text-left font-bold text-slate-800 bg-white hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-300 rounded-2xl p-4 transition flex items-center justify-between shadow-sm active:scale-[0.99]';
+          btn.innerHTML = `
+            <div class="flex items-center">
+              <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-black text-sm flex items-center justify-center mr-3 letter-badge border border-slate-200">
+                ${letters[idx] || (idx + 1)}
+              </span>
+              <span class="text-base font-extrabold text-slate-800">${opt}</span>
+            </div>
+            <span class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs checkmark"></span>
+          `;
+          btn.addEventListener('click', () => {
+            if (appState.questionAnswered) return;
+            selectMcqOption(opt, btn);
+          });
+          mcqOptionsContainer.appendChild(btn);
+        });
+      } else {
+        mcqOptionsContainer.classList.add('hidden');
+        inputAnswerContainer.classList.remove('hidden');
+        inputUnitLabel.textContent = q.unit || '';
+        studentFillInput.disabled = false;
+        studentFillInput.focus();
+      }
+    }
+
+    function selectMcqOption(optionValue, btnElement) {
+      appState.selectedAnswer = optionValue;
+      const allBtns = mcqOptionsContainer.querySelectorAll('.mcq-opt-btn');
+      allBtns.forEach(b => {
+        b.classList.remove('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+        b.classList.add('bg-white', 'border-slate-200', 'text-slate-800');
+        const cm = b.querySelector('.checkmark');
+        if (cm) {
+          cm.className = 'w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs checkmark';
+          cm.textContent = '';
+        }
+      });
+
+      btnElement.classList.remove('bg-white', 'border-slate-200', 'text-slate-800');
+      btnElement.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+      const cm = btnElement.querySelector('.checkmark');
+      if (cm) {
+        cm.className = 'w-6 h-6 rounded-full border-2 border-emerald-600 bg-emerald-600 text-white flex items-center justify-center text-xs checkmark';
+        cm.textContent = '✓';
+      }
+    }
+
+    btnCheckAnswer.addEventListener('click', () => {
+      validateAnswer();
+    });
+
+    studentFillInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        validateAnswer();
+      }
+    });
+
+    function normalizeAnswer(str) {
+      if (!str) return '';
+      return str.toString().trim().replace(/[\s\.\,]/g, '').toLowerCase();
+    }
+
+    function validateAnswer() {
+      const q = appState.activeQuestion;
+      let userAnswer = '';
+
+      if (q.type === 'mcq') {
+        if (!appState.selectedAnswer) {
+          sound.playWrong();
+          showToast('Vui lòng chọn 1 đáp án trước khi kiểm tra nhé!', '💡');
+          return;
+        }
+        userAnswer = appState.selectedAnswer;
+      } else {
+        userAnswer = studentFillInput.value.trim();
+        if (!userAnswer) {
+          sound.playWrong();
+          showToast('Vui lòng nhập đáp án vào ô trống nhé!', '✍️');
+          studentFillInput.focus();
+          return;
+        }
+      }
+
+      appState.questionAnswered = true;
+      const isCorrect = normalizeAnswer(userAnswer) === normalizeAnswer(q.correct);
+      const maxAttempts = (q.type === 'mcq' ? q.options.length : 3);
+
+      feedbackPanel.classList.remove('hidden');
+      btnCheckAnswer.classList.add('hidden');
+
+      if (isCorrect) {
+        // Correct answer scoring:
+        // Lần 1: 25 kim cương
+        // Lần 2: 20 kim cương
+        // Lần 3 (nếu số đáp án = 4): 15 kim cương
+        // Lần cuối (3/3 hoặc 4/4): 0 kim cương
+        let earned = 0;
+        if (appState.questionAttempt === 1) {
+          earned = 25;
+        } else if (appState.questionAttempt === 2) {
+          earned = 20;
+        } else if (appState.questionAttempt === 3) {
+          earned = (maxAttempts >= 4 ? 15 : 0);
+        } else {
+          earned = 0;
+        }
+
+        sound.playRight();
+
+        try {
+          confetti({
+            particleCount: 60,
+            spread: 70,
+            origin: { y: 0.7 }
+          });
+        } catch (e) {}
+
+        appState.stageScores[appState.currentStage] += earned;
+        updateScoreDisplays();
+
+        feedbackPanel.className = 'mt-6 rounded-2xl p-5 border-2 border-emerald-300 bg-emerald-50 text-emerald-950';
+        feedbackIcon.textContent = '🎉';
+        feedbackTitle.textContent = `Chính xác! (+${earned} 💎 Kim cương)`;
+        feedbackExplanation.textContent = `${q.explanation} (Em đã hoàn thành ở lần trả lời thứ ${appState.questionAttempt}/${maxAttempts}).`;
+
+        const qList = stageQuestions[appState.currentStage];
+        if (appState.currentQuestionIndex + 1 < qList.length) {
+          btnNextQuestion.classList.remove('hidden');
+          btnRetryQuestion.classList.add('hidden');
+        } else {
+          btnFinishStage.classList.remove('hidden');
+          btnRetryQuestion.classList.add('hidden');
+        }
+
+      } else {
+        // Incorrect answer
+        sound.playWrong();
+
+        if (appState.questionAttempt < maxAttempts) {
+          // Still have retry attempts available
+          let nextScore = 0;
+          if (appState.questionAttempt === 1) {
+            nextScore = 20;
+          } else if (appState.questionAttempt === 2) {
+            nextScore = (maxAttempts >= 4 ? 15 : 0);
+          } else {
+            nextScore = 0;
+          }
+
+          feedbackPanel.className = 'mt-6 rounded-2xl p-5 border-2 border-amber-300 bg-amber-50 text-amber-950';
+          feedbackIcon.textContent = '🐻';
+          feedbackTitle.textContent = `Chưa chính xác rồi bạn ơi! (Lượt ${appState.questionAttempt}/${maxAttempts})`;
+          feedbackExplanation.textContent = `Hãy bấm nút 'Làm lại câu này' để suy nghĩ và chọn lại nhé! (Trả lời đúng ở lần tiếp theo sẽ nhận được ${nextScore} 💎).`;
+
+          btnRetryQuestion.classList.remove('hidden');
+          btnNextQuestion.classList.add('hidden');
+          btnFinishStage.classList.add('hidden');
+        } else {
+          // Exhausted all attempts (Lần cuối 3/3 hoặc 4/4 -> 0 kim cương)
+          feedbackPanel.className = 'mt-6 rounded-2xl p-5 border-2 border-rose-300 bg-rose-50 text-rose-950';
+          feedbackIcon.textContent = '⏱️';
+          feedbackTitle.textContent = `Đã hết lượt thử câu này! (+0 💎)`;
+          feedbackExplanation.textContent = `Đáp án đúng là: ${q.correct}. ${q.explanation} Em hãy tiếp tục cố gắng ở câu sau nhé!`;
+
+          btnRetryQuestion.classList.add('hidden');
+          const qList = stageQuestions[appState.currentStage];
+          if (appState.currentQuestionIndex + 1 < qList.length) {
+            btnNextQuestion.classList.remove('hidden');
+          } else {
+            btnFinishStage.classList.remove('hidden');
+          }
+        }
+      }
+    }
+
+    btnRetryQuestion.addEventListener('click', () => {
+      appState.questionAttempt += 1;
+      appState.questionAnswered = false;
+      appState.selectedAnswer = null;
+
+      feedbackPanel.classList.add('hidden');
+      btnRetryQuestion.classList.add('hidden');
+      btnCheckAnswer.classList.remove('hidden');
+
+      const q = appState.activeQuestion;
+      if (q.type === 'mcq') {
+        const allBtns = mcqOptionsContainer.querySelectorAll('.mcq-opt-btn');
+        allBtns.forEach(b => {
+          b.classList.remove('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+          b.classList.add('bg-white', 'border-slate-200', 'text-slate-800');
+          const cm = b.querySelector('.checkmark');
+          if (cm) {
+            cm.className = 'w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs checkmark';
+            cm.textContent = '';
+          }
+        });
+      } else {
+        studentFillInput.disabled = false;
+        studentFillInput.value = '';
+        studentFillInput.focus();
+      }
+    });
+
+    btnNextQuestion.addEventListener('click', () => {
+      sound.playRight();
+      appState.currentQuestionIndex += 1;
+      renderCurrentQuestion();
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    });
+
+    btnFinishStage.addEventListener('click', () => {
+      sound.playVictory();
+
+      try {
+        confetti({
+          particleCount: 120,
+          spread: 100,
+          origin: { y: 0.6 }
+        });
+      } catch (e) {}
+
+      const nextStage = appState.currentStage + 1;
+      if (nextStage <= 5 && !appState.unlockedStages.includes(nextStage)) {
+        appState.unlockedStages.push(nextStage);
+      }
+      appState.currentStage = Math.min(nextStage, 5);
+
+      updateScoreDisplays();
+
+      if (nextStage === 5) {
+        showStage5();
+      } else {
+        showScreen('roadmap');
+      }
+    });
+
+    // ==============================================
+    // STAGE 5: CELEBRATION, KARAOKE & LUCKY WHEEL
+    // ==============================================
+    let rhymePlaying = false;
+    let rhymeTimer = null;
+
+    function showStage5() {
+      showScreen('stage5');
+      sound.playVictory();
+
+      try {
+        confetti({
+          particleCount: 150,
+          spread: 120,
+          origin: { y: 0.5 }
+        });
+      } catch (e) {}
+
+      // Fill Certificate values exactly matching student reality
+      certStudentName.textContent = (appState.student.name || 'HỌC SINH').toUpperCase();
+      certStudentClass.textContent = appState.student.class || 'Lớp 4';
+      certStudentSchool.textContent = appState.student.school || 'Trường Tiểu học';
+
+      let totalStars = 0;
+      for (let s = 1; s <= 5; s++) {
+        totalStars += appState.stageScores[s];
+      }
+      certStars.textContent = `💎 ${totalStars} / 1 000`;
+
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const yyyy = today.getFullYear();
+      certDate.textContent = `${dd}/${mm}/${yyyy}`;
+
+      const certCode = document.getElementById('cert-code');
+      if (certCode) {
+        certCode.textContent = `TC-2026-${String(totalStars).padStart(4, '0')}`;
+      }
+
+      // Silent Google Sheet Sync for teacher
+      
+    }
+
+    const rhymeLines = [
+      { id: 'rhyme-line-0', t: 0 },
+      { id: 'rhyme-line-1', t: 2200 },
+      { id: 'rhyme-line-2', t: 4400 },
+      { id: 'rhyme-line-3', t: 6600 },
+      { id: 'rhyme-line-4', t: 8800 },
+      { id: 'rhyme-line-5', t: 11000 }
+    ];
+
+    function stopRhyme() {
+      rhymePlaying = false;
+      if (rhymeTimer) clearTimeout(rhymeTimer);
+      const icon = document.getElementById('rhyme-play-icon');
+      const text = document.getElementById('rhyme-play-text');
+      if (icon) icon.textContent = '▶️';
+      if (text) text.textContent = 'Bật giai điệu đồng dao';
+
+      for (let i = 0; i < 6; i++) {
+        const el = document.getElementById(`rhyme-line-${i}`);
+        if (el) {
+          el.className = 'rhyme-line py-1 px-3 rounded-xl transition-all duration-300';
+        }
+      }
+    }
+
+    function playSynchronizedRhyme() {
+      if (rhymePlaying) {
+        stopRhyme();
+        return;
+      }
+      rhymePlaying = true;
+      const icon = document.getElementById('rhyme-play-icon');
+      const text = document.getElementById('rhyme-play-text');
+      if (icon) icon.textContent = '⏹️';
+      if (text) text.textContent = 'Dừng giai điệu';
+
+      sound.init();
+
+      if (sound.ctx) {
+        const now = sound.ctx.currentTime;
+        const folkNotes = [
+          { f: 523.25, t: 0.0 }, { f: 587.33, t: 0.35 }, { f: 659.25, t: 0.7 }, { f: 783.99, t: 1.1 }, { f: 659.25, t: 1.5 },
+          { f: 523.25, t: 2.2 }, { f: 587.33, t: 2.55 }, { f: 659.25, t: 2.9 }, { f: 587.33, t: 3.3 }, { f: 523.25, t: 3.7 },
+          { f: 659.25, t: 4.4 }, { f: 783.99, t: 4.75 }, { f: 880.00, t: 5.1 }, { f: 783.99, t: 5.5 }, { f: 659.25, t: 5.9 },
+          { f: 880.00, t: 6.6 }, { f: 783.99, t: 6.95 }, { f: 659.25, t: 7.3 }, { f: 587.33, t: 7.7 }, { f: 523.25, t: 8.1 },
+          { f: 523.25, t: 8.8 }, { f: 659.25, t: 9.15 }, { f: 783.99, t: 9.5 }, { f: 880.00, t: 9.9 }, { f: 1046.50, t: 10.3 },
+          { f: 783.99, t: 11.0 }, { f: 659.25, t: 11.4 }, { f: 783.99, t: 11.8 }, { f: 1046.50, t: 12.3 }
+        ];
+
+        folkNotes.forEach(n => {
+          const osc = sound.ctx.createOscillator();
+          const gain = sound.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(n.f, now + n.t);
+
+          gain.gain.setValueAtTime(0.01, now + n.t);
+          gain.gain.exponentialRampToValueAtTime(0.45, now + n.t + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + 0.32);
+
+          osc.connect(gain);
+          gain.connect(sound.ctx.destination);
+          osc.start(now + n.t);
+          osc.stop(now + n.t + 0.35);
+        });
+      }
+
+      rhymeLines.forEach((item, index) => {
+        setTimeout(() => {
+          if (!rhymePlaying) return;
+          for (let i = 0; i < 6; i++) {
+            const el = document.getElementById(`rhyme-line-${i}`);
+            if (el) el.className = 'rhyme-line py-1 px-3 rounded-xl transition-all duration-300';
+          }
+          const curr = document.getElementById(item.id);
+          if (curr) {
+            curr.className = 'rhyme-line py-2 px-4 rounded-2xl bg-amber-300 text-amber-950 font-black scale-105 shadow-md border border-amber-400 transition-all duration-300';
+          }
+        }, item.t);
+      });
+
+      rhymeTimer = setTimeout(() => {
+        if (!rhymePlaying) return;
+        sound.playVictory();
+        try {
+          confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 } });
+        } catch (e) {}
+        stopRhyme();
+      }, 13200);
+    }
+
+    if (btnPlayRhyme) btnPlayRhyme.addEventListener('click', playSynchronizedRhyme);
+
+    // Lucky Farm Wheel Spin Action (Chỉ quay 1 lần + Cúp đáng yêu + Modal to giữa màn hình)
+    const cutePrizes = [
+      { icon: '🏆', name: 'Cúp "Gấu Con Siêu Đẳng"' },
+      { icon: '🎖️', name: 'Huân Chương "Bé Yêu Đo Lường"' },
+      { icon: '👑', name: 'Vương Miện "Hiệp Sĩ Toán 4"' },
+      { icon: '🚚', name: 'Xe Nông Sản "Thần Tốc"' },
+      { icon: '🥇', name: 'Cúp "Bác Voi Thông Thái"' },
+      { icon: '🌟', name: 'Bảo Ngọc "Tính Nhanh Thụy Lâm"' },
+      { icon: '🎁', name: 'Hộp Quà "Bí Mật Nông Trại"' },
+      { icon: '🍉', name: 'Cúp "Vua Dưa Hấu Khổng Lồ"' }
+    ];
+
+    let wheelSpinning = false;
+    let wheelRotation = 0;
+
+    const btnSpinWheel = document.getElementById('btn-spin-wheel');
+    const wheelDisc = document.getElementById('wheel-disc');
+    const wheelStatusTxt = document.getElementById('wheel-status-txt');
+    const prizeModal = document.getElementById('prize-modal');
+    const modalPrizeIcon = document.getElementById('modal-prize-icon');
+    const modalPrizeName = document.getElementById('modal-prize-name');
+    const btnClaimPrize = document.getElementById('btn-claim-prize');
+
+    const backpackEmptyTxt = document.getElementById('backpack-empty-txt');
+    const backpackWonCard = document.getElementById('backpack-won-card');
+    const backpackPrizeIcon = document.getElementById('backpack-prize-icon');
+    const backpackPrizeName = document.getElementById('backpack-prize-name');
+
+    if (btnSpinWheel) {
+      btnSpinWheel.addEventListener('click', () => {
+        if (appState.hasSpunWheel) {
+          showToast('Em đã quay nhận phần thưởng rồi nhé! Mỗi bạn được quay 1 lần.', '🎁');
+          return;
+        }
+        if (wheelSpinning) return;
+
+        wheelSpinning = true;
+        btnSpinWheel.disabled = true;
+        btnSpinWheel.classList.add('opacity-50', 'cursor-not-allowed');
+        if (wheelStatusTxt) wheelStatusTxt.textContent = 'Đang quay... Hồi hộp quá!';
+
+        sound.playRight();
+
+        // Random prize (0 to 7)
+        const prizeIdx = Math.floor(Math.random() * cutePrizes.length);
+        const selectedPrize = cutePrizes[prizeIdx];
+
+        // 360 * 4 + slice offset
+        const addedRotation = 1440 + prizeIdx * 45 + 22;
+        wheelRotation += addedRotation;
+
+        if (wheelDisc) {
+          wheelDisc.style.transform = `rotate(${wheelRotation}deg)`;
+        }
+
+        setTimeout(() => {
+          wheelSpinning = false;
+          appState.hasSpunWheel = true;
+          appState.wonPrize = selectedPrize;
+
+          btnSpinWheel.disabled = true;
+          btnSpinWheel.className = 'bg-slate-300 text-slate-600 font-bold px-6 py-3 rounded-2xl text-sm cursor-not-allowed';
+          btnSpinWheel.textContent = '✅ Đã nhận thưởng (Mỗi bạn 1 lượt)';
+          if (wheelStatusTxt) wheelStatusTxt.textContent = `Đã rinh ${selectedPrize.name}!`;
+
+          sound.playVictory();
+          try {
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
+          } catch (e) {}
+
+          // Show BIG CENTER MODAL
+          if (modalPrizeIcon) modalPrizeIcon.textContent = selectedPrize.icon;
+          if (modalPrizeName) modalPrizeName.textContent = selectedPrize.name;
+          if (prizeModal) prizeModal.classList.remove('hidden');
+
+          // Silently update Google Sheet
+          
+        }, 3900);
+      });
+    }
+
+    if (btnClaimPrize) {
+      btnClaimPrize.addEventListener('click', () => {
+        if (prizeModal) prizeModal.classList.add('hidden');
+        sound.playRight();
+
+        // Put prize into Backpack
+        if (appState.wonPrize) {
+          if (backpackEmptyTxt) backpackEmptyTxt.classList.add('hidden');
+          if (backpackWonCard) backpackWonCard.classList.remove('hidden');
+          if (backpackPrizeIcon) backpackPrizeIcon.textContent = appState.wonPrize.icon;
+          if (backpackPrizeName) backpackPrizeName.textContent = appState.wonPrize.name;
+        }
+
+        showToast('Đã cất phần thưởng vào Ba Lô của em!', '🎒');
+      });
+    }
+
+    if (btnPrintCert) {
+      btnPrintCert.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
+    function saveStudentResultToSheet(status = 'Đang làm bài') {
+      let total = 0;
+      for (let s = 1; s <= 5; s++) {
+        total += appState.stageScores[s];
+      }
+
+      const entry = {
+        time: new Date().toLocaleString('vi-VN'),
+        name: appState.student.name || 'Học sinh',
+        class: appState.student.class || 'Lớp 4',
+        school: appState.student.school || 'Tiểu học',
+        score: total,
+        status: status,
+        prize: appState.wonPrize?.name || 'Chưa quay'
+      };
+
+      try {
+        const list = getStoredSheetResults();
+        list.unshift(entry);
+        localStorage.setItem('gsheet_student_results', JSON.stringify(list));
+      } catch (e) {}
+
+      // Background silent webhook for teacher
+      if (TEACHER_GOOGLE_SHEET_URL && TEACHER_GOOGLE_SHEET_URL.startsWith('http')) {
+        try {
+          fetch(webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(entry)
+          });
+        } catch (err) {}
+      }
+    }
+
+    // Print certificate button
+    if (btnPrintCert) {
+      btnPrintCert.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
+    // Replay game button
+    if (btnReplayGame) {
+      btnReplayGame.addEventListener('click', () => {
+        appState.currentStage = 1;
+        appState.unlockedStages = [1];
+        appState.stageScores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+        appState.currentQuestionIndex = 0;
+        appState.hasSpunWheel = false;
+        appState.wonPrize = null;
+        updateScoreDisplays();
+        showScreen('roadmap');
+      });
+    }
+
+  </script>
+</body>
+</html>

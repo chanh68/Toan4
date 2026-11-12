@@ -1,0 +1,8 @@
+# Bo qua file PowerPoint nguon nang (>220 MB) va thu muc tam khi day len GitHub
+sildes/
+*.pptx
+web_xuat_ban/
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
