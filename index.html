@@ -1,518 +1,970 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hệ Thống Học Liệu Số Tương Tác Toán 4—Trường TH &amp; THCS Thụy Lâm</title>
+  <title>🌟 Vương Quốc Toán Học Lớp 4 — Trường TH &amp; THCS Thụy Lâm</title>
   <link rel="icon" type="image/jpeg" href="./logo.jpg" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <style>
+    :root {
+      --font-display: 'Baloo 2', cursive, sans-serif;
+      --font-body: 'Nunito', sans-serif;
+    }
+
     body {
       font-family: 'Lexend', sans-serif;
       background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 50%, #f0fdfa 100%);
+      font-family: var(--font-body);
+      background-color: #fff9f5;
+      background-image:
+        radial-gradient(at 12% 15%, rgba(254, 215, 226, 0.55) 0px, transparent 45%),
+        radial-gradient(at 88% 12%, rgba(186, 230, 253, 0.65) 0px, transparent 45%),
+        radial-gradient(at 82% 85%, rgba(254, 240, 138, 0.5) 0px, transparent 45%),
+        radial-gradient(at 15% 85%, rgba(167, 243, 208, 0.5) 0px, transparent 45%),
+        radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 26px 26px;
       min-height: 100vh;
+      overflow-x: hidden;
     }
+
     .drop-active {
       border-color: #0284c7 !important;
       background-color: #e0f2fe !important;
-    }
+
+      h1,
+      h2,
+      h3,
+      .font-cute {
+        font-family: var(--font-display);
+      }
+
+      @keyframes floatSlow {
+
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+
+        50% {
+          transform: translateY(-8px) rotate(4deg);
+        }
+      }
+
+      @keyframes floatReverse {
+
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+
+        50% {
+          transform: translateY(7px) rotate(-4deg);
+        }
+      }
+
+      @keyframes wiggle {
+
+        0%,
+        100% {
+          transform: rotate(-3deg) scale(1);
+        }
+
+        50% {
+          transform: rotate(3deg) scale(1.06);
+        }
+      }
+
+      .animate-float {
+        animation: floatSlow 4s ease-in-out infinite;
+      }
+
+      .animate-float-rev {
+        animation: floatReverse 4.5s ease-in-out infinite;
+      }
+
+      .animate-wiggle {
+        animation: wiggle 2.8s ease-in-out infinite;
+      }
+
+      /* Cute 3D Toy Card Style */
+      .cute-card {
+        border-radius: 28px;
+        border: 3px solid #ffffff;
+        box-shadow: 0 10px 25px -5px rgba(148, 163, 184, 0.22), 0 6px 0 0 #e2e8f0;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .cute-card:hover {
+        transform: translateY(-7px) scale(1.015);
+        box-shadow: 0 20px 30px -8px rgba(56, 189, 248, 0.28), 0 9px 0 0 #bae6fd;
+        border-color: #e0f2fe;
+      }
+
+      .cute-card:active {
+        transform: translateY(-2px) scale(0.99);
+      }
+
+      /* Cute 3D Pill Buttons */
+      .cute-pill {
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 4px 0 0 #e2e8f0;
+      }
+
+      .cute-pill:hover {
+        transform: translateY(-2px);
+      }
+
+      .cute-pill:active {
+        transform: translateY(2px);
+        box-shadow: 0 1px 0 0 #e2e8f0;
+      }
+
+      .cute-pill-active {
+        box-shadow: 0 4px 0 0 #db2777 !important;
+      }
+
+      /* Card Header Pattern */
+      .card-pattern {
+        background-image: radial-gradient(rgba(255, 255, 255, 0.28) 2px, transparent 2px);
+        background-size: 16px 16px;
+      }
   </style>
 </head>
+
 <body class="text-slate-800 flex flex-col min-h-screen">
 
-  <!-- Top Header -->
-  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <img src="./logo.jpg" alt="Logo Trường Tiểu học và THCS Thụy Lâm"
-             class="w-12 h-12 rounded-full object-cover border-2 border-sky-200 shadow-sm bg-white shrink-0" />
-        <div>
-          <h1 class="text-base sm:text-xl font-black text-slate-900 leading-tight">
-            HỆ THỐNG HỌC LIỆU SỐ TƯƠNG TÁC TOÁN 4
-          </h1>
-          <p class="text-xs text-slate-600 font-semibold">
-            Trường Tiểu học và THCS Thụy Lâm • GV thực hiện: <span class="text-sky-800 font-bold">Cô Trần Thị Hoan &amp; Cô Trần Thị Hải</span>
-          </p>
-        </div>
-      </div>
+  <body class="text-slate-800 flex flex-col min-h-screen relative">
 
-      <div class="flex items-center flex-wrap gap-2">
-        <span id="game-count-badge" class="bg-sky-50 border border-sky-200 text-sky-900 text-xs font-extrabold px-3 py-2 rounded-xl whitespace-nowrap">
-          0 học liệu
-        </span>
-        <button id="btn-open-guide" type="button" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-3.5 py-2 rounded-xl whitespace-nowrap transition">
-          📘 Hướng dẫn chia sẻ
-        </button>
-        <button id="btn-open-upload" type="button" class="bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-xl shadow-sm transition active:scale-95 whitespace-nowrap">
-          ➕ Thêm bài / Gắn Link
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
-
-    <!-- Overview Hero Section -->
-    <section class="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-      <div class="flex flex-col sm:flex-row items-start gap-4 max-w-3xl">
-        <img src="./logo.jpg" alt="Trường Tiểu học và THCS Thụy Lâm"
-             class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-sky-200 shadow-md bg-white shrink-0" />
-        <div class="space-y-2">
-          <div class="inline-flex items-center gap-1.5 bg-sky-50 border border-sky-200 text-sky-800 text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wide">
-            ✨ Sản phẩm dự thi Ứng dụng Trí tuệ nhân tạo trong dạy học
+    <!-- Top Header -->
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200 shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <img src="./logo.jpg" alt="Logo Trường Tiểu học và THCS Thụy Lâm"
+            class="w-12 h-12 rounded-full object-cover border-2 border-sky-200 shadow-sm bg-white shrink-0" />
+          <!-- Decorative Floating Cute Stickers (Background) -->
+          <div class="pointer-events-none fixed inset-0 overflow-hidden z-0 select-none opacity-75">
+            <div class="animate-float absolute top-24 left-6 text-3xl sm:text-4xl hidden xl:block">🌈</div>
+            <div class="animate-float-rev absolute top-40 right-8 text-3xl sm:text-4xl hidden xl:block">⭐</div>
+            <div class="animate-float absolute bottom-28 left-8 text-3xl sm:text-4xl hidden xl:block">🧮</div>
+            <div class="animate-float-rev absolute bottom-20 right-10 text-3xl sm:text-4xl hidden xl:block">🚀</div>
           </div>
-          <h2 class="text-lg sm:text-2xl font-black text-slate-900 leading-snug">
-            Kho Học Liệu Số Toán Lớp 4 — Tương Tác Trực Quan Theo Từng Tiết Học
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-            Mỗi học liệu được thiết kế dưới dạng ứng dụng web độc lập gồm phần <strong>Khám phá lý thuyết trực quan</strong>, hệ thống <strong>40 bài tập phân hóa theo 4 mức độ</strong> kèm âm thanh phản hồi và <strong>Giấy chứng nhận</strong> cho học sinh. Khi sao chép liên kết gửi học sinh, học sinh chỉ truy cập đúng bài học được giao.
-          </p>
-          <div class="flex flex-wrap items-center gap-2 pt-1">
-            <span class="inline-flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs font-bold px-3 py-1.5 rounded-xl">
-              🏫 Trường Tiểu học &amp; THCS Thụy Lâm (Xã Thư Lâm, TP. Hà Nội)
-            </span>
-            <span class="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-bold px-3 py-1.5 rounded-xl">
-              👩‍🏫 Giáo viên thực hiện: Cô Trần Thị Hoan &amp; Cô Trần Thị Hải
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="grid grid-cols-3 md:grid-cols-1 gap-2 shrink-0 w-full md:w-52">
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center">
-          <div class="text-xs text-slate-500 font-semibold">Số chuyên đề</div>
-          <div id="stat-total-count" class="text-xl font-black text-sky-700">10 bài</div>
-        </div>
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center">
-          <div class="text-xs text-slate-500 font-semibold">Quy mô bài tập</div>
-          <div class="text-sm font-black text-emerald-700">40 câu / bài</div>
-        </div>
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center">
-          <div class="text-xs text-slate-500 font-semibold">Quyền riêng tư HS</div>
-          <div class="text-xs font-black text-indigo-700">Độc lập từng bài</div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Offline Tip -->
-    <div id="offline-warning" class="hidden bg-amber-50 border border-amber-300 rounded-2xl p-4 text-xs sm:text-sm text-amber-950 font-semibold">
-      ℹ️ Để tải danh sách học liệu tự động trên máy tính cá nhân, thầy/cô vui lòng mở tệp khởi chạy <code>start_web.bat</code> đi kèm trong thư mục.
-    </div>
+          <!-- Top Cute Header -->
+          <header class="bg-white/90 backdrop-blur-md sticky top-0 z-30 border-b-4 border-pink-100 shadow-sm">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-3.5">
+                <div class="relative shrink-0">
+                  <img src="./logo.jpg" alt="Logo Trường Tiểu học và THCS Thụy Lâm"
+                    class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl object-cover border-3 border-amber-300 shadow-md bg-white p-0.5" />
+                  <span class="absolute -bottom-1 -right-1 text-base animate-wiggle">🌟</span>
+                </div>
+                <div>
+                  <h1 class="text-base sm:text-xl font-black text-slate-900 leading-tight">
+                    HỆ THỐNG HỌC LIỆU SỐ TƯƠNG TÁC TOÁN 4
+                  </h1>
+                  <p class="text-xs text-slate-600 font-semibold">
+                    Trường Tiểu học và THCS Thụy Lâm • GV thực hiện: <span class="text-sky-800 font-bold">Cô Trần Thị
+                      Hoan &amp; Cô Trần Thị Hải</span>
+                  <div class="flex items-center gap-2">
+                    <h1
+                      class="text-lg sm:text-2xl font-extrabold bg-gradient-to-r from-sky-600 via-pink-500 to-amber-500 bg-clip-text text-transparent leading-tight">
+                      KHO HỌC LIỆU SỐ TOÁN 4
+                    </h1>
+                    <span
+                      class="hidden sm:inline-block text-xs font-extrabold bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full">
+                      Vương Quốc Toán Học ✨
+                    </span>
+                  </div>
+                  <p class="text-xs sm:text-sm text-slate-600 font-bold">
+                    🏫 Trường TH &amp; THCS Thụy Lâm • <span class="text-pink-600">Cô Trần Thị Hoan &amp; Cô Trần Thị
+                      Hải</span>
+                  </p>
+                </div>
+              </div>
 
-    <!-- Search & Category Filters -->
-    <section class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-      <div class="flex flex-wrap items-center gap-2" id="category-pills">
-        <button type="button" data-cat="Tất cả" class="cat-pill bg-slate-900 text-white font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">Tất cả chuyên đề</button>
-        <button type="button" data-cat="Số và Phép tính" class="cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">🔢 Số và Phép tính</button>
-        <button type="button" data-cat="Hình học" class="cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">📐 Hình học</button>
-        <button type="button" data-cat="Đo lường" class="cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">⚖️ Đo lường</button>
-        <button type="button" data-cat="Bổ sung" class="cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">📂 Học liệu bổ sung</button>
-      </div>
+              <div class="flex items-center flex-wrap gap-2">
+                <span id="game-count-badge"
+                  class="bg-sky-50 border border-sky-200 text-sky-900 text-xs font-extrabold px-3 py-2 rounded-xl whitespace-nowrap">
+                  0 học liệu
+                  <div class="flex items-center flex-wrap gap-2.5">
+                    <span id="game-count-badge"
+                      class="bg-amber-100 border-2 border-amber-300 text-amber-900 text-xs sm:text-sm font-extrabold px-3.5 py-2 rounded-2xl whitespace-nowrap shadow-sm">
+                      🎒 0 bài học
+                    </span>
+                    <button id="btn-open-guide" type="button"
+                      class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-3.5 py-2 rounded-xl whitespace-nowrap transition">
+                      📘 Hướng dẫn chia sẻ
+                      <button id="btn-open-upload" type="button"
+                        class="bg-gradient-to-r from-pink-500 via-rose-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-extrabold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-2xl shadow-[0_4px_0_0_#be185d] hover:translate-y-[-1px] active:translate-y-[2px] active:shadow-[0_1px_0_0_#be185d] transition-all whitespace-nowrap flex items-center gap-1.5">
+                        <span>➕</span> <span>Thêm Link Bài Học</span>
+                      </button>
+                      <button id="btn-open-upload" type="button"
+                        class="bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-xl shadow-sm transition active:scale-95 whitespace-nowrap">
+                        ➕ Thêm bài / Gắn Link
+                      </button>
+                  </div>
+              </div>
+          </header>
 
-      <div class="relative w-full sm:w-72">
-        <input id="search-input" type="search" placeholder="Tìm tên bài học, chủ đề..."
-               class="w-full bg-white border border-slate-300 focus:border-sky-500 focus:outline-none rounded-xl pl-9 pr-4 py-2 text-sm font-medium" />
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
-      </div>
-    </section>
+          <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+            <main class="relative z-10 flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-7">
 
-    <!-- Games Grid -->
-    <section id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></section>
+              <!-- Overview Hero Section -->
+              <section
+                class="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+                <div class="flex flex-col sm:flex-row items-start gap-4 max-w-3xl">
+                  <img src="./logo.jpg" alt="Trường Tiểu học và THCS Thụy Lâm"
+                    class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-sky-200 shadow-md bg-white shrink-0" />
+                  <div class="space-y-2">
+                    <div
+                      class="inline-flex items-center gap-1.5 bg-sky-50 border border-sky-200 text-sky-800 text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wide">
+                      ✨ Sản phẩm dự thi Ứng dụng Trí tuệ nhân tạo trong dạy học
+                      <!-- Cute Hero Banner -->
+                      <section
+                        class="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-sky-100 via-rose-50 to-amber-100 p-6 sm:p-8 border-4 border-white shadow-[0_12px_30px_-8px_rgba(244,114,182,0.22)]">
+                        <!-- Decorative soft circles -->
+                        <div
+                          class="pointer-events-none absolute -top-12 -right-12 w-44 h-44 rounded-full bg-pink-200/40 blur-xl">
+                        </div>
+                        <div
+                          class="pointer-events-none absolute -bottom-14 -left-12 w-48 h-48 rounded-full bg-sky-200/50 blur-xl">
+                        </div>
 
-    <div id="empty-state" class="hidden text-center py-14 bg-white rounded-3xl border border-dashed border-slate-300">
-      <div class="text-5xl mb-2">📭</div>
-      <h3 class="text-lg font-bold text-slate-800">Không tìm thấy học liệu phù hợp</h3>
-      <p class="text-xs text-slate-500 mt-1">Thử đổi từ khóa tìm kiếm hoặc bấm "Đăng tải học liệu (.html)" để thêm bài mới.</p>
-    </div>
-  </main>
+                        <div class="relative flex flex-col lg:flex-row items-center justify-between gap-6">
+                          <div
+                            class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 max-w-3xl">
+                            <div class="relative shrink-0">
+                              <div
+                                class="w-24 h-24 sm:w-28 sm:h-28 rounded-[28px] bg-white p-1.5 shadow-lg border-4 border-pink-200 rotate-[-3deg] hover:rotate-0 transition">
+                                <img src="./logo.jpg" alt="Trường Tiểu học và THCS Thụy Lâm"
+                                  class="w-full h-full rounded-[20px] object-cover" />
+                              </div>
+                              <span class="absolute -top-3 -left-3 text-2xl animate-float">👑</span>
+                              <span class="absolute -bottom-2 -right-2 text-2xl animate-float-rev">🐣</span>
+                            </div>
+                            <h2 class="text-lg sm:text-2xl font-black text-slate-900 leading-snug">
+                              Kho Học Liệu Số Toán Lớp 4 — Tương Tác Trực Quan Theo Từng Tiết Học
+                            </h2>
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                              Mỗi học liệu được thiết kế dưới dạng ứng dụng web độc lập gồm phần <strong>Khám phá lý
+                                thuyết trực quan</strong>, hệ thống <strong>40 bài tập phân hóa theo 4 mức độ</strong>
+                              kèm âm thanh phản hồi và <strong>Giấy chứng nhận</strong> cho học sinh. Khi sao chép liên
+                              kết gửi học sinh, học sinh chỉ truy cập đúng bài học được giao.
+                            </p>
+                            <div class="flex flex-wrap items-center gap-2 pt-1">
+                              <span
+                                class="inline-flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs font-bold px-3 py-1.5 rounded-xl">
+                                🏫 Trường Tiểu học &amp; THCS Thụy Lâm (Xã Thư Lâm, TP. Hà Nội)
+                              </span>
+                              <span
+                                class="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-bold px-3 py-1.5 rounded-xl">
+                                👩‍🏫 Giáo viên thực hiện: Cô Trần Thị Hoan &amp; Cô Trần Thị Hải
+                              </span>
 
-  <footer class="bg-white border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-600 mt-auto">
-    <strong>Trường Tiểu học và THCS Thụy Lâm</strong> (Xã Thư Lâm, TP. Hà Nội) • Giáo viên thực hiện: <strong>Cô Trần Thị Hoan &amp; Cô Trần Thị Hải</strong> • Hệ Thống Học Liệu Số Tương Tác Toán 4
-  </footer>
+                              <div class="space-y-2.5">
+                                <div
+                                  class="inline-flex items-center gap-1.5 bg-white/90 border-2 border-pink-200 text-pink-600 text-xs font-extrabold px-3.5 py-1 rounded-full shadow-sm">
+                                  <span>🌈</span> <span>Học mà chơi – Chơi mà học Toán 4 thật vui!</span>
+                                </div>
+                                <h2 class="text-xl sm:text-3xl font-extrabold text-slate-800 leading-snug">
+                                  Khám Phá Thế Giới Toán Học Sắc Màu 🎈
+                                </h2>
+                                <p class="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed">
+                                  Chào mừng các em học sinh đến với khu vườn Toán lớp 4! Chỉ cần <strong>chạm nhẹ vào
+                                    bất kỳ bài học nào bên dưới</strong> để bắt đầu khám phá lý thuyết trực quan, chinh
+                                  phục <strong>40 thử thách thú vị</strong> và nhận <strong>Giấy chứng nhận</strong>
+                                  siêu đáng yêu nhé! 🏆
+                                </p>
+                                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                                  <span
+                                    class="inline-flex items-center gap-1.5 bg-white/90 border-2 border-sky-200 text-sky-800 text-xs font-extrabold px-3.5 py-1.5 rounded-2xl shadow-sm">
+                                    🏫 Trường TH &amp; THCS Thụy Lâm (Xã Thư Lâm, TP. Hà Nội)
+                                  </span>
+                                  <span
+                                    class="inline-flex items-center gap-1.5 bg-white/90 border-2 border-emerald-200 text-emerald-800 text-xs font-extrabold px-3.5 py-1.5 rounded-2xl shadow-sm">
+                                    👩‍🏫 GV: Cô Trần Thị Hoan &amp; Cô Trần Thị Hải
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="grid grid-cols-3 md:grid-cols-1 gap-2 shrink-0 w-full md:w-52">
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center">
+                              <div class="text-xs text-slate-500 font-semibold">Số chuyên đề</div>
+                              <div id="stat-total-count" class="text-xl font-black text-sky-700">10 bài</div>
 
-  <!-- Teacher Preview Overlay (Only in Teacher Portal; student share links open strictly the standalone game without this bar!) -->
-  <div id="player-overlay" class="fixed inset-0 bg-slate-900 z-50 flex flex-col hidden">
-    <div class="bg-white border-b border-slate-200 px-3 sm:px-5 py-2 flex items-center justify-between gap-2 shrink-0">
-      <div class="flex items-center gap-2 min-w-0">
-        <button id="btn-close-player" type="button" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm px-3 py-1.5 rounded-xl whitespace-nowrap transition">
-          ⬅️ Quay lại danh sách
-        </button>
-        <span id="player-icon" class="text-lg shrink-0">📘</span>
-        <span id="player-title" class="font-extrabold text-xs sm:text-sm text-slate-900 truncate"></span>
-      </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <button id="btn-player-share" type="button" class="bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-200 font-bold text-xs px-3 py-1.5 rounded-xl whitespace-nowrap transition">
-          🔗 Lấy link gửi học sinh
-        </button>
-        <a id="btn-player-newtab" href="#" target="_blank" rel="noopener" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-xl whitespace-nowrap transition">
-          ⛶ Mở riêng bài học
-        </a>
-      </div>
-    </div>
-    <iframe id="player-iframe" sandbox="allow-scripts allow-forms allow-modals allow-popups allow-downloads" class="w-full flex-1 border-0 bg-white"></iframe>
-  </div>
+                              <!-- Cute Bubbly Stat Badges -->
+                              <div class="grid grid-cols-3 lg:grid-cols-1 gap-3 shrink-0 w-full lg:w-52">
+                                <div
+                                  class="bg-white/95 border-2 border-sky-200 rounded-2xl p-3 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
+                                  <span class="text-xs font-extrabold text-slate-500">📚 Kho bài học</span>
+                                  <span id="stat-total-count" class="text-base sm:text-lg font-black text-sky-600">10
+                                    bài</span>
+                                </div>
+                                <div
+                                  class="bg-white/95 border-2 border-pink-200 rounded-2xl p-3 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
+                                  <span class="text-xs font-extrabold text-slate-500">🎯 Thử thách</span>
+                                  <span class="text-xs sm:text-sm font-black text-pink-600">40 câu / bài</span>
+                                </div>
+                                <div
+                                  class="bg-white/95 border-2 border-amber-200 rounded-2xl p-3 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
+                                  <span class="text-xs font-extrabold text-slate-500">🏅 Phần thưởng</span>
+                                  <span class="text-xs sm:text-sm font-black text-amber-600">Giấy khen số</span>
+                                </div>
+                              </div>
+                              <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center">
+                                <div class="text-xs text-slate-500 font-semibold">Quy mô bài tập</div>
+                                <div class="text-sm font-black text-emerald-700">40 câu / bài</div>
+                              </div>
+                              <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center">
+                                <div class="text-xs text-slate-500 font-semibold">Quyền riêng tư HS</div>
+                                <div class="text-xs font-black text-indigo-700">Độc lập từng bài</div>
+                              </div>
+                            </div>
+                      </section>
 
-  <!-- Upload / Add Link Modal -->
-  <div id="upload-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg sm:text-xl font-black text-slate-900">➕ Thêm Học Liệu Vào Danh Sách</h3>
-        <button id="btn-close-upload" type="button" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-600">✕</button>
-      </div>
+                      <!-- Offline Tip -->
+                      <div id="offline-warning"
+                        class="hidden bg-amber-50 border border-amber-300 rounded-2xl p-4 text-xs sm:text-sm text-amber-950 font-semibold">
+                        ℹ️ Để tải danh sách học liệu tự động trên máy tính cá nhân, thầy/cô vui lòng mở tệp khởi chạy
+                        <code>start_web.bat</code> đi kèm trong thư mục.
+                      </div>
 
-      <!-- Storage Transparency & GitHub Cloud Sync Panel (Shown in Static / GitHub Pages Mode) -->
-      <div id="storage-mode-banner" class="hidden rounded-2xl border p-3.5 text-xs space-y-2">
-        <div class="flex items-start justify-between gap-2">
-          <p id="storage-mode-text" class="leading-relaxed font-semibold"></p>
-          <button id="btn-toggle-gh-config" type="button" class="shrink-0 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-bold px-2.5 py-1.5 rounded-xl whitespace-nowrap transition">
-            ⚙️ Kết nối GitHub
-          </button>
-        </div>
-        <div id="gh-config-box" class="hidden pt-2 border-t border-slate-200/80 space-y-2">
-          <p class="text-[11px] text-slate-600 leading-relaxed">
-            Nhập 1 lần (chỉ lưu riêng trên trình duyệt máy giáo viên) để mỗi khi thêm bài mới trên web GitHub Pages, hệ thống <strong>đẩy thẳng lên kho GitHub</strong> cho toàn bộ học sinh và Ban Tổ Chức cùng xem:
-          </p>
-          <div class="grid grid-cols-3 gap-2">
-            <div class="col-span-2">
-              <input id="gh-repo-input" type="text" placeholder="chanh68/ten-kho-github"
-                     class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-mono" />
-            </div>
-            <div>
-              <input id="gh-branch-input" type="text" value="main" placeholder="main"
-                     class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-mono" />
-            </div>
-          </div>
-          <div class="flex gap-2">
-            <input id="gh-token-input" type="password" placeholder="GitHub Token (Fine-grained PAT: Contents Read & Write)"
-                   class="flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-mono" />
-            <button id="btn-save-gh-config" type="button" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-3 py-1.5 rounded-lg whitespace-nowrap">Lưu</button>
-            <button id="btn-clear-gh-config" type="button" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">Ngắt</button>
-          </div>
-        </div>
-      </div>
+                      <!-- Search & Category Filters -->
+                      <section class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                        <!-- Search & Cute Category Filters -->
+                        <section
+                          class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 bg-white/80 backdrop-blur-sm p-3.5 rounded-[26px] border-2 border-pink-100 shadow-sm">
+                          <div class="flex flex-wrap items-center gap-2" id="category-pills">
+                            <button type="button" data-cat="Tất cả"
+                              class="cat-pill bg-slate-900 text-white font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">Tất
+                              cả chuyên đề</button>
+                            <button type="button" data-cat="Số và Phép tính"
+                              class="cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">🔢
+                              Số và Phép tính</button>
+                            <button type="button" data-cat="Hình học"
+                              class="cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">📐
+                              Hình học</button>
+                            <button type="button" data-cat="Đo lường"
+                              class="cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">⚖️
+                              Đo lường</button>
+                            <button type="button" data-cat="Bổ sung"
+                              class="cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap">📂
+                              Học liệu bổ sung</button>
+                            <button type="button" data-cat="Tất cả"
+                              class="cat-pill cute-pill cute-pill-active bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+                              🌈 Tất cả bài học
+                            </button>
+                            <button type="button" data-cat="Số và Phép tính"
+                              class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-sky-300 hover:bg-sky-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+                              🔢 Số &amp; Phép tính
+                            </button>
+                            <button type="button" data-cat="Hình học"
+                              class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-purple-300 hover:bg-purple-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+                              📐 Hình học vui
+                            </button>
+                            <button type="button" data-cat="Đo lường"
+                              class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-amber-300 hover:bg-amber-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+                              ⚖️ Đo lường
+                            </button>
+                            <button type="button" data-cat="Bổ sung"
+                              class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-emerald-300 hover:bg-emerald-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+                              🎁 Bổ sung
+                            </button>
+                          </div>
 
-      <!-- Mode Switcher: Add by Link vs Upload .html -->
-      <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-2xl">
-        <button id="tab-mode-link" type="button" class="py-2 rounded-xl text-xs sm:text-sm font-black bg-white text-sky-700 shadow-sm transition">
-          🔗 Thêm bằng Đường dẫn (Link)
-        </button>
-        <button id="tab-mode-file" type="button" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition">
-          📄 Tải tệp .html lên
-        </button>
-      </div>
+                          <div class="relative w-full sm:w-72">
+                            <input id="search-input" type="search" placeholder="Tìm tên bài học, chủ đề..."
+                              class="w-full bg-white border border-slate-300 focus:border-sky-500 focus:outline-none rounded-xl pl-9 pr-4 py-2 text-sm font-medium" />
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+                            <div class="relative w-full md:w-72 shrink-0">
+                              <input id="search-input" type="search" placeholder="Tìm bài học yêu thích..."
+                                class="w-full bg-slate-50/90 border-2 border-pink-200 focus:border-pink-400 focus:bg-white focus:outline-none rounded-2xl pl-10 pr-4 py-2 text-sm font-bold text-slate-700 placeholder:text-slate-400 transition" />
+                              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-base">🔍</span>
+                            </div>
+                        </section>
 
-      <form id="upload-form" class="space-y-4">
-        <div id="link-input-wrap">
-          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Đường dẫn bài học (Google Sites hoặc Web):</label>
-          <input id="up-url" type="url" placeholder="https://sites.google.com/view/... hoặc https://..."
-                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-sky-500 focus:outline-none text-sm font-medium" />
-        </div>
+                        <!-- Games Grid -->
+                        <section id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></section>
+                        <section id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></section>
 
-        <div id="drop-zone" class="hidden border-2 border-dashed border-sky-300 bg-sky-50/40 rounded-2xl p-6 text-center cursor-pointer transition hover:bg-sky-50">
-          <input id="file-input" type="file" accept=".html,.htm" class="hidden" />
-          <div class="text-4xl mb-2">📄</div>
-          <p id="file-label" class="text-sm font-bold text-sky-900">Bấm để chọn hoặc Kéo thả tệp .html vào đây</p>
-          <p class="text-xs text-slate-500 mt-1">Hỗ trợ mọi tệp học liệu HTML đơn lẻ (tối đa 25 MB)</p>
-        </div>
+                        <div id="empty-state"
+                          class="hidden text-center py-14 bg-white rounded-3xl border border-dashed border-slate-300">
+                          <div class="text-5xl mb-2">📭</div>
+                          <h3 class="text-lg font-bold text-slate-800">Không tìm thấy học liệu phù hợp</h3>
+                          <p class="text-xs text-slate-500 mt-1">Thử đổi từ khóa tìm kiếm hoặc bấm "Đăng tải học liệu
+                            (.html)" để thêm bài mới.</p>
+                          <!-- Empty State -->
+                          <div id="empty-state"
+                            class="hidden text-center py-16 bg-white/90 rounded-[32px] border-4 border-dashed border-pink-200 shadow-sm">
+                            <div class="text-6xl mb-3 animate-bounce">🐰</div>
+                            <h3 class="text-xl font-extrabold text-slate-800">Ơ kìa, chưa tìm thấy bài học nào!</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">Thử gõ từ khóa khác hoặc
+                              chọn "🌈 Tất cả bài học" nhé!</p>
+                          </div>
+            </main>
 
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tên bài học:</label>
-          <input id="up-title" type="text" required placeholder="Ví dụ: Bài 32: Luyện tập chung"
-                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-sky-500 focus:outline-none text-sm font-bold" />
-        </div>
+            <footer class="bg-white border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-600 mt-auto">
+              <strong>Trường Tiểu học và THCS Thụy Lâm</strong> (Xã Thư Lâm, TP. Hà Nội) • Giáo viên thực hiện:
+              <strong>Cô Trần Thị Hoan &amp; Cô Trần Thị Hải</strong> • Hệ Thống Học Liệu Số Tương Tác Toán 4
+              <footer
+                class="relative z-10 bg-white/90 border-t-4 border-pink-100 py-5 px-4 text-center text-xs sm:text-sm text-slate-600 font-bold mt-auto">
+                💖 <strong>Trường Tiểu học và THCS Thụy Lâm</strong> (Xã Thư Lâm, TP. Hà Nội) • Giáo viên: <strong
+                  class="text-pink-600">Cô Trần Thị Hoan &amp; Cô Trần Thị Hải</strong> 🌟
+              </footer>
 
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Mô tả nội dung trọng tâm:</label>
-          <input id="up-subtitle" type="text" placeholder="Ví dụ: Ôn tập tính chất phép cộng và hình học"
-                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-sky-500 focus:outline-none text-sm font-medium" />
-        </div>
+              <!-- Teacher Preview Overlay (Only in Teacher Portal; student share links open strictly the standalone game without this bar!) -->
+              <div id="player-overlay" class="fixed inset-0 bg-slate-900 z-50 flex flex-col hidden">
+                <div
+                  class="bg-white border-b border-slate-200 px-3 sm:px-5 py-2 flex items-center justify-between gap-2 shrink-0">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <button id="btn-close-player" type="button"
+                      class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm px-3 py-1.5 rounded-xl whitespace-nowrap transition">
+                      ⬅️ Quay lại danh sách
+                    </button>
+                    <span id="player-icon" class="text-lg shrink-0">📘</span>
+                    <span id="player-title" class="font-extrabold text-xs sm:text-sm text-slate-900 truncate"></span>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <button id="btn-player-share" type="button"
+                      class="bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-200 font-bold text-xs px-3 py-1.5 rounded-xl whitespace-nowrap transition">
+                      🔗 Lấy link gửi học sinh
+                    </button>
+                    <a id="btn-player-newtab" href="#" target="_blank" rel="noopener"
+                      class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-xl whitespace-nowrap transition">
+                      ⛶ Mở riêng bài học
+                    </a>
+                  </div>
+                </div>
+                <iframe id="player-iframe" sandbox="allow-scripts allow-forms allow-modals allow-popups allow-downloads"
+                  class="w-full flex-1 border-0 bg-white"></iframe>
+              </div>
 
-        <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Chủ đề:</label>
-            <select id="up-category" class="w-full px-2.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold bg-white">
-              <option value="Số và Phép tính">Số và Phép tính</option>
-              <option value="Hình học">Hình học</option>
-              <option value="Đo lường">Đo lường</option>
-              <option value="Bổ sung" selected>Học liệu bổ sung</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Môn / Lớp:</label>
-            <input id="up-grade" type="text" value="Toán 4"
-                   class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm font-bold" />
-          </div>
-          <div>
-            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Biểu tượng:</label>
-            <select id="up-icon" class="w-full px-2.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold bg-white">
-              <option value="📘">📘 Bài học</option>
-              <option value="🌟">🌟 Ngôi sao</option>
-              <option value="📐">📐 Hình học</option>
-              <option value="⚖️">⚖️ Đo lường</option>
-              <option value="➕">➕ Phép tính</option>
-              <option value="🏆">🏆 Ôn tập</option>
-            </select>
-          </div>
-        </div>
+              <!-- Upload / Add Link Modal -->
+              <div id="upload-modal"
+                class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+                <div
+                  class="bg-white rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4">
+                  <!-- Simplified Add Link Modal (No HTML file upload!) -->
+                  <div id="upload-modal"
+                    class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+                    <div
+                      class="bg-white rounded-[32px] max-w-md w-full p-6 sm:p-7 shadow-2xl border-4 border-pink-200 space-y-4 relative">
+                      <div class="flex items-center justify-between">
+                        <h3 class="text-lg sm:text-xl font-black text-slate-900">➕ Thêm Học Liệu Vào Danh Sách</h3>
+                        <button id="btn-close-upload" type="button"
+                          class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-600">✕</button>
+                      </div>
 
-        <button id="btn-submit-upload" type="submit" class="w-full bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold py-3.5 rounded-2xl shadow-md text-sm transition active:scale-95">
-          Lưu Học Liệu Vào Hệ Thống
-        </button>
-      </form>
-    </div>
-  </div>
+                      <!-- Storage Transparency & GitHub Cloud Sync Panel (Shown in Static / GitHub Pages Mode) -->
+                      <div id="storage-mode-banner" class="hidden rounded-2xl border p-3.5 text-xs space-y-2">
+                        <div class="flex items-start justify-between gap-2">
+                          <p id="storage-mode-text" class="leading-relaxed font-semibold"></p>
+                          <button id="btn-toggle-gh-config" type="button"
+                            class="shrink-0 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-bold px-2.5 py-1.5 rounded-xl whitespace-nowrap transition">
+                            ⚙️ Kết nối GitHub
+                          </button>
+                          <div class="flex items-center gap-2">
+                            <span class="text-2xl">🔗</span>
+                            <h3 class="text-xl font-extrabold text-slate-900">Thêm Link Học Liệu Mới</h3>
+                          </div>
+                          <div id="gh-config-box" class="hidden pt-2 border-t border-slate-200/80 space-y-2">
+                            <p class="text-[11px] text-slate-600 leading-relaxed">
+                              Nhập 1 lần (chỉ lưu riêng trên trình duyệt máy giáo viên) để mỗi khi thêm bài mới trên web
+                              GitHub Pages, hệ thống <strong>đẩy thẳng lên kho GitHub</strong> cho toàn bộ học sinh và
+                              Ban Tổ Chức cùng xem:
+                            </p>
+                            <div class="grid grid-cols-3 gap-2">
+                              <div class="col-span-2">
+                                <input id="gh-repo-input" type="text" placeholder="chanh68/ten-kho-github"
+                                  class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-mono" />
+                              </div>
+                              <div>
+                                <input id="gh-branch-input" type="text" value="main" placeholder="main"
+                                  class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-mono" />
+                              </div>
+                            </div>
+                            <div class="flex gap-2">
+                              <input id="gh-token-input" type="password"
+                                placeholder="GitHub Token (Fine-grained PAT: Contents Read & Write)"
+                                class="flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-mono" />
+                              <button id="btn-save-gh-config" type="button"
+                                class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-3 py-1.5 rounded-lg whitespace-nowrap">Lưu</button>
+                              <button id="btn-clear-gh-config" type="button"
+                                class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">Ngắt</button>
+                            </div>
+                          </div>
+                          <button id="btn-close-upload" type="button"
+                            class="w-9 h-9 rounded-full bg-rose-50 hover:bg-rose-100 font-black text-rose-500 transition">✕</button>
+                        </div>
 
-  <!-- Share Link Modal (Strictly Student-Isolated Links!) -->
-  <div id="share-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-black text-slate-900">🔗 Liên Kết Giao Bài Cho Học Sinh</h3>
-        <button id="btn-close-share" type="button" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-600">✕</button>
-      </div>
-      <p id="share-game-title" class="text-sm font-extrabold text-sky-800"></p>
-      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-900 font-semibold leading-relaxed">
-        🔒 <strong>Chế độ riêng biệt cho học sinh:</strong> Khi mở liên kết dưới đây, học sinh chỉ tham gia duy nhất bài học này, không có nút quay về xem toàn bộ danh sách bài của giáo viên.
-      </div>
-      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2.5">
-        <div>
-          <div class="text-[11px] font-bold uppercase text-slate-500 mb-1">1. Đường dẫn gửi học sinh / Dán vào Google Sites (Theo URL):</div>
-          <div class="flex gap-2">
-            <input id="share-student-url" type="text" readonly class="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-mono" />
-            <button type="button" data-copy="share-student-url" class="copy-btn bg-sky-600 text-white font-bold text-xs px-3 py-1.5 rounded-xl whitespace-nowrap">Sao chép</button>
-          </div>
-        </div>
-        <div>
-          <div class="text-[11px] font-bold uppercase text-slate-500 mb-1">2. Mã nhúng HTML (Dán vào Google Sites ➔ Nhúng ➔ Mã nhúng):</div>
-          <div class="flex gap-2">
-            <input id="share-embed-code" type="text" readonly class="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-mono" />
-            <button type="button" data-copy="share-embed-code" class="copy-btn bg-indigo-600 text-white font-bold text-xs px-3 py-1.5 rounded-xl whitespace-nowrap">Sao chép</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                        <!-- Mode Switcher: Add by Link vs Upload .html -->
+                        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-2xl">
+                          <button id="tab-mode-link" type="button"
+                            class="py-2 rounded-xl text-xs sm:text-sm font-black bg-white text-sky-700 shadow-sm transition">
+                            🔗 Thêm bằng Đường dẫn (Link)
+                          </button>
+                          <button id="tab-mode-file" type="button"
+                            class="py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition">
+                            📄 Tải tệp .html lên
+                          </button>
+                        </div>
 
-  <!-- Teacher Guide Modal (Simple, No-Git Explanation) -->
-  <div id="guide-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-black text-slate-900">📘 Hướng Dẫn Đưa Lên Mạng &amp; Nhúng Google Sites</h3>
-        <button id="btn-close-guide" type="button" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-600">✕</button>
-      </div>
-      <div class="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
-        <div class="bg-sky-50 border border-sky-200 rounded-2xl p-3.5">
-          <div class="font-black text-sky-900 mb-1">1. Đưa hệ thống lên GitHub Pages (Công khai cho Ban Tổ Chức &amp; Học sinh)</div>
-          <p>Đẩy thư mục web lên kho lưu trữ <strong>GitHub</strong> ➔ vào mục <strong>Settings ➔ Pages</strong> ➔ chọn nhánh <strong>main</strong> (thư mục gốc <code>/ (root)</code>) ➔ bấm <strong>Save</strong>. Sau 1–2 phút, hệ thống sẽ có địa chỉ chính thức dạng <code>https://tên-tài-khoản.github.io/tên-kho/</code> để nộp Ban Tổ Chức.</p>
-        </div>
-        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5">
-          <div class="font-black text-emerald-900 mb-1">2. Gắn từng bài lên Google Sites &amp; Giao học sinh</div>
-          <p>Ở mỗi bài học, bấm <strong>🔗 Link gửi HS ➔ Sao chép</strong> để lấy đường dẫn độc lập (<code>.../games/tên-bài.html</code>) — học sinh vào link chỉ thấy đúng bài được giao, không quay về xem danh sách chung. Có thể dán trực tiếp link này lên Zalo/Google Classroom hoặc vào Google Sites chọn <strong>Chèn ➔ Nhúng ➔ Theo URL</strong>.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+                        <form id="upload-form" class="space-y-4">
+                          <div id="link-input-wrap">
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Đường dẫn bài học
+                              (Google Sites hoặc Web):</label>
+                            <input id="up-url" type="url"
+                              placeholder="https://sites.google.com/view/... hoặc https://..."
+                              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-sky-500 focus:outline-none text-sm font-medium" />
+                            <div>
+                              <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">🌐 Đường dẫn bài
+                                học (URL):</label>
+                              <input id="up-url" type="text" required placeholder="https://... hoặc games/ten_bai.html"
+                                class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-pink-400 focus:outline-none text-sm font-bold" />
+                            </div>
 
-  <!-- Toast -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white font-bold px-5 py-3 rounded-2xl shadow-xl z-50 transition-all duration-300 opacity-0 pointer-events-none text-sm"></div>
+                            <div id="drop-zone"
+                              class="hidden border-2 border-dashed border-sky-300 bg-sky-50/40 rounded-2xl p-6 text-center cursor-pointer transition hover:bg-sky-50">
+                              <input id="file-input" type="file" accept=".html,.htm" class="hidden" />
+                              <div class="text-4xl mb-2">📄</div>
+                              <p id="file-label" class="text-sm font-bold text-sky-900">Bấm để chọn hoặc Kéo thả tệp
+                                .html vào đây</p>
+                              <p class="text-xs text-slate-500 mt-1">Hỗ trợ mọi tệp học liệu HTML đơn lẻ (tối đa 25 MB)
+                              </p>
+                            </div>
 
-  <script>
-    let allGames = [];
-    let isServerMode = false;
-    let activeCategory = 'Tất cả';
-    let selectedFile = null;
-    let addMode = 'link';
-    let currentPlayingGame = null;
+                            <div>
+                              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tên bài học:</label>
+                              <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">🏷️ Tên bài
+                                học:</label>
+                              <input id="up-title" type="text" required placeholder="Ví dụ: Bài 32: Luyện tập chung"
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-sky-500 focus:outline-none text-sm font-bold" />
+                              class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-pink-400
+                              focus:outline-none text-sm font-bold" />
+                            </div>
 
-    const COLOR_PRESETS = [
-      'from-sky-500 to-cyan-500',
-      'from-rose-500 to-pink-500',
-      'from-emerald-500 to-teal-500',
-      'from-amber-500 to-orange-500',
-      'from-indigo-500 to-purple-500'
-    ];
+                            <div>
+                              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Mô tả nội dung trọng
+                                tâm:</label>
+                              <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">✨ Mô tả ngắn
+                                gọn:</label>
+                              <input id="up-subtitle" type="text"
+                                placeholder="Ví dụ: Ôn tập tính chất phép cộng và hình học"
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-sky-500 focus:outline-none text-sm font-medium" />
+                              class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-pink-400
+                              focus:outline-none text-sm font-semibold" />
+                            </div>
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.remove('opacity-0', 'pointer-events-none');
-      t.classList.add('opacity-100');
-      clearTimeout(window._tTimer);
-      window._tTimer = setTimeout(() => {
-        t.classList.remove('opacity-100');
-        t.classList.add('opacity-0', 'pointer-events-none');
-      }, 3000);
+                            <div class="grid grid-cols-3 gap-3">
+                              <div class="grid grid-cols-3 gap-2.5">
+                                <div>
+                                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Chủ đề:</label>
+                                  <select id="up-category"
+                                    class="w-full px-2.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold bg-white">
+                                    <option value="Số và Phép tính">Số và Phép tính</option>
+                                    <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">Chủ
+                                      đề:</label>
+                                    <select id="up-category"
+                                      class="w-full px-2.5 py-2.5 rounded-2xl border-2 border-slate-200 text-xs sm:text-sm font-bold bg-white">
+                                      <option value="Số và Phép tính">Số &amp; Phép tính</option>
+                                      <option value="Hình học">Hình học</option>
+                                      <option value="Đo lường">Đo lường</option>
+                                      <option value="Bổ sung" selected>Học liệu bổ sung</option>
+                                      <option value="Bổ sung" selected>Bổ sung</option>
+                                    </select>
+                                </div>
+                                <div>
+                                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Môn /
+                                    Lớp:</label>
+                                  <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">Lớp:</label>
+                                  <input id="up-grade" type="text" value="Toán 4"
+                                    class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm font-bold" />
+                                  class="w-full px-3 py-2.5 rounded-2xl border-2 border-slate-200 text-xs sm:text-sm
+                                  font-bold" />
+                                </div>
+                                <div>
+                                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Biểu
+                                    tượng:</label>
+                                  <select id="up-icon"
+                                    class="w-full px-2.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold bg-white">
+                                    <label
+                                      class="block text-xs font-extrabold uppercase text-slate-600 mb-1">Icon:</label>
+                                    <select id="up-icon"
+                                      class="w-full px-2.5 py-2.5 rounded-2xl border-2 border-slate-200 text-xs sm:text-sm font-bold bg-white">
+                                      <option value="🌟">🌟 Ngôi sao</option>
+                                      <option value="📘">📘 Bài học</option>
+                                      <option value="🌟">🌟 Ngôi sao</option>
+                                      <option value="📐">📐 Hình học</option>
+                                      <option value="⚖️">⚖️ Đo lường</option>
+                                      <option value="➕">➕ Phép tính</option>
+                                      <option value="🏆">🏆 Ôn tập</option>
+                                      <option value="🎮">🎮 Trò chơi</option>
+                                    </select>
+                                </div>
+                              </div>
+
+                              <button id="btn-submit-upload" type="submit"
+                                class="w-full bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold py-3.5 rounded-2xl shadow-md text-sm transition active:scale-95">
+                                Lưu Học Liệu Vào Hệ Thống
+                                <button id="btn-submit-upload" type="submit"
+                                  class="w-full bg-gradient-to-r from-pink-500 via-rose-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-extrabold py-3.5 rounded-2xl shadow-[0_5px_0_0_#be185d] active:translate-y-[2px] active:shadow-[0_2px_0_0_#be185d] text-sm transition-all">
+                                  💖 Lưu Vào Danh Sách
+                                </button>
+                        </form>
+                      </div>
+                    </div>
+
+                    <!-- Share Link Modal (Strictly Student-Isolated Links!) -->
+                    <div id="share-modal"
+                      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+                      <div
+                        class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between">
+                          <h3 class="text-lg font-black text-slate-900">🔗 Liên Kết Giao Bài Cho Học Sinh</h3>
+                          <button id="btn-close-share" type="button"
+                            class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-600">✕</button>
+                        </div>
+                        <p id="share-game-title" class="text-sm font-extrabold text-sky-800"></p>
+                        <div
+                          class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-900 font-semibold leading-relaxed">
+                          🔒 <strong>Chế độ riêng biệt cho học sinh:</strong> Khi mở liên kết dưới đây, học sinh chỉ
+                          tham gia duy nhất bài học này, không có nút quay về xem toàn bộ danh sách bài của giáo viên.
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2.5">
+                          <div>
+                            <div class="text-[11px] font-bold uppercase text-slate-500 mb-1">1. Đường dẫn gửi học sinh /
+                              Dán vào Google Sites (Theo URL):</div>
+                            <div class="flex gap-2">
+                              <input id="share-student-url" type="text" readonly
+                                class="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-mono" />
+                              <button type="button" data-copy="share-student-url"
+                                class="copy-btn bg-sky-600 text-white font-bold text-xs px-3 py-1.5 rounded-xl whitespace-nowrap">Sao
+                                chép</button>
+                            </div>
+                          </div>
+                          <div>
+                            <div class="text-[11px] font-bold uppercase text-slate-500 mb-1">2. Mã nhúng HTML (Dán vào
+                              Google Sites ➔ Nhúng ➔ Mã nhúng):</div>
+                            <div class="flex gap-2">
+                              <input id="share-embed-code" type="text" readonly
+                                class="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-mono" />
+                              <button type="button" data-copy="share-embed-code"
+                                class="copy-btn bg-indigo-600 text-white font-bold text-xs px-3 py-1.5 rounded-xl whitespace-nowrap">Sao
+                                chép</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Teacher Guide Modal (Simple, No-Git Explanation) -->
+                    <div id="guide-modal"
+                      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+                      <div
+                        class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between">
+                          <h3 class="text-lg font-black text-slate-900">📘 Hướng Dẫn Đưa Lên Mạng &amp; Nhúng Google
+                            Sites</h3>
+                          <button id="btn-close-guide" type="button"
+                            class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-600">✕</button>
+                        </div>
+                        <div class="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                          <div class="bg-sky-50 border border-sky-200 rounded-2xl p-3.5">
+                            <div class="font-black text-sky-900 mb-1">1. Đưa hệ thống lên GitHub Pages (Công khai cho
+                              Ban Tổ Chức &amp; Học sinh)</div>
+                            <p>Đẩy thư mục web lên kho lưu trữ <strong>GitHub</strong> ➔ vào mục <strong>Settings ➔
+                                Pages</strong> ➔ chọn nhánh <strong>main</strong> (thư mục gốc <code>/ (root)</code>) ➔
+                              bấm <strong>Save</strong>. Sau 1–2 phút, hệ thống sẽ có địa chỉ chính thức dạng
+                              <code>https://tên-tài-khoản.github.io/tên-kho/</code> để nộp Ban Tổ Chức.</p>
+                          </div>
+                          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5">
+                            <div class="font-black text-emerald-900 mb-1">2. Gắn từng bài lên Google Sites &amp; Giao
+                              học sinh</div>
+                            <p>Ở mỗi bài học, bấm <strong>🔗 Link gửi HS ➔ Sao chép</strong> để lấy đường dẫn độc lập
+                              (<code>.../games/tên-bài.html</code>) — học sinh vào link chỉ thấy đúng bài được giao,
+                              không quay về xem danh sách chung. Có thể dán trực tiếp link này lên Zalo/Google Classroom
+                              hoặc vào Google Sites chọn <strong>Chèn ➔ Nhúng ➔ Theo URL</strong>.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Toast -->
+                    <div id="toast"
+                      class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white font-bold px-5 py-3 rounded-2xl shadow-xl z-50 transition-all duration-300 opacity-0 pointer-events-none text-sm">
+                    </div>
+                    <div id="toast"
+                      class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white font-extrabold px-5 py-3 rounded-2xl shadow-xl z-50 transition-all duration-300 opacity-0 pointer-events-none text-sm">
+                    </div>
+
+                    <script>
+                      let allGames = [];
+                      let isServerMode = false;
+                      let activeCategory = 'Tất cả';
+                      let selectedFile = null;
+                      let addMode = 'link';
+                      let currentPlayingGame = null;
+
+                      const COLOR_PRESETS = [
+                        'from-sky-500 to-cyan-500',
+                        'from-rose-500 to-pink-500',
+                        'from-emerald-500 to-teal-500',
+                        'from-amber-500 to-orange-500',
+                        'from-indigo-500 to-purple-500'
+    const LOCAL_LINKS_KEY = 'toan4_custom_links_v1';
+
+                      const CUTE_THEMES = [
+                        { grad: 'from-emerald-400 via-teal-400 to-cyan-400', badgeBg: 'bg-emerald-50 text-emerald-700 border-emerald-200', ctaBg: 'bg-emerald-500 group-hover:bg-emerald-600 shadow-[0_4px_0_0_#047857]', sticker: '🍀' },
+                        { grad: 'from-sky-400 via-blue-400 to-indigo-400', badgeBg: 'bg-sky-50 text-sky-700 border-sky-200', ctaBg: 'bg-sky-500 group-hover:bg-sky-600 shadow-[0_4px_0_0_#0369a1]', sticker: '🐳' },
+                        { grad: 'from-pink-400 via-rose-400 to-orange-300', badgeBg: 'bg-pink-50 text-pink-700 border-pink-200', ctaBg: 'bg-pink-500 group-hover:bg-pink-600 shadow-[0_4px_0_0_#be185d]', sticker: '🌸' },
+                        { grad: 'from-amber-400 via-orange-400 to-rose-400', badgeBg: 'bg-amber-50 text-amber-800 border-amber-200', ctaBg: 'bg-amber-500 group-hover:bg-amber-600 shadow-[0_4px_0_0_#b45309]', sticker: '🦊' },
+                        { grad: 'from-purple-400 via-violet-400 to-fuchsia-400', badgeBg: 'bg-purple-50 text-purple-700 border-purple-200', ctaBg: 'bg-purple-500 group-hover:bg-purple-600 shadow-[0_4px_0_0_#6d28d9]', sticker: '🦄' }
+                      ];
+
+                      function showToast(msg) {
+                        const t = document.getElementById('toast');
+                        t.textContent = msg;
+                        t.classList.remove('opacity-0', 'pointer-events-none');
+                        t.classList.add('opacity-100');
+                        clearTimeout(window._tTimer);
+                        window._tTimer = setTimeout(() => {
+                          t.classList.remove('opacity-100');
+                          t.classList.add('opacity-0', 'pointer-events-none');
+                        }, 3000);
+                      }, 2800);
     }
 
-    function formatSize(bytes) {
-      if (!bytes) return 'HTML';
-      if (bytes >= 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
-      return Math.round(bytes / 1024) + ' KB';
-    }
+                      function formatSize(bytes) {
+                        if (!bytes) return 'HTML';
+                        if (bytes >= 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+                        return Math.round(bytes / 1024) + ' KB';
+                      }
 
-    function openLocalDb() {
-      return new Promise((resolve, reject) => {
-        const req = indexedDB.open('KhoHocLieuSoDB', 1);
-        req.onupgradeneeded = () => {
-          const db = req.result;
-          if (!db.objectStoreNames.contains('localGames')) {
-            db.createObjectStore('localGames', { keyPath: 'id' });
-          }
-        };
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-      });
-    }
+                      function openLocalDb() {
+                        return new Promise((resolve, reject) => {
+                          const req = indexedDB.open('KhoHocLieuSoDB', 1);
+                          req.onupgradeneeded = () => {
+                            const db = req.result;
+                            if (!db.objectStoreNames.contains('localGames')) {
+                              db.createObjectStore('localGames', { keyPath: 'id' });
+                            }
+                          };
+                          req.onsuccess = () => resolve(req.result);
+                          req.onerror = () => reject(req.error);
+                        });
+                      }
 
-    async function getLocalUploadedGames() {
-      try {
-        const db = await openLocalDb();
-        return await new Promise((resolve, reject) => {
-          const tx = db.transaction('localGames', 'readonly');
-          const req = tx.objectStore('localGames').getAll();
-          req.onsuccess = () => resolve(req.result || []);
-          req.onerror = () => reject(req.error);
-        });
-      } catch (e) {
-        return [];
-      }
-    }
+                      async function getLocalUploadedGames() {
+                        function getLocalLinks() {
+                          try {
+                            const db = await openLocalDb();
+                            return await new Promise((resolve, reject) => {
+                              const tx = db.transaction('localGames', 'readonly');
+                              const req = tx.objectStore('localGames').getAll();
+                              req.onsuccess = () => resolve(req.result || []);
+                              req.onerror = () => reject(req.error);
+                            });
+                            const raw = localStorage.getItem(LOCAL_LINKS_KEY);
+                            const parsed = raw ? JSON.parse(raw) : [];
+                            return Array.isArray(parsed) ? parsed : [];
+                          } catch (e) {
+                            return [];
+                          }
+                        }
 
-    async function saveLocalUploadedGame(gameObj) {
-      const db = await openLocalDb();
-      return await new Promise((resolve, reject) => {
-        const tx = db.transaction('localGames', 'readwrite');
-        tx.objectStore('localGames').put(gameObj);
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error);
-      });
-    }
+                        async function saveLocalUploadedGame(gameObj) {
+                          const db = await openLocalDb();
+                          return await new Promise((resolve, reject) => {
+                            const tx = db.transaction('localGames', 'readwrite');
+                            tx.objectStore('localGames').put(gameObj);
+                            tx.oncomplete = () => resolve();
+                            tx.onerror = () => reject(tx.error);
+                          });
+                          function saveLocalLinks(list) {
+                            localStorage.setItem(LOCAL_LINKS_KEY, JSON.stringify(list));
+                          }
 
-    async function deleteLocalUploadedGame(id) {
-      const db = await openLocalDb();
-      return await new Promise((resolve, reject) => {
-        const tx = db.transaction('localGames', 'readwrite');
-        tx.objectStore('localGames').delete(id);
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error);
-      });
-    }
+                          async function deleteLocalUploadedGame(id) {
+                            const db = await openLocalDb();
+                            return await new Promise((resolve, reject) => {
+                              const tx = db.transaction('localGames', 'readwrite');
+                              tx.objectStore('localGames').delete(id);
+                              tx.oncomplete = () => resolve();
+                              tx.onerror = () => reject(tx.error);
+                            });
+                          }
 
-    function resolveBaseUrl() {
-      return new URL('./', location.href).href;
-    }
+                          function resolveBaseUrl() {
+                            return new URL('./', location.href).href;
+                          }
 
-    // Isolated Student Link: serves ONLY that single lesson, no back-navigation to the full library
-    function buildStudentIsolatedUrl(g) {
-      if (g.externalUrl) return g.externalUrl;
-      if (g.isLocalOnly && g.htmlContent) {
-        return URL.createObjectURL(new Blob([g.htmlContent], { type: 'text/html;charset=utf-8' }));
-      }
-      if (isServerMode) {
-        return new URL(`bai-hoc/${encodeURIComponent(g.id)}`, resolveBaseUrl()).href;
-      }
-      return new URL(`games/${encodeURIComponent(g.filename)}`, resolveBaseUrl()).href;
-    }
+                          // Isolated Student Link: serves ONLY that single lesson, no back-navigation to the full library
+                          function buildStudentIsolatedUrl(g) {
+                            function buildDirectUrl(g) {
+                              if (g.externalUrl) return g.externalUrl;
+                              if (g.isLocalOnly && g.htmlContent) {
+                                return URL.createObjectURL(new Blob([g.htmlContent], { type: 'text/html;charset=utf-8' }));
+                              }
+                              if (isServerMode) {
+                                return new URL(`bai-hoc/${encodeURIComponent(g.id)}`, resolveBaseUrl()).href;
+                              }
+                              return new URL(`games/${encodeURIComponent(g.filename)}`, resolveBaseUrl()).href;
+                            }
 
-    async function loadGames() {
-      if (location.protocol === 'file:') {
-        document.getElementById('offline-warning').classList.remove('hidden');
-        return;
-      }
+                            async function loadGames() {
+                              if (location.protocol === 'file:') {
+                                document.getElementById('offline-warning').classList.remove('hidden');
+                                return;
+                              }
 
-      try {
-        const res = await fetch('./api/games');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.ok && Array.isArray(data.games)) {
-            isServerMode = true;
-            allGames = data.games;
-            renderGames();
-            return;
-          }
-        }
-      } catch (e) {}
+                              try {
+                                const res = await fetch('./api/games');
+                                if (res.ok) {
+                                  const data = await res.json();
+                                  if (data.ok && Array.isArray(data.games)) {
+                                    isServerMode = true;
+                                    allGames = data.games;
+                                    renderGames();
+                                    return;
+                                  }
+                                }
+                              } catch (e) { }
 
-      isServerMode = false;
-      try {
-        const resStatic = await fetch('./data/games.json');
-        const staticList = resStatic.ok ? await resStatic.json() : [];
-        const localExtras = await getLocalUploadedGames();
-        allGames = [...localExtras, ...(Array.isArray(staticList) ? staticList : [])];
-        renderGames();
-      } catch (err) {
-        showToast('Không tải được danh sách học liệu.');
-      }
-    }
+                              isServerMode = false;
+                              try {
+                                const resStatic = await fetch('./data/games.json');
+                                const staticList = resStatic.ok ? await resStatic.json() : [];
+                                const localExtras = await getLocalUploadedGames();
+                                allGames = [...localExtras, ...(Array.isArray(staticList) ? staticList : [])];
+                                const localLinks = getLocalLinks();
+                                allGames = [...localLinks, ...(Array.isArray(staticList) ? staticList : [])];
+                                renderGames();
+                              } catch (err) {
+                                showToast('Không tải được danh sách học liệu.');
+                              }
+                            }
 
-    function openTeacherPreview(g) {
-      if (g.externalUrl) {
-        window.open(g.externalUrl, '_blank', 'noopener');
-        return;
-      }
-      currentPlayingGame = g;
-      const overlay = document.getElementById('player-overlay');
-      const iframe = document.getElementById('player-iframe');
-      const studentUrl = buildStudentIsolatedUrl(g);
-      document.getElementById('player-icon').textContent = g.icon || '📘';
-      document.getElementById('player-title').textContent = g.title;
-      document.getElementById('btn-player-newtab').href = studentUrl;
-      iframe.src = studentUrl;
-      overlay.classList.remove('hidden');
-    }
+                            function openTeacherPreview(g) {
+                              if (g.externalUrl) {
+                                window.open(g.externalUrl, '_blank', 'noopener');
+                                return;
+                              }
+                              currentPlayingGame = g;
+                              const overlay = document.getElementById('player-overlay');
+                              const iframe = document.getElementById('player-iframe');
+                              const studentUrl = buildStudentIsolatedUrl(g);
+                              document.getElementById('player-icon').textContent = g.icon || '📘';
+                              document.getElementById('player-title').textContent = g.title;
+                              document.getElementById('btn-player-newtab').href = studentUrl;
+                              iframe.src = studentUrl;
+                              overlay.classList.remove('hidden');
+                            }
 
-    function openShareModal(g) {
-      document.getElementById('share-game-title').textContent = `${g.icon || '📘'} ${g.title}`;
-      const studentUrl = g.isLocalOnly ? '(Học liệu vừa thêm trên máy cá nhân — hãy tải tệp lên bản web công khai để chia sẻ)' : buildStudentIsolatedUrl(g);
-      document.getElementById('share-student-url').value = studentUrl;
-      document.getElementById('share-embed-code').value = g.isLocalOnly
-        ? '(Cần đưa học liệu lên web công khai để tạo mã nhúng)'
-        : `<iframe src="${studentUrl}" width="100%" height="780" style="border:0;border-radius:16px;" allowfullscreen></iframe>`;
-      document.getElementById('share-modal').classList.remove('hidden');
-    }
+                            function openShareModal(g) {
+                              document.getElementById('share-game-title').textContent = `${g.icon || '📘'} ${g.title}`;
+                              const studentUrl = g.isLocalOnly ? '(Học liệu vừa thêm trên máy cá nhân — hãy tải tệp lên bản web công khai để chia sẻ)' : buildStudentIsolatedUrl(g);
+                              document.getElementById('share-student-url').value = studentUrl;
+                              document.getElementById('share-embed-code').value = g.isLocalOnly
+                                ? '(Cần đưa học liệu lên web công khai để tạo mã nhúng)'
+                                : `<iframe src="${studentUrl}" width="100%" height="780" style="border:0;border-radius:16px;" allowfullscreen></iframe>`;
+                              document.getElementById('share-modal').classList.remove('hidden');
+                            }
 
-    function renderGames() {
-      const grid = document.getElementById('games-grid');
-      const empty = document.getElementById('empty-state');
-      const q = document.getElementById('search-input').value.trim().toLowerCase();
+                            function renderGames() {
+                              const grid = document.getElementById('games-grid');
+                              const empty = document.getElementById('empty-state');
+                              const q = document.getElementById('search-input').value.trim().toLowerCase();
 
-      const filtered = allGames.filter(g => {
-        const catOk = activeCategory === 'Tất cả' || g.category === activeCategory;
-        const text = `${g.title} ${g.subtitle} ${g.category} ${g.grade}`.toLowerCase();
-        const qOk = !q || text.includes(q);
-        return catOk && qOk;
-      });
+                              const filtered = allGames.filter(g => {
+                                const catOk = activeCategory === 'Tất cả' || g.category === activeCategory;
+                                const text = `${g.title} ${g.subtitle} ${g.category} ${g.grade}`.toLowerCase();
+                                const qOk = !q || text.includes(q);
+                                return catOk && qOk;
+                              });
 
-      document.getElementById('game-count-badge').textContent = `${allGames.length} học liệu`;
-      document.getElementById('stat-total-count').textContent = `${allGames.length} bài`;
-      grid.innerHTML = '';
+                              document.getElementById('game-count-badge').textContent = `${allGames.length} học liệu`;
+                              document.getElementById('game-count-badge').textContent = `🎒 ${allGames.length} bài học`;
+                              document.getElementById('stat-total-count').textContent = `${allGames.length} bài`;
+                              grid.innerHTML = '';
 
-      if (filtered.length === 0) {
-        empty.classList.remove('hidden');
-        return;
-      }
-      empty.classList.add('hidden');
+                              if (filtered.length === 0) {
+                                empty.classList.remove('hidden');
+                                return;
+                              }
+                              empty.classList.add('hidden');
 
-      filtered.forEach(g => {
-        const card = document.createElement('div');
-        card.className = 'bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col justify-between';
-        const grad = g.color || 'from-sky-500 to-cyan-500';
-        const studentUrl = buildStudentIsolatedUrl(g);
+                              filtered.forEach(g => {
+                                const card = document.createElement('div');
+                                card.className = 'bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col justify-between';
+                                const grad = g.color || 'from-sky-500 to-cyan-500';
+                                const studentUrl = buildStudentIsolatedUrl(g);
+                                filtered.forEach((g, idx) => {
+                                  const theme = CUTE_THEMES[idx % CUTE_THEMES.length];
+                                  const targetUrl = buildDirectUrl(g);
+                                  const canDelete = isServerMode || Boolean(g.isLocalLink);
 
-        card.innerHTML = `
+                                  const card = document.createElement('a');
+                                  card.href = targetUrl;
+                                  card.target = '_blank';
+                                  card.rel = 'noopener';
+                                  card.className = 'cute-card group bg-white overflow-hidden flex flex-col justify-between cursor-pointer select-none relative';
+
+                                  card.innerHTML = `
           <div>
             <div class="bg-gradient-to-r ${grad} p-4 flex items-center justify-between text-white">
               <div class="flex items-center gap-2.5">
                 <span class="w-11 h-11 rounded-2xl bg-white/95 text-2xl flex items-center justify-center shadow-sm">${g.icon || '📘'}</span>
+            <!-- Cute Colorful Header -->
+            <div class="bg-gradient-to-r ${theme.grad} card-pattern p-5 flex items-center justify-between text-white relative overflow-hidden">
+              <div class="flex items-center gap-3.5 relative z-10">
+                <div class="w-14 h-14 rounded-[20px] bg-white text-3xl flex items-center justify-center shadow-md border-2 border-white/80 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                  ${g.icon || '📘'}
+                </div>
                 <div>
                   <span class="text-[10px] font-bold uppercase bg-black/20 px-2.5 py-0.5 rounded-full">${g.grade || 'Toán 4'} • ${g.category || 'Bổ sung'}</span>
                   <div class="text-[11px] font-semibold opacity-95 mt-0.5">${g.externalUrl ? 'Liên kết trực tuyến' : formatSize(g.sizeBytes)}</div>
+                  <span class="inline-block text-[11px] font-extrabold uppercase tracking-wide bg-black/20 backdrop-blur-xs px-3 py-1 rounded-full">
+                    ${g.grade || 'Toán 4'} • ${g.category || 'Bổ sung'}
+                  </span>
+                  <div class="text-xs font-extrabold opacity-95 mt-1 flex items-center gap-1">
+                    <span>✨ 40 thử thách tương tác</span>
+                  </div>
                 </div>
               </div>
               <button type="button" data-del="${g.id}" title="Gỡ khỏi danh sách" class="del-btn w-8 h-8 rounded-xl bg-white/20 hover:bg-rose-600 text-white text-xs font-bold flex items-center justify-center transition ${!isServerMode && !hasGithubSync() && !g.isLocalOnly && !String(g.id).startsWith('local_') ? 'hidden' : ''}">🗑️</button>
+
+              <span class="text-3xl opacity-35 group-hover:opacity-75 group-hover:scale-125 transition duration-300 select-none">
+                ${theme.sticker}
+              </span>
+
+              ${canDelete ? `
+                <button type="button" data-del="${g.id}" title="Gỡ khỏi danh sách"
+                        class="del-btn absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-white/25 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center transition">
+                  🗑️
+                </button>
+              ` : ''}
             </div>
             <div class="p-4 pb-2">
               <h3 class="font-bold text-slate-900 text-base leading-snug mb-1">${g.title}</h3>
               <p class="text-xs text-slate-500 font-medium leading-relaxed">${g.subtitle || ''}</p>
+
+            <!-- Card Body -->
+            <div class="p-5 pb-3">
+              <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl leading-snug mb-1.5 group-hover:text-pink-600 transition-colors">
+                ${g.title}
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-500 font-semibold leading-relaxed line-clamp-2">
+                ${g.subtitle || 'Khám phá kiến thức và chinh phục bài tập tương tác vui nhộn!'}
+              </p>
             </div>
           </div>
           <div class="p-4 pt-2 flex flex-wrap items-center gap-2">
@@ -525,447 +977,498 @@
             <button type="button" data-share="${g.id}" class="share-btn bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs py-2.5 px-3 rounded-xl whitespace-nowrap transition">
               🔗 Link gửi HS
             </button>
+
+          <!-- Cute Footer Action Bar -->
+          <div class="px-5 pb-5 pt-2 flex items-center justify-between gap-2">
+            <span class="inline-flex items-center gap-1 text-xs font-extrabold px-3 py-1.5 rounded-xl border ${theme.badgeBg}">
+              🏅 Có giấy khen
+            </span>
+            <span class="inline-flex items-center gap-1.5 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl transition-all ${theme.ctaBg}">
+              <span>Vào học ngay</span>
+              <span class="group-hover:translate-x-1 transition-transform">🚀</span>
+            </span>
           </div>
         `;
-        grid.appendChild(card);
-      });
 
-      document.querySelectorAll('.preview-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const g = allGames.find(x => x.id === btn.dataset.preview);
-          if (g) openTeacherPreview(g);
-        });
-      });
+                                  grid.appendChild(card);
+                                });
 
-      document.querySelectorAll('.share-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const g = allGames.find(x => x.id === btn.dataset.share);
-          if (!g) return;
-          openShareModal(g);
-          if (!g.isLocalOnly) {
-            try {
-              await navigator.clipboard.writeText(buildStudentIsolatedUrl(g));
-              showToast('Đã sao chép sẵn liên kết riêng cho học sinh!');
-            } catch (e) {}
-          }
-        });
-      });
+                                document.querySelectorAll('.preview-btn').forEach(btn => {
+                                  btn.addEventListener('click', () => {
+                                    const g = allGames.find(x => x.id === btn.dataset.preview);
+                                    if (g) openTeacherPreview(g);
+                                  });
+                                });
 
-      document.querySelectorAll('.del-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const id = btn.dataset.del;
-          const g = allGames.find(x => x.id === id);
-          if (!g) return;
-          if (!confirm(`Gỡ học liệu "${g.title}" khỏi danh sách?`)) return;
-          if (g.isLocalOnly || String(g.id).startsWith('local_')) {
-            await deleteLocalUploadedGame(id);
-            showToast('Đã gỡ khỏi danh sách.');
-            loadGames();
-          } else if (isServerMode) {
-            const res = await fetch(`./api/games/${encodeURIComponent(id)}`, { method: 'DELETE' });
-            const data = await res.json();
-            if (data.ok) {
-              showToast('Đã gỡ khỏi danh sách.');
-              loadGames();
-            }
-          } else if (hasGithubSync()) {
-            try {
-              await deleteGameOnGithub(id);
-              allGames = allGames.filter(x => x.id !== id);
-              renderGames();
-              showToast('✅ Đã gỡ học liệu trên kho GitHub (web cập nhật sau ~30-60s).');
-            } catch (err) {
-              showToast('❌ ' + err.message);
-            }
-          }
-        });
-      });
-    }
+                                document.querySelectorAll('.share-btn').forEach(btn => {
+                                  btn.addEventListener('click', async () => {
+                                    const g = allGames.find(x => x.id === btn.dataset.share);
+                                    if (!g) return;
+                                    openShareModal(g);
+                                    if (!g.isLocalOnly) {
+                                      try {
+                                        await navigator.clipboard.writeText(buildStudentIsolatedUrl(g));
+                                        showToast('Đã sao chép sẵn liên kết riêng cho học sinh!');
+                                      } catch (e) { }
+                                    }
+                                  });
+                                });
+
+                                document.querySelectorAll('.del-btn').forEach(btn => {
+                                  btn.addEventListener('click', async () => {
+                                    btn.addEventListener('click', async (e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      const id = btn.dataset.del;
+                                      const g = allGames.find(x => x.id === id);
+                                      if (!g) return;
+                                      if (!confirm(`Gỡ học liệu "${g.title}" khỏi danh sách?`)) return;
+                                      if (g.isLocalOnly || String(g.id).startsWith('local_')) {
+                                        await deleteLocalUploadedGame(id);
+                                        showToast('Đã gỡ khỏi danh sách.');
+                                        if (!confirm(`Gỡ bài học "${g.title}" khỏi danh sách?`)) return;
+
+                                        if (g.isLocalLink) {
+                                          const next = getLocalLinks().filter(x => x.id !== id);
+                                          saveLocalLinks(next);
+                                          showToast('🗑️ Đã gỡ bài học khỏi danh sách.');
+                                          loadGames();
+                                        } else if (isServerMode) {
+                                          const res = await fetch(`./api/games/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                                          const data = await res.json();
+                                          if (data.ok) {
+                                            showToast('Đã gỡ khỏi danh sách.');
+                                            showToast('🗑️ Đã gỡ bài học khỏi danh sách.');
+                                            loadGames();
+                                          }
+                                        } else if (hasGithubSync()) {
+                                          try {
+                                            await deleteGameOnGithub(id);
+                                            allGames = allGames.filter(x => x.id !== id);
+                                            renderGames();
+                                            showToast('✅ Đã gỡ học liệu trên kho GitHub (web cập nhật sau ~30-60s).');
+                                          } catch (err) {
+                                            showToast('❌ ' + err.message);
+                                          }
+                                        }
+                                      });
+                                  });
+                                }
 
     const GH_STORAGE_KEY = 'toan4_gh_sync_config';
 
-    function detectGithubRepoFromLocation() {
-      try {
-        if (location.hostname.endsWith('.github.io')) {
-          const owner = location.hostname.split('.')[0];
-          const segs = location.pathname.split('/').filter(Boolean);
-          if (segs.length > 0) return `${owner}/${segs[0]}`;
-        }
-      } catch (e) {}
-      return '';
-    }
+                                function detectGithubRepoFromLocation() {
+                                  try {
+                                    if (location.hostname.endsWith('.github.io')) {
+                                      const owner = location.hostname.split('.')[0];
+                                      const segs = location.pathname.split('/').filter(Boolean);
+                                      if (segs.length > 0) return `${owner}/${segs[0]}`;
+                                    }
+                                  } catch (e) { }
+                                  return '';
+                                }
 
-    function getGithubConfig() {
-      try {
-        const raw = localStorage.getItem(GH_STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : {};
-        return {
-          repo: (parsed.repo || detectGithubRepoFromLocation() || '').trim(),
-          branch: (parsed.branch || 'main').trim(),
-          token: (parsed.token || '').trim()
-        };
-      } catch (e) {
-        return { repo: detectGithubRepoFromLocation(), branch: 'main', token: '' };
-      }
-    }
+                                function getGithubConfig() {
+                                  try {
+                                    const raw = localStorage.getItem(GH_STORAGE_KEY);
+                                    const parsed = raw ? JSON.parse(raw) : {};
+                                    return {
+                                      repo: (parsed.repo || detectGithubRepoFromLocation() || '').trim(),
+                                      branch: (parsed.branch || 'main').trim(),
+                                      token: (parsed.token || '').trim()
+                                    };
+                                  } catch (e) {
+                                    return { repo: detectGithubRepoFromLocation(), branch: 'main', token: '' };
+                                  }
+                                }
 
-    function hasGithubSync() {
-      const cfg = getGithubConfig();
-      return Boolean(cfg.repo && cfg.token);
-    }
+                                function hasGithubSync() {
+                                  const cfg = getGithubConfig();
+                                  return Boolean(cfg.repo && cfg.token);
+                                }
 
-    function refreshStorageModeBanner() {
-      const banner = document.getElementById('storage-mode-banner');
-      const textEl = document.getElementById('storage-mode-text');
-      if (!banner || !textEl) return;
-      if (isServerMode) {
-        banner.classList.add('hidden');
-        return;
-      }
-      banner.classList.remove('hidden');
-      const cfg = getGithubConfig();
-      document.getElementById('gh-repo-input').value = cfg.repo;
-      document.getElementById('gh-branch-input').value = cfg.branch || 'main';
-      document.getElementById('gh-token-input').value = cfg.token;
+                                function refreshStorageModeBanner() {
+                                  const banner = document.getElementById('storage-mode-banner');
+                                  const textEl = document.getElementById('storage-mode-text');
+                                  if (!banner || !textEl) return;
+                                  if (isServerMode) {
+                                    banner.classList.add('hidden');
+                                    return;
+                                  }
+                                  banner.classList.remove('hidden');
+                                  const cfg = getGithubConfig();
+                                  document.getElementById('gh-repo-input').value = cfg.repo;
+                                  document.getElementById('gh-branch-input').value = cfg.branch || 'main';
+                                  document.getElementById('gh-token-input').value = cfg.token;
 
-      if (cfg.repo && cfg.token) {
-        banner.className = 'rounded-2xl border border-emerald-200 bg-emerald-50 p-3.5 text-xs text-emerald-900 space-y-2';
-        textEl.innerHTML = `☁️ <strong>Đã kết nối kho GitHub (<code>${cfg.repo}</code>):</strong> Bài mới tải lên sẽ được đẩy trực tiếp lên web công khai để học sinh &amp; Ban Tổ Chức cùng mở.`;
-      } else {
-        banner.className = 'rounded-2xl border border-amber-200 bg-amber-50 p-3.5 text-xs text-amber-950 space-y-2';
-        textEl.innerHTML = '⚠️ <strong>Chế độ web tĩnh (GitHub Pages):</strong> Nếu chưa kết nối Token GitHub của giáo viên, bài mới thêm chỉ lưu tạm trên trình duyệt máy này. Hãy bấm <em>Kết nối GitHub</em> nếu muốn lưu công khai cho mọi học sinh.';
-      }
-    }
+                                  if (cfg.repo && cfg.token) {
+                                    banner.className = 'rounded-2xl border border-emerald-200 bg-emerald-50 p-3.5 text-xs text-emerald-900 space-y-2';
+                                    textEl.innerHTML = `☁️ <strong>Đã kết nối kho GitHub (<code>${cfg.repo}</code>):</strong> Bài mới tải lên sẽ được đẩy trực tiếp lên web công khai để học sinh &amp; Ban Tổ Chức cùng mở.`;
+                                  } else {
+                                    banner.className = 'rounded-2xl border border-amber-200 bg-amber-50 p-3.5 text-xs text-amber-950 space-y-2';
+                                    textEl.innerHTML = '⚠️ <strong>Chế độ web tĩnh (GitHub Pages):</strong> Nếu chưa kết nối Token GitHub của giáo viên, bài mới thêm chỉ lưu tạm trên trình duyệt máy này. Hãy bấm <em>Kết nối GitHub</em> nếu muốn lưu công khai cho mọi học sinh.';
+                                  }
+                                }
 
-    function textToBase64Utf8(str) {
-      const bytes = new TextEncoder().encode(str);
-      let binary = '';
-      const chunkSize = 0x8000;
-      for (let i = 0; i < bytes.length; i += chunkSize) {
-        binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
-      }
-      return btoa(binary);
-    }
+                                function textToBase64Utf8(str) {
+                                  const bytes = new TextEncoder().encode(str);
+                                  let binary = '';
+                                  const chunkSize = 0x8000;
+                                  for (let i = 0; i < bytes.length; i += chunkSize) {
+                                    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+                                  }
+                                  return btoa(binary);
+                                }
 
-    function base64ToUtf8(b64) {
-      const bin = atob(String(b64).replace(/\n/g, ''));
-      const bytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-      return new TextDecoder().decode(bytes);
-    }
+                                function base64ToUtf8(b64) {
+                                  const bin = atob(String(b64).replace(/\n/g, ''));
+                                  const bytes = new Uint8Array(bin.length);
+                                  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+                                  return new TextDecoder().decode(bytes);
+                                }
 
-    function slugifyAscii(name) {
-      return String(name || 'hoc_lieu')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/gi, 'd')
-        .toLowerCase()
-        .replace(/\.html?$/i, '')
-        .replace(/[^a-z0-9]+/g, '_')
-        .replace(/^_+|_+$/g, '') || ('bai_hoc_' + Date.now());
-    }
+                                function slugifyAscii(name) {
+                                  return String(name || 'hoc_lieu')
+                                    .normalize('NFD')
+                                    .replace(/[\u0300-\u036f]/g, '')
+                                    .replace(/đ/gi, 'd')
+                                    .toLowerCase()
+                                    .replace(/\.html?$/i, '')
+                                    .replace(/[^a-z0-9]+/g, '_')
+                                    .replace(/^_+|_+$/g, '') || ('bai_hoc_' + Date.now());
+                                }
 
-    async function ghApiFetch(repo, apiPath, token, options = {}) {
-      const res = await fetch(`https://api.github.com/repos/${repo}${apiPath}`, {
-        ...options,
-        headers: {
-          'Accept': 'application/vnd.github+json',
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          ...(options.headers || {})
-        }
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(data.message || `GitHub API lỗi HTTP ${res.status}`);
-      }
-      return data;
-    }
+                                async function ghApiFetch(repo, apiPath, token, options = {}) {
+                                  const res = await fetch(`https://api.github.com/repos/${repo}${apiPath}`, {
+                                    ...options,
+                                    headers: {
+                                      'Accept': 'application/vnd.github+json',
+                                      'Authorization': `Bearer ${token}`,
+                                      'Content-Type': 'application/json',
+                                      ...(options.headers || {})
+                                    }
+                                  });
+                                  const data = await res.json().catch(() => ({}));
+                                  if (!res.ok) {
+                                    throw new Error(data.message || `GitHub API lỗi HTTP ${res.status}`);
+                                  }
+                                  return data;
+                                }
 
-    async function uploadGameToGithub(payload) {
-      const cfg = getGithubConfig();
-      const catalogMeta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
-      const currentList = JSON.parse(base64ToUtf8(catalogMeta.content));
-      const baseSlug = slugifyAscii(payload.filename || payload.title || `bai_${Date.now()}`);
-      let finalId = baseSlug;
-      let n = 2;
-      while (currentList.some(g => g.id === finalId)) {
-        finalId = `${baseSlug}_${n++}`;
-      }
+                                async function uploadGameToGithub(payload) {
+                                  const cfg = getGithubConfig();
+                                  const catalogMeta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
+                                  const currentList = JSON.parse(base64ToUtf8(catalogMeta.content));
+                                  const baseSlug = slugifyAscii(payload.filename || payload.title || `bai_${Date.now()}`);
+                                  let finalId = baseSlug;
+                                  let n = 2;
+                                  while (currentList.some(g => g.id === finalId)) {
+                                    finalId = `${baseSlug}_${n++}`;
+                                  }
 
-      const newEntry = {
-        id: finalId,
-        title: payload.title || finalId.replace(/_/g, ' '),
-        subtitle: payload.subtitle || (payload.externalUrl ? 'Liên kết trực tuyến' : 'Học liệu HTML mới đăng tải'),
-        category: payload.category || 'Bổ sung',
-        grade: payload.grade || 'Toán 4',
-        icon: payload.icon || (payload.externalUrl ? '🔗' : '📘'),
-        color: COLOR_PRESETS[currentList.length % COLOR_PRESETS.length],
-        createdAt: new Date().toISOString()
-      };
+                                  const newEntry = {
+                                    id: finalId,
+                                    title: payload.title || finalId.replace(/_/g, ' '),
+                                    subtitle: payload.subtitle || (payload.externalUrl ? 'Liên kết trực tuyến' : 'Học liệu HTML mới đăng tải'),
+                                    category: payload.category || 'Bổ sung',
+                                    grade: payload.grade || 'Toán 4',
+                                    icon: payload.icon || (payload.externalUrl ? '🔗' : '📘'),
+                                    color: COLOR_PRESETS[currentList.length % COLOR_PRESETS.length],
+                                    createdAt: new Date().toISOString()
+                                  };
 
-      if (payload.externalUrl) {
-        newEntry.externalUrl = payload.externalUrl;
-      } else {
-        const finalFilename = `${finalId}.html`;
-        newEntry.filename = finalFilename;
-        let existingSha = undefined;
-        try {
-          const check = await ghApiFetch(cfg.repo, `/contents/games/${encodeURIComponent(finalFilename)}?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
-          existingSha = check.sha;
-        } catch (e) {}
+                                  if (payload.externalUrl) {
+                                    newEntry.externalUrl = payload.externalUrl;
+                                  } else {
+                                    const finalFilename = `${finalId}.html`;
+                                    newEntry.filename = finalFilename;
+                                    let existingSha = undefined;
+                                    try {
+                                      const check = await ghApiFetch(cfg.repo, `/contents/games/${encodeURIComponent(finalFilename)}?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
+                                      existingSha = check.sha;
+                                    } catch (e) { }
 
-        await ghApiFetch(cfg.repo, `/contents/games/${encodeURIComponent(finalFilename)}`, cfg.token, {
-          method: 'PUT',
-          body: JSON.stringify({
-            message: `Them hoc lieu: ${finalFilename}`,
-            branch: cfg.branch,
-            content: textToBase64Utf8(payload.htmlContent),
-            ...(existingSha ? { sha: existingSha } : {})
-          })
-        });
-      }
+                                    await ghApiFetch(cfg.repo, `/contents/games/${encodeURIComponent(finalFilename)}`, cfg.token, {
+                                      method: 'PUT',
+                                      body: JSON.stringify({
+                                        message: `Them hoc lieu: ${finalFilename}`,
+                                        branch: cfg.branch,
+                                        content: textToBase64Utf8(payload.htmlContent),
+                                        ...(existingSha ? { sha: existingSha } : {})
+                                      })
+                                    });
+                                  }
 
-      const updatedCatalog = [newEntry, ...currentList];
-      await ghApiFetch(cfg.repo, '/contents/data/games.json', cfg.token, {
-        method: 'PUT',
-        body: JSON.stringify({
-          message: `Cap nhat danh muc: ${newEntry.title}`,
-          branch: cfg.branch,
-          sha: catalogMeta.sha,
-          content: textToBase64Utf8(JSON.stringify(updatedCatalog, null, 2))
-        })
-      });
+                                  const updatedCatalog = [newEntry, ...currentList];
+                                  await ghApiFetch(cfg.repo, '/contents/data/games.json', cfg.token, {
+                                    method: 'PUT',
+                                    body: JSON.stringify({
+                                      message: `Cap nhat danh muc: ${newEntry.title}`,
+                                      branch: cfg.branch,
+                                      sha: catalogMeta.sha,
+                                      content: textToBase64Utf8(JSON.stringify(updatedCatalog, null, 2))
+                                    })
+                                  });
 
-      return newEntry;
-    }
+                                  return newEntry;
+                                }
 
-    async function deleteGameOnGithub(id) {
-      const cfg = getGithubConfig();
-      const catalogMeta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
-      const currentList = JSON.parse(base64ToUtf8(catalogMeta.content));
-      const remaining = currentList.filter(g => g.id !== id);
-      await ghApiFetch(cfg.repo, '/contents/data/games.json', cfg.token, {
-        method: 'PUT',
-        body: JSON.stringify({
-          message: `Go hoc lieu khoi danh muc: ${id}`,
-          branch: cfg.branch,
-          sha: catalogMeta.sha,
-          content: textToBase64Utf8(JSON.stringify(remaining, null, 2))
-        })
-      });
-    }
+                                async function deleteGameOnGithub(id) {
+                                  const cfg = getGithubConfig();
+                                  const catalogMeta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
+                                  const currentList = JSON.parse(base64ToUtf8(catalogMeta.content));
+                                  const remaining = currentList.filter(g => g.id !== id);
+                                  await ghApiFetch(cfg.repo, '/contents/data/games.json', cfg.token, {
+                                    method: 'PUT',
+                                    body: JSON.stringify({
+                                      message: `Go hoc lieu khoi danh muc: ${id}`,
+                                      branch: cfg.branch,
+                                      sha: catalogMeta.sha,
+                                      content: textToBase64Utf8(JSON.stringify(remaining, null, 2))
+                                    })
+                                  });
+                                }
 
-    document.getElementById('btn-toggle-gh-config').addEventListener('click', () => {
-      document.getElementById('gh-config-box').classList.toggle('hidden');
-    });
-    document.getElementById('btn-save-gh-config').addEventListener('click', () => {
-      const repo = document.getElementById('gh-repo-input').value.trim();
-      const branch = document.getElementById('gh-branch-input').value.trim() || 'main';
-      const token = document.getElementById('gh-token-input').value.trim();
-      if (!repo || !repo.includes('/') || !token) {
-        showToast('Vui lòng nhập đúng dạng owner/repo và GitHub Token.');
-        return;
-      }
-      localStorage.setItem(GH_STORAGE_KEY, JSON.stringify({ repo, branch, token }));
-      document.getElementById('gh-config-box').classList.add('hidden');
-      refreshStorageModeBanner();
-      renderGames();
-      showToast('✅ Đã lưu kết nối kho GitHub trên trình duyệt này.');
-    });
-    document.getElementById('btn-clear-gh-config').addEventListener('click', () => {
-      localStorage.removeItem(GH_STORAGE_KEY);
-      refreshStorageModeBanner();
-      renderGames();
-      showToast('Đã ngắt kết nối Token GitHub.');
-    });
+                                document.getElementById('btn-toggle-gh-config').addEventListener('click', () => {
+                                  document.getElementById('gh-config-box').classList.toggle('hidden');
+                                });
+                                document.getElementById('btn-save-gh-config').addEventListener('click', () => {
+                                  const repo = document.getElementById('gh-repo-input').value.trim();
+                                  const branch = document.getElementById('gh-branch-input').value.trim() || 'main';
+                                  const token = document.getElementById('gh-token-input').value.trim();
+                                  if (!repo || !repo.includes('/') || !token) {
+                                    showToast('Vui lòng nhập đúng dạng owner/repo và GitHub Token.');
+                                    return;
+                                  }
+                                  localStorage.setItem(GH_STORAGE_KEY, JSON.stringify({ repo, branch, token }));
+                                  document.getElementById('gh-config-box').classList.add('hidden');
+                                  refreshStorageModeBanner();
+                                  renderGames();
+                                  showToast('✅ Đã lưu kết nối kho GitHub trên trình duyệt này.');
+                                });
+                                document.getElementById('btn-clear-gh-config').addEventListener('click', () => {
+                                  localStorage.removeItem(GH_STORAGE_KEY);
+                                  refreshStorageModeBanner();
+                                  renderGames();
+                                  showToast('Đã ngắt kết nối Token GitHub.');
+                                });
 
-    document.querySelectorAll('.cat-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        activeCategory = btn.dataset.cat;
-        document.querySelectorAll('.cat-pill').forEach(b => {
-          b.className = b === btn
-            ? 'cat-pill bg-slate-900 text-white font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap'
-            : 'cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap';
-        });
-        renderGames();
-      });
-    });
+                                // Category filter pills
+                                document.querySelectorAll('.cat-pill').forEach(btn => {
+                                  btn.addEventListener('click', () => {
+                                    activeCategory = btn.dataset.cat;
+                                    document.querySelectorAll('.cat-pill').forEach(b => {
+                                      b.className = b === btn
+                                        ? 'cat-pill bg-slate-900 text-white font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap'
+                                        : 'cat-pill bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs px-4 py-2 rounded-xl whitespace-nowrap';
+            ?'cat-pill cute-pill cute-pill-active bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap'
+            : 'cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-pink-300 hover:bg-pink-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap';
+                                    });
+                                    renderGames();
+                                  });
+                                });
 
-    document.getElementById('search-input').addEventListener('input', renderGames);
+                                document.getElementById('search-input').addEventListener('input', renderGames);
 
-    const uploadModal = document.getElementById('upload-modal');
-    const openUpload = () => {
-      refreshStorageModeBanner();
-      uploadModal.classList.remove('hidden');
-    };
-    const closeUpload = () => uploadModal.classList.add('hidden');
+                                // Add Link Modal
+                                const uploadModal = document.getElementById('upload-modal');
+                                const openUpload = () => {
+                                  refreshStorageModeBanner();
+                                  uploadModal.classList.remove('hidden');
+                                };
+                                const openUpload = () => uploadModal.classList.remove('hidden');
+                                const closeUpload = () => uploadModal.classList.add('hidden');
 
-    document.getElementById('btn-open-upload').addEventListener('click', openUpload);
-    document.getElementById('btn-close-upload').addEventListener('click', closeUpload);
-    document.getElementById('btn-close-share').addEventListener('click', () => {
-      document.getElementById('share-modal').classList.add('hidden');
-    });
-    document.getElementById('btn-open-guide').addEventListener('click', () => {
-      document.getElementById('guide-modal').classList.remove('hidden');
-    });
-    document.getElementById('btn-close-guide').addEventListener('click', () => {
-      document.getElementById('guide-modal').classList.add('hidden');
-    });
-    document.getElementById('btn-close-player').addEventListener('click', () => {
-      document.getElementById('player-iframe').src = 'about:blank';
-      document.getElementById('player-overlay').classList.add('hidden');
-    });
-    document.getElementById('btn-player-share').addEventListener('click', () => {
-      if (currentPlayingGame) openShareModal(currentPlayingGame);
-    });
+                                document.getElementById('btn-open-upload').addEventListener('click', openUpload);
+                                document.getElementById('btn-close-upload').addEventListener('click', closeUpload);
+                                document.getElementById('btn-close-share').addEventListener('click', () => {
+                                  document.getElementById('share-modal').classList.add('hidden');
+                                  uploadModal.addEventListener('click', (e) => {
+                                    if (e.target === uploadModal) closeUpload();
+                                  });
+                                  document.getElementById('btn-open-guide').addEventListener('click', () => {
+                                    document.getElementById('guide-modal').classList.remove('hidden');
+                                  });
+                                  document.getElementById('btn-close-guide').addEventListener('click', () => {
+                                    document.getElementById('guide-modal').classList.add('hidden');
+                                  });
+                                  document.getElementById('btn-close-player').addEventListener('click', () => {
+                                    document.getElementById('player-iframe').src = 'about:blank';
+                                    document.getElementById('player-overlay').classList.add('hidden');
+                                  });
+                                  document.getElementById('btn-player-share').addEventListener('click', () => {
+                                    if (currentPlayingGame) openShareModal(currentPlayingGame);
+                                  });
 
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const inp = document.getElementById(btn.dataset.copy);
-        try {
-          await navigator.clipboard.writeText(inp.value);
-          showToast('Đã sao chép đường dẫn!');
-        } catch (e) {
-          inp.select();
-          document.execCommand('copy');
-          showToast('Đã sao chép đường dẫn!');
-        }
-      });
-    });
+                                  document.querySelectorAll('.copy-btn').forEach(btn => {
+                                    btn.addEventListener('click', async () => {
+                                      const inp = document.getElementById(btn.dataset.copy);
+                                      try {
+                                        await navigator.clipboard.writeText(inp.value);
+                                        showToast('Đã sao chép đường dẫn!');
+                                      } catch (e) {
+                                        inp.select();
+                                        document.execCommand('copy');
+                                        showToast('Đã sao chép đường dẫn!');
+                                      }
+                                    });
+                                  });
 
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const linkInputWrap = document.getElementById('link-input-wrap');
-    const tabModeLink = document.getElementById('tab-mode-link');
-    const tabModeFile = document.getElementById('tab-mode-file');
+                                  const dropZone = document.getElementById('drop-zone');
+                                  const fileInput = document.getElementById('file-input');
+                                  const linkInputWrap = document.getElementById('link-input-wrap');
+                                  const tabModeLink = document.getElementById('tab-mode-link');
+                                  const tabModeFile = document.getElementById('tab-mode-file');
 
-    function setAddMode(mode) {
-      addMode = mode;
-      if (mode === 'link') {
-        linkInputWrap.classList.remove('hidden');
-        dropZone.classList.add('hidden');
-        tabModeLink.className = 'py-2 rounded-xl text-xs sm:text-sm font-black bg-white text-sky-700 shadow-sm transition';
-        tabModeFile.className = 'py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition';
-      } else {
-        linkInputWrap.classList.add('hidden');
-        dropZone.classList.remove('hidden');
-        tabModeFile.className = 'py-2 rounded-xl text-xs sm:text-sm font-black bg-white text-sky-700 shadow-sm transition';
-        tabModeLink.className = 'py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition';
-      }
-    }
-    tabModeLink.addEventListener('click', () => setAddMode('link'));
-    tabModeFile.addEventListener('click', () => setAddMode('file'));
+                                  function setAddMode(mode) {
+                                    addMode = mode;
+                                    if (mode === 'link') {
+                                      linkInputWrap.classList.remove('hidden');
+                                      dropZone.classList.add('hidden');
+                                      tabModeLink.className = 'py-2 rounded-xl text-xs sm:text-sm font-black bg-white text-sky-700 shadow-sm transition';
+                                      tabModeFile.className = 'py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition';
+                                    } else {
+                                      linkInputWrap.classList.add('hidden');
+                                      dropZone.classList.remove('hidden');
+                                      tabModeFile.className = 'py-2 rounded-xl text-xs sm:text-sm font-black bg-white text-sky-700 shadow-sm transition';
+                                      tabModeLink.className = 'py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition';
+                                    }
+                                  }
+                                  tabModeLink.addEventListener('click', () => setAddMode('link'));
+                                  tabModeFile.addEventListener('click', () => setAddMode('file'));
 
-    async function handleChosenFile(file) {
-      if (!file) return;
-      if (!file.name.toLowerCase().endsWith('.html') && !file.name.toLowerCase().endsWith('.htm')) {
-        showToast('Vui lòng chọn đúng tệp .html.');
-        return;
-      }
-      selectedFile = file;
-      document.getElementById('file-label').textContent = `✅ Đã chọn: ${file.name} (${formatSize(file.size)})`;
-      if (!document.getElementById('up-title').value.trim()) {
-        const text = await file.text();
-        const titleMatch = text.match(/<title>([^<]+)<\/title>/i);
-        document.getElementById('up-title').value = titleMatch ? titleMatch[1].trim() : file.name.replace(/\.html?$/i, '');
-      }
-    }
+                                  async function handleChosenFile(file) {
+                                    if (!file) return;
+                                    if (!file.name.toLowerCase().endsWith('.html') && !file.name.toLowerCase().endsWith('.htm')) {
+                                      showToast('Vui lòng chọn đúng tệp .html.');
+                                      return;
+                                    }
+                                    selectedFile = file;
+                                    document.getElementById('file-label').textContent = `✅ Đã chọn: ${file.name} (${formatSize(file.size)})`;
+                                    if (!document.getElementById('up-title').value.trim()) {
+                                      const text = await file.text();
+                                      const titleMatch = text.match(/<title>([^<]+)<\/title>/i);
+                                      document.getElementById('up-title').value = titleMatch ? titleMatch[1].trim() : file.name.replace(/\.html?$/i, '');
+                                    }
+                                  }
 
-    dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => handleChosenFile(e.target.files[0]));
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drop-active'); });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drop-active'));
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('drop-active');
-      if (e.dataTransfer.files[0]) handleChosenFile(e.dataTransfer.files[0]);
-    });
+                                  dropZone.addEventListener('click', () => fileInput.click());
+                                  fileInput.addEventListener('change', (e) => handleChosenFile(e.target.files[0]));
+                                  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drop-active'); });
+                                  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drop-active'));
+                                  dropZone.addEventListener('drop', (e) => {
+                                    e.preventDefault();
+                                    dropZone.classList.remove('drop-active');
+                                    if (e.dataTransfer.files[0]) handleChosenFile(e.dataTransfer.files[0]);
+                                  });
 
-    document.getElementById('upload-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const urlVal = document.getElementById('up-url').value.trim();
+                                  document.getElementById('upload-form').addEventListener('submit', async (e) => {
+                                    e.preventDefault();
+                                    const urlVal = document.getElementById('up-url').value.trim();
 
-      if (addMode === 'link') {
-        if (!/^https?:\/\//i.test(urlVal)) {
-          showToast('Vui lòng nhập đường dẫn hợp lệ bắt đầu bằng https:// hoặc http://');
-          return;
-        }
-      } else if (!selectedFile) {
-        showToast('Hãy chọn hoặc kéo thả 1 tệp .html trước.');
-        return;
-      }
+                                    if (addMode === 'link') {
+                                      if (!/^https?:\/\//i.test(urlVal)) {
+                                        showToast('Vui lòng nhập đường dẫn hợp lệ bắt đầu bằng https:// hoặc http://');
+                                        return;
+                                      }
+                                    } else if (!selectedFile) {
+                                      showToast('Hãy chọn hoặc kéo thả 1 tệp .html trước.');
+                                      if (!urlVal) {
+                                        showToast('Vui lòng nhập đường dẫn bài học!');
+                                        return;
+                                      }
 
-      const btn = document.getElementById('btn-submit-upload');
-      btn.disabled = true;
-      btn.textContent = '⏳ Đang lưu học liệu...';
+                                      const payload = {
+                                        title: document.getElementById('up-title').value.trim(),
+                                        subtitle: document.getElementById('up-subtitle').value.trim() || 'Bài học tương tác Toán 4',
+                                        category: document.getElementById('up-category').value,
+                                        grade: document.getElementById('up-grade').value.trim() || 'Toán 4',
+                                        icon: document.getElementById('up-icon').value,
+                                        externalUrl: urlVal
+                                      };
 
-      try {
-        const payload = {
-          title: document.getElementById('up-title').value.trim(),
-          subtitle: document.getElementById('up-subtitle').value.trim(),
-          category: document.getElementById('up-category').value,
-          grade: document.getElementById('up-grade').value.trim(),
-          icon: document.getElementById('up-icon').value
-        };
+                                      const btn = document.getElementById('btn-submit-upload');
+                                      btn.disabled = true;
+                                      btn.textContent = '⏳ Đang lưu học liệu...';
 
-        if (addMode === 'link') {
-          payload.externalUrl = urlVal;
-        } else {
-          payload.filename = selectedFile.name;
-          payload.htmlContent = await selectedFile.text();
-        }
+                                      try {
+                                        const payload = {
+                                          title: document.getElementById('up-title').value.trim(),
+                                          subtitle: document.getElementById('up-subtitle').value.trim(),
+                                          category: document.getElementById('up-category').value,
+                                          grade: document.getElementById('up-grade').value.trim(),
+                                          icon: document.getElementById('up-icon').value
+                                        };
 
-        let pushedToGithub = false;
-        if (isServerMode) {
-          const res = await fetch('./api/games', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-          const data = await res.json();
-          if (!data.ok) throw new Error(data.error || 'Lưu học liệu thất bại.');
-          showToast(`✅ Đã lưu học liệu "${data.game.title}" lên máy chủ.`);
-        } else if (hasGithubSync()) {
-          btn.textContent = '☁️ Đang đẩy lên GitHub...';
-          const created = await uploadGameToGithub(payload);
-          allGames = [created, ...allGames];
-          renderGames();
-          pushedToGithub = true;
-          showToast(`☁️ Đã đẩy "${created.title}" lên GitHub! Web công khai cập nhật sau ~30-60 giây.`);
-        } else {
-          const localId = `local_${Date.now()}`;
-          await saveLocalUploadedGame({
-            id: localId,
-            title: payload.title || (selectedFile ? selectedFile.name : 'Học liệu mới'),
-            subtitle: payload.subtitle || (addMode === 'link' ? 'Liên kết trực tuyến' : 'Học liệu mới đăng tải'),
-            category: payload.category,
-            grade: payload.grade,
-            icon: payload.icon,
-            color: COLOR_PRESETS[allGames.length % COLOR_PRESETS.length],
-            externalUrl: payload.externalUrl || '',
-            filename: selectedFile ? selectedFile.name : '',
-            sizeBytes: selectedFile ? selectedFile.size : 0,
-            isLocalOnly: !payload.externalUrl,
-            htmlContent: payload.htmlContent || ''
-          });
-          showToast('⚠️ Đã lưu tạm trên trình duyệt này (chưa kết nối GitHub công khai).');
-        }
+                                        if (addMode === 'link') {
+                                          payload.externalUrl = urlVal;
+                                        } else {
+                                          payload.filename = selectedFile.name;
+                                          payload.htmlContent = await selectedFile.text();
+                                        }
+
+                                        let pushedToGithub = false;
+                                        if (isServerMode) {
+                                          if (isServerMode && /^https?:\/\//i.test(urlVal)) {
+                                            const res = await fetch('./api/games', {
+                                              method: 'POST',
+                                              headers: { 'Content-Type': 'application/json' },
+                                              body: JSON.stringify(payload)
+                                            });
+                                            const data = await res.json();
+                                            if (!data.ok) throw new Error(data.error || 'Lưu học liệu thất bại.');
+                                            showToast(`✅ Đã lưu học liệu "${data.game.title}" lên máy chủ.`);
+                                          } else if (hasGithubSync()) {
+                                            btn.textContent = '☁️ Đang đẩy lên GitHub...';
+                                            const created = await uploadGameToGithub(payload);
+                                            allGames = [created, ...allGames];
+                                            renderGames();
+                                            pushedToGithub = true;
+                                            showToast(`☁️ Đã đẩy "${created.title}" lên GitHub! Web công khai cập nhật sau ~30-60 giây.`);
+                                            if (!data.ok) throw new Error(data.error || 'Không lưu được bài học.');
+                                          } else {
+                                            const localId = `local_${Date.now()}`;
+                                            await saveLocalUploadedGame({
+                                              id: localId,
+                                              title: payload.title || (selectedFile ? selectedFile.name : 'Học liệu mới'),
+                                              subtitle: payload.subtitle || (addMode === 'link' ? 'Liên kết trực tuyến' : 'Học liệu mới đăng tải'),
+                                              category: payload.category,
+                                              grade: payload.grade,
+                                              icon: payload.icon,
+                                              color: COLOR_PRESETS[allGames.length % COLOR_PRESETS.length],
+                                              externalUrl: payload.externalUrl || '',
+                                              filename: selectedFile ? selectedFile.name : '',
+                                              sizeBytes: selectedFile ? selectedFile.size : 0,
+                                              isLocalOnly: !payload.externalUrl,
+                                              htmlContent: payload.htmlContent || ''
+          const current = getLocalLinks();
+                                              current.unshift({
+                                                id: 'link_' + Date.now(),
+                                                ...payload,
+                                                isLocalLink: true,
+                                                createdAt: new Date().toISOString()
+                                              });
+                                              showToast('⚠️ Đã lưu tạm trên trình duyệt này (chưa kết nối GitHub công khai).');
+          saveLocalLinks(current);
+                                            }
 
         selectedFile = null;
-        document.getElementById('upload-form').reset();
-        document.getElementById('file-label').textContent = 'Bấm để chọn hoặc Kéo thả tệp .html vào đây';
-        closeUpload();
-        if (!pushedToGithub) await loadGames();
-      } catch (err) {
-        showToast('❌ ' + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Lưu Học Liệu Vào Hệ Thống';
-      }
-    });
+                                            document.getElementById('upload-form').reset();
+                                            document.getElementById('file-label').textContent = 'Bấm để chọn hoặc Kéo thả tệp .html vào đây';
+                                            closeUpload();
+                                            if (!pushedToGithub) await loadGames();
+                                            showToast('🎉 Đã thêm bài học mới thành công!');
+                                            await loadGames();
+                                          } catch (err) {
+                                            showToast('❌ ' + err.message);
+                                          } finally {
+                                            btn.disabled = false;
+                                            btn.textContent = 'Lưu Học Liệu Vào Hệ Thống';
+                                          }
+                                        });
 
-    loadGames();
-  </script>
-</body>
+                                  loadGames();
+                    </script>
+  </body>
+
 </html>
