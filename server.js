@@ -338,6 +338,14 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, readCatalog());
     }
 
+    if (req.method === 'GET' && pathname === '/logo.jpg') {
+      const logoPath = path.join(ROOT_DIR, 'logo.jpg');
+      if (fs.existsSync(logoPath)) {
+        res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+        return fs.createReadStream(logoPath).pipe(res);
+      }
+    }
+
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Không tìm thấy trang.');
   } catch (err) {
