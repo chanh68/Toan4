@@ -199,8 +199,8 @@ const server = http.createServer(async (req, res) => {
       const list = readCatalog();
 
       if (externalUrl) {
-        if (!/^https?:\/\//i.test(externalUrl)) {
-          return sendJson(res, 400, { ok: false, error: 'Đường dẫn phải bắt đầu bằng https:// hoặc http://' });
+        if (/^javascript:/i.test(externalUrl)) {
+          return sendJson(res, 400, { ok: false, error: 'Đường dẫn không hợp lệ.' });
         }
         let baseSlug = slugifyFilename(rawTitle || `bai_hoc_${Date.now()}`);
         let finalSlug = baseSlug;

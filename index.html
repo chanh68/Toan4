@@ -247,10 +247,37 @@
         <button id="btn-close-upload" type="button" class="w-9 h-9 rounded-full bg-rose-50 hover:bg-rose-100 font-black text-rose-500 transition">✕</button>
       </div>
 
+      <!-- Storage Mode & Permanent Save Banner -->
+      <div id="storage-mode-banner" class="rounded-2xl border-2 p-3 text-xs space-y-2 bg-amber-50 border-amber-200 text-amber-950">
+        <div class="flex items-start justify-between gap-2">
+          <p id="storage-mode-text" class="leading-relaxed font-bold"></p>
+          <button id="btn-toggle-gh-config" type="button" class="shrink-0 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-extrabold px-2.5 py-1 rounded-xl whitespace-nowrap transition">
+            ⚙️ Kết nối GitHub
+          </button>
+        </div>
+        <div id="gh-config-box" class="hidden pt-2 border-t border-amber-200/80 space-y-2">
+          <p class="text-[11px] text-slate-600 font-semibold leading-relaxed">
+            Nhập 1 lần để mỗi khi thêm link mới, hệ thống <strong>lưu vĩnh viễn thẳng lên GitHub</strong> (tắt đi bật lại không bao giờ mất):
+          </p>
+          <div class="grid grid-cols-3 gap-2">
+            <input id="gh-repo-input" type="text" placeholder="user/ten-repo"
+                   class="col-span-2 px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-mono" />
+            <input id="gh-branch-input" type="text" value="main" placeholder="main"
+                   class="px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-mono" />
+          </div>
+          <div class="flex gap-2">
+            <input id="gh-token-input" type="password" placeholder="GitHub Token (Contents: Read & Write)"
+                   class="flex-1 px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-mono" />
+            <button id="btn-save-gh-config" type="button" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-3 py-1.5 rounded-xl whitespace-nowrap">Lưu</button>
+            <button id="btn-clear-gh-config" type="button" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-2.5 py-1.5 rounded-xl whitespace-nowrap">Ngắt</button>
+          </div>
+        </div>
+      </div>
+
       <form id="upload-form" class="space-y-4">
         <div>
           <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">🌐 Đường dẫn bài học (URL):</label>
-          <input id="up-url" type="text" required placeholder="https://... hoặc games/ten_bai.html"
+          <input id="up-url" type="text" required placeholder="Dán đường dẫn vào đây (https://...)"
                  class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-pink-400 focus:outline-none text-sm font-bold" />
         </div>
 
@@ -299,6 +326,12 @@
                 class="w-full bg-gradient-to-r from-pink-500 via-rose-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-extrabold py-3.5 rounded-2xl shadow-[0_5px_0_0_#be185d] active:translate-y-[2px] active:shadow-[0_2px_0_0_#be185d] text-sm transition-all">
           💖 Lưu Vào Danh Sách
         </button>
+
+        <div class="text-center pt-1">
+          <button id="btn-export-json" type="button" class="text-xs font-bold text-sky-700 hover:text-sky-900 underline">
+            📥 Tải file data/games.json (nếu muốn tự chép vào thư mục Git)
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -503,7 +536,7 @@
       filtered.forEach((g, idx) => {
         const theme = CUTE_THEMES[idx % CUTE_THEMES.length];
         const targetUrl = buildDirectUrl(g);
-        const canDelete = isServerMode || Boolean(g.isLocalLink);
+        const canDelete = isServerMode || hasGithubSync() || Boolean(g.isLocalLink);
 
         const card = document.createElement('a');
         card.href = targetUrl;
@@ -588,6 +621,27 @@
               showToast('🗑️ Đã gỡ bài học khỏi danh sách.');
               loadGames();
             }
+          } else if (hasGithubSync()) {
+            try {
+              const cfg = getGithubConfig();
+              const meta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
+              const list = JSON.parse(base64ToUtf8(meta.content));
+              const remaining = list.filter(x => x.id !== id);
+              await ghApiFetch(cfg.repo, '/contents/data/games.json', cfg.token, {
+                method: 'PUT',
+                body: JSON.stringify({
+                  message: `Go bai hoc: ${id}`,
+                  branch: cfg.branch,
+                  sha: meta.sha,
+                  content: textToBase64Utf8(JSON.stringify(remaining, null, 2))
+                })
+              });
+              allGames = allGames.filter(x => x.id !== id);
+              renderGames();
+              showToast('☁️ Đã gỡ bài học trên GitHub!');
+            } catch (err) {
+              showToast('❌ ' + err.message);
+            }
           }
         });
       });
@@ -608,9 +662,162 @@
 
     document.getElementById('search-input').addEventListener('input', renderGames);
 
-    // Add Link Modal
+    // Add Link Modal & Permanent Storage (Server / GitHub Sync / Export)
+    const GH_STORAGE_KEY = 'toan4_gh_sync_config';
+
+    function detectGithubRepoFromLocation() {
+      try {
+        if (location.hostname.endsWith('.github.io')) {
+          const owner = location.hostname.split('.')[0];
+          const segs = location.pathname.split('/').filter(Boolean);
+          if (segs.length > 0) return `${owner}/${segs[0]}`;
+        }
+      } catch (e) {}
+      return '';
+    }
+
+    function getGithubConfig() {
+      try {
+        const raw = localStorage.getItem(GH_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return {
+          repo: (parsed.repo || detectGithubRepoFromLocation() || '').trim(),
+          branch: (parsed.branch || 'main').trim(),
+          token: (parsed.token || '').trim()
+        };
+      } catch (e) {
+        return { repo: detectGithubRepoFromLocation(), branch: 'main', token: '' };
+      }
+    }
+
+    function hasGithubSync() {
+      const cfg = getGithubConfig();
+      return Boolean(cfg.repo && cfg.token);
+    }
+
+    function refreshStorageModeBanner() {
+      const banner = document.getElementById('storage-mode-banner');
+      const textEl = document.getElementById('storage-mode-text');
+      const toggleBtn = document.getElementById('btn-toggle-gh-config');
+      if (!banner || !textEl) return;
+
+      if (isServerMode) {
+        banner.className = 'rounded-2xl border-2 p-3 text-xs space-y-2 bg-emerald-50 border-emerald-200 text-emerald-900';
+        textEl.innerHTML = '💾 <strong>Đang chạy máy chủ nội bộ:</strong> Link mới sẽ được lưu vĩnh viễn thẳng vào file <code>data/games.json</code>.';
+        toggleBtn.classList.add('hidden');
+        return;
+      }
+
+      toggleBtn.classList.remove('hidden');
+      const cfg = getGithubConfig();
+      document.getElementById('gh-repo-input').value = cfg.repo;
+      document.getElementById('gh-branch-input').value = cfg.branch || 'main';
+      document.getElementById('gh-token-input').value = cfg.token;
+
+      if (cfg.repo && cfg.token) {
+        banner.className = 'rounded-2xl border-2 p-3 text-xs space-y-2 bg-emerald-50 border-emerald-200 text-emerald-900';
+        textEl.innerHTML = `☁️ <strong>Đã kết nối GitHub (<code>${cfg.repo}</code>):</strong> Link mới sẽ được đẩy thẳng lên kho GitHub (lưu vĩnh viễn cho mọi học sinh).`;
+      } else {
+        banner.className = 'rounded-2xl border-2 p-3 text-xs space-y-2 bg-amber-50 border-amber-200 text-amber-950';
+        textEl.innerHTML = '⚠️ <strong>Chế độ web tĩnh:</strong> Thêm link ở đây chỉ lưu tạm trên trình duyệt. Hãy bấm <em>⚙️ Kết nối GitHub</em> (hoặc chạy <code>start_web.bat</code>) để lưu vĩnh viễn!';
+      }
+    }
+
+    function textToBase64Utf8(str) {
+      const bytes = new TextEncoder().encode(str);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i += 0x8000) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+      }
+      return btoa(binary);
+    }
+
+    function base64ToUtf8(b64) {
+      const bin = atob(String(b64).replace(/\n/g, ''));
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder().decode(bytes);
+    }
+
+    async function ghApiFetch(repo, apiPath, token, options = {}) {
+      const res = await fetch(`https://api.github.com/repos/${repo}${apiPath}`, {
+        ...options,
+        headers: {
+          'Accept': 'application/vnd.github+json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          ...(options.headers || {})
+        }
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || `GitHub API lỗi HTTP ${res.status}`);
+      return data;
+    }
+
+    async function pushLinkToGithub(payload) {
+      const cfg = getGithubConfig();
+      const catalogMeta = await ghApiFetch(cfg.repo, `/contents/data/games.json?ref=${encodeURIComponent(cfg.branch)}`, cfg.token);
+      const currentList = JSON.parse(base64ToUtf8(catalogMeta.content));
+      const newEntry = {
+        id: 'link_' + Date.now(),
+        title: payload.title,
+        subtitle: payload.subtitle,
+        category: payload.category,
+        grade: payload.grade,
+        icon: payload.icon,
+        externalUrl: payload.externalUrl,
+        createdAt: new Date().toISOString()
+      };
+      const updated = [newEntry, ...currentList];
+      await ghApiFetch(cfg.repo, '/contents/data/games.json', cfg.token, {
+        method: 'PUT',
+        body: JSON.stringify({
+          message: `Them link bai hoc: ${newEntry.title}`,
+          branch: cfg.branch,
+          sha: catalogMeta.sha,
+          content: textToBase64Utf8(JSON.stringify(updated, null, 2))
+        })
+      });
+      return newEntry;
+    }
+
+    document.getElementById('btn-toggle-gh-config').addEventListener('click', () => {
+      document.getElementById('gh-config-box').classList.toggle('hidden');
+    });
+    document.getElementById('btn-save-gh-config').addEventListener('click', () => {
+      const repo = document.getElementById('gh-repo-input').value.trim();
+      const branch = document.getElementById('gh-branch-input').value.trim() || 'main';
+      const token = document.getElementById('gh-token-input').value.trim();
+      if (!repo || !repo.includes('/') || !token) {
+        showToast('Vui lòng nhập đúng dạng user/ten-repo và GitHub Token.');
+        return;
+      }
+      localStorage.setItem(GH_STORAGE_KEY, JSON.stringify({ repo, branch, token }));
+      document.getElementById('gh-config-box').classList.add('hidden');
+      refreshStorageModeBanner();
+      showToast('✅ Đã lưu kết nối GitHub!');
+    });
+    document.getElementById('btn-clear-gh-config').addEventListener('click', () => {
+      localStorage.removeItem(GH_STORAGE_KEY);
+      refreshStorageModeBanner();
+      showToast('Đã ngắt kết nối GitHub.');
+    });
+
+    document.getElementById('btn-export-json').addEventListener('click', () => {
+      const clean = allGames.map(({ isLocalLink, sizeBytes, ...rest }) => rest);
+      const blob = new Blob([JSON.stringify(clean, null, 2)], { type: 'application/json;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'games.json';
+      a.click();
+      showToast('📥 Đã tải games.json! Chép đè vào thư mục data/ rồi đẩy lên Git nhé.');
+    });
+
     const uploadModal = document.getElementById('upload-modal');
-    const openUpload = () => uploadModal.classList.remove('hidden');
+    const openUpload = () => {
+      refreshStorageModeBanner();
+      uploadModal.classList.remove('hidden');
+    };
     const closeUpload = () => uploadModal.classList.add('hidden');
 
     document.getElementById('btn-open-upload').addEventListener('click', openUpload);
@@ -640,7 +847,7 @@
       btn.disabled = true;
 
       try {
-        if (isServerMode && /^https?:\/\//i.test(urlVal)) {
+        if (isServerMode) {
           const res = await fetch('./api/games', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -648,6 +855,14 @@
           });
           const data = await res.json();
           if (!data.ok) throw new Error(data.error || 'Không lưu được bài học.');
+          showToast('💾 Đã lưu vĩnh viễn vào data/games.json!');
+          await loadGames();
+        } else if (hasGithubSync()) {
+          btn.textContent = '☁️ Đang lưu lên GitHub...';
+          const created = await pushLinkToGithub(payload);
+          allGames = [created, ...allGames];
+          renderGames();
+          showToast('☁️ Đã lưu vĩnh viễn lên GitHub (web cập nhật sau ~30 giây)!');
         } else {
           const current = getLocalLinks();
           current.unshift({
@@ -657,16 +872,17 @@
             createdAt: new Date().toISOString()
           });
           saveLocalLinks(current);
+          showToast('⚠️ Đã lưu tạm! Bấm ⚙️ Kết nối GitHub hoặc tải games.json để lưu vĩnh viễn.');
+          await loadGames();
         }
 
         document.getElementById('upload-form').reset();
         closeUpload();
-        showToast('🎉 Đã thêm bài học mới thành công!');
-        await loadGames();
       } catch (err) {
         showToast('❌ ' + err.message);
       } finally {
         btn.disabled = false;
+        btn.textContent = '💖 Lưu Vào Danh Sách';
       }
     });
 
