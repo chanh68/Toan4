@@ -4,6 +4,217 @@
 // =======================================================================
 
 export const STUDIO_TEMPLATES = {
+  giao_hoan_ket_hop_nhan: {
+    title: "Bài 40: Tính chất giao hoán và kết hợp của phép nhân",
+    subtitle: "Nắm vững quy tắc đổi chỗ, ghép nhóm và tuyệt chiêu tính nhẩm số tròn trăm, tròn nghìn",
+    category: "Luyện tập",
+    icon: "💎",
+    theory: {
+      title: "Tính chất giao hoán và kết hợp của phép nhân",
+      summary: "Khi đổi chỗ các thừa số trong một tích thì tích không thay đổi. Khi nhân một tích hai số với số thứ ba, ta có thể nhân số thứ nhất với tích của số thứ hai và số thứ ba để tính nhẩm thuận tiện nhất.",
+      rules: [
+        "Tính chất giao hoán: a × b = b × a (Khi đổi chỗ các thừa số trong một tích thì tích không thay đổi).",
+        "Tính chất kết hợp: (a × b) × c = a × (b × c) (Khi nhân một tích hai số với số thứ ba, ta có thể nhân số thứ nhất với tích của số thứ hai và số thứ ba).",
+        "Biểu thức nhiều thừa số: a × b × c = (a × b) × c = a × (b × c). Ta có thể đổi chỗ và nhóm các thừa số bất kỳ.",
+        "Bộ Cặp số vàng tạo số tròn chục, tròn trăm, tròn nghìn: 2 × 5 = 10; 4 × 25 = 100; 5 × 20 = 100; 8 × 125 = 1 000; 50 × 2 = 100; 250 × 4 = 1 000."
+      ],
+      example: {
+        title: "Ví dụ: Tính bằng cách thuận tiện nhất: 25 × 7 × 4",
+        steps: [
+          { step: 1, text: "Bước 1 (Giao hoán): Đổi chỗ số 7 và số 4: 25 × 4 × 7" },
+          { step: 2, text: "Bước 2 (Kết hợp): Đặt ngoặc nhóm cặp số tròn trăm: (25 × 4) × 7" },
+          { step: 3, text: "Bước 3 (Tính nhẩm): 100 × 7 = 700." }
+        ]
+      }
+    },
+    stages: [
+      {
+        stageNum: 1, name: "Khởi Động",
+        questions: [
+          {
+            question: "Điền số thích hợp vào chỗ chấm: 125 × 6 = 6 × ...",
+            options: ["6", "125", "750", "12"],
+            correctIndex: 1,
+            explanation: "Theo tính chất giao hoán của phép nhân: a × b = b × a, nên 125 × 6 = 6 × 125."
+          },
+          {
+            question: "Điền Đúng hoặc Sai: \"Khi đổi chỗ các thừa số trong một tích thì tích không thay đổi.\"",
+            options: ["Đúng", "Sai", "Chỉ đúng với số bé", "Chỉ đúng với phép cộng"],
+            correctIndex: 0,
+            explanation: "Đúng! Đây chính là quy tắc tính chất giao hoán của phép nhân: a × b = b × a."
+          },
+          {
+            question: "Biểu thức 45 × 9 có giá trị bằng biểu thức nào dưới đây?",
+            options: ["45 + 9", "9 × 45", "45 : 9", "9 + 45"],
+            correctIndex: 1,
+            explanation: "Khi đổi chỗ hai thừa số 45 và 9 ta được 9 × 45, tích không đổi."
+          },
+          {
+            question: "Cho m × 8 = 8 × 24. Giá trị của m là:",
+            options: ["8", "16", "24", "32"],
+            correctIndex: 2,
+            explanation: "Vì m × 8 = 8 × m, mà 8 × m = 8 × 24 nên m = 24."
+          },
+          {
+            question: "Phép tính nào dưới đây có kết quả bằng a × 1?",
+            options: ["1 × a", "a + 1", "a : 1", "Cả A và C đều đúng"],
+            correctIndex: 3,
+            explanation: "a × 1 = 1 × a = a và a : 1 = a. Do đó cả A và C đều đúng!"
+          }
+        ]
+      },
+      {
+        stageNum: 2, name: "Khám Phá",
+        questions: [
+          {
+            question: "Công thức nào dưới đây thể hiện Tính chất kết hợp của phép nhân?",
+            options: [
+              "a × b = b × a",
+              "(a × b) × c = a × (b × c)",
+              "(a + b) × c = a × c + b × c",
+              "a × (b - c) = a × b - a × c"
+            ],
+            correctIndex: 1,
+            explanation: "Quy tắc SGK Toán 4: (a × b) × c = a × (b × c)."
+          },
+          {
+            question: "Không tính kết quả, hãy chọn dấu thích hợp: (14 × 5) × 2 ... 14 × (5 × 2)",
+            options: [">", "<", "=", "Không so sánh được"],
+            correctIndex: 2,
+            explanation: "Dấu = ! Theo tính chất kết hợp của phép nhân, (14 × 5) × 2 = 14 × (5 × 2)."
+          },
+          {
+            question: "Cặp thừa số nào dưới đây có tích bằng 100?",
+            options: ["2 × 5", "4 × 25", "8 × 125", "6 × 15"],
+            correctIndex: 1,
+            explanation: "4 × 25 = 100 là Cặp số vàng tạo số tròn trăm!"
+          },
+          {
+            question: "Cặp thừa số nào dưới đây có tích bằng 1 000?",
+            options: ["5 × 20", "4 × 25", "8 × 125", "50 × 2"],
+            correctIndex: 2,
+            explanation: "8 × 125 = 1 000 là Cặp số vàng tạo số tròn nghìn!"
+          },
+          {
+            question: "Giá trị của biểu thức (3 × 2) × 5 tính theo cách thuận tiện là:",
+            options: ["30", "25", "35", "40"],
+            correctIndex: 0,
+            explanation: "3 × (2 × 5) = 3 × 10 = 30."
+          }
+        ]
+      },
+      {
+        stageNum: 3, name: "Luyện Tập",
+        questions: [
+          {
+            question: "Tính bằng cách thuận tiện nhất: 5 × 19 × 2 = ?",
+            options: ["190", "180", "95", "380"],
+            correctIndex: 0,
+            explanation: "Nhóm (5 × 2) × 19 = 10 × 19 = 190."
+          },
+          {
+            question: "Tính bằng cách thuận tiện nhất: 25 × 36 × 4 = ?",
+            options: ["900", "3 600", "360", "7 200"],
+            correctIndex: 1,
+            explanation: "Nhóm (25 × 4) × 36 = 100 × 36 = 3 600."
+          },
+          {
+            question: "Tính bằng cách thuận tiện nhất: 8 × 17 × 125 = ?",
+            options: ["1 700", "17 000", "136 000", "1 360"],
+            correctIndex: 1,
+            explanation: "Nhóm (8 × 125) × 17 = 1 000 × 17 = 17 000."
+          },
+          {
+            question: "Biểu thức 2 × 47 × 50 được nhóm thuận tiện nhất theo cách nào?",
+            options: [
+              "(2 × 47) × 50",
+              "(2 × 50) × 47",
+              "2 × (47 × 50)",
+              "Tính từ trái sang phải lần lượt"
+            ],
+            correctIndex: 1,
+            explanation: "Nhóm (2 × 50) × 47 = 100 × 47 = 4 700."
+          },
+          {
+            question: "Kết quả của phép tính 50 × 38 × 2 là:",
+            options: ["3 800", "1 900", "7 600", "380"],
+            correctIndex: 0,
+            explanation: "Đổi chỗ và nhóm: (50 × 2) × 38 = 100 × 38 = 3 800."
+          },
+          {
+            question: "Tính nhẩm nhanh: 4 × 18 × 25 = ?",
+            options: ["1 800", "720", "4 500", "180"],
+            correctIndex: 0,
+            explanation: "(4 × 25) × 18 = 100 × 18 = 1 800."
+          },
+          {
+            question: "Để tính 125 × 9 × 8, bạn An đổi thành (125 × 8) × 9 = 1000 × 9 = 9000. An đã áp dụng những tính chất nào?",
+            options: [
+              "Chỉ tính chất giao hoán",
+              "Chỉ tính chất kết hợp",
+              "Cả tính chất giao hoán và tính chất kết hợp",
+              "Không áp dụng tính chất nào"
+            ],
+            correctIndex: 2,
+            explanation: "Đổi chỗ thừa số (giao hoán) và đặt ngoặc nhóm (kết hợp)!"
+          },
+          {
+            question: "Tính: 20 × 9 × 5 = ?",
+            options: ["90", "900", "1 800", "450"],
+            correctIndex: 1,
+            explanation: "Nhóm (20 × 5) × 9 = 100 × 9 = 900."
+          },
+          {
+            question: "Tìm x biết: x : 25 = 4 × 7",
+            options: ["700", "100", "28", "175"],
+            correctIndex: 0,
+            explanation: "x = 25 × (4 × 7) = (25 × 4) × 7 = 100 × 7 = 700."
+          },
+          {
+            question: "Biểu thức 250 × 13 × 4 có giá trị là:",
+            options: ["13 000", "1 300", "26 000", "130 000"],
+            correctIndex: 0,
+            explanation: "Nhóm (250 × 4) × 13 = 1 000 × 13 = 13 000."
+          }
+        ]
+      },
+      {
+        stageNum: 4, name: "Vận Dụng",
+        questions: [
+          {
+            question: "Bác An ở xã Thụy Lâm đóng gói cam Canh vào các thùng. Mỗi thùng có 4 hộp cam, mỗi hộp có 25 quả. Bác An xếp được tất cả 8 thùng cam như vậy. Hỏi bác An đã đóng gói tất cả bao nhiêu quả cam?",
+            options: ["800 quả", "1 000 quả", "600 quả", "1 200 quả"],
+            correctIndex: 0,
+            explanation: "Mỗi thùng có 4 × 25 = 100 quả. 8 thùng có: 8 × 100 = 800 (quả cam)."
+          },
+          {
+            question: "Trường TH & THCS Thụy Lâm có 5 dãy phòng học, mỗi dãy có 4 phòng, mỗi phòng trang bị 25 bộ bàn ghế mới. Hỏi trường đã trang bị tất cả bao nhiêu bộ bàn ghế?",
+            options: ["400 bộ", "500 bộ", "600 bộ", "250 bộ"],
+            correctIndex: 1,
+            explanation: "5 × 4 × 25 = 5 × (4 × 25) = 5 × 100 = 500 (bộ bàn ghế)."
+          },
+          {
+            question: "Đội thiếu niên mua 8 hộp bánh làm quà trung thu. Mỗi hộp có 125 gói bánh nhỏ. Hỏi tổng số gói bánh của cả 8 hộp là bao nhiêu?",
+            options: ["1 000 gói", "800 gói", "1 250 gói", "900 gói"],
+            correctIndex: 0,
+            explanation: "8 × 125 = 1 000 (gói bánh)."
+          },
+          {
+            question: "Một cửa hàng nông sản ở Đông Anh xuất bán 2 chuyến xe, mỗi chuyến chở 50 bao gạo, mỗi bao gạo cân nặng 35 kg. Hỏi cả hai chuyến chở được tất cả bao nhiêu ki-lô-gam gạo?",
+            options: ["3 500 kg", "1 750 kg", "7 000 kg", "350 kg"],
+            correctIndex: 0,
+            explanation: "(2 × 50) × 35 = 100 × 35 = 3 500 (kg)."
+          },
+          {
+            question: "Để chuẩn bị phần thưởng cho học sinh xuất sắc, cô giáo Hoan xếp các cuốn vở thành 4 chồng, mỗi chồng có 25 cọc, mỗi cọc có 10 cuốn vở. Hỏi có tất cả bao nhiêu cuốn vở phần thưởng?",
+            options: ["1 000 cuốn", "10 000 cuốn", "500 cuốn", "2 500 cuốn"],
+            correctIndex: 0,
+            explanation: "(4 × 25) × 10 = 100 × 10 = 1 000 (cuốn vở)."
+          }
+        ]
+      }
+    ]
+  },
   trung_binh_cong: {
     title: "Bài: Tìm số trung bình cộng",
     subtitle: "Khám phá quy tắc tính trung bình cộng và giải các bài toán thực tế",

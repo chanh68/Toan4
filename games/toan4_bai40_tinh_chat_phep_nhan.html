@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 40: Tính Chất Giao Hoán & Kết Hợp Của Phép Nhân - Toán Lớp 4</title>
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
+  
+  <!-- Google Fonts: Lexend & Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS 3.4.17 -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Lexend', 'Quicksand', 'Segoe UI', 'sans-serif'],
+          },
+          boxShadow: {
+            'card': '0 10px 25px -5px rgba(19, 57, 94, 0.08), 0 8px 10px -6px rgba(19, 57, 94, 0.04)',
+            'pop': '0 6px 0 #d97706',
+            'pop-green': '0 6px 0 #059669',
+            'pop-blue': '0 6px 0 #2563eb',
+            'pop-purple': '0 6px 0 #7c3aed',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Lexend', 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 45%, #fffbeb 100%);
+      min-height: 100vh;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+
+    /* Prevent awkward Vietnamese line wraps & orphan words */
+    h1, h2, h3, h4, .text-balance {
+      text-wrap: balance;
+    }
+
+    @keyframes gentlePulse {
+      0%, 100% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.25), 0 6px 12px rgba(15, 23, 42, 0.15); }
+      50% { box-shadow: 0 0 0 14px rgba(245, 158, 11, 0.45), 0 8px 16px rgba(15, 23, 42, 0.2); }
+    }
+
+    .journey-road {
+      position: relative;
+      height: 420px;
+      margin: 18px 0 14px;
+      border-radius: 24px;
+      background: linear-gradient(165deg, #bae6fd 0 32%, #bbf7d0 33% 100%);
+      overflow: hidden;
+      border: 3px solid #86efac;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.04);
+    }
+
+    @media (max-width: 760px) {
+      .journey-road { height: 480px; }
+    }
+
+    .journey-road::before {
+      content: "☁️   ☀️   ✨";
+      position: absolute;
+      top: 6%;
+      left: 7%;
+      font-size: 36px;
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .journey-road::after {
+      content: "🌳 💎 🌻 💎 🌳 💎 🌻";
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      right: 0;
+      font-size: 26px;
+      word-spacing: 28px;
+      opacity: 0.8;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .road-curve {
+      position: absolute;
+      top: 46%;
+      left: -6%;
+      right: -5%;
+      height: 70px;
+      border-top: 6px dashed #fffbeb;
+      border-bottom: 6px dashed #fffbeb;
+      border-radius: 50%;
+      background: #fcd34d;
+      transform: rotate(-4deg);
+      z-index: 1;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .road-truck {
+      position: absolute;
+      top: 42%;
+      font-size: 50px;
+      filter: drop-shadow(0 6px 3px rgba(30, 41, 59, 0.3));
+      transform: translate(-50%) scaleX(-1);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .road-stop {
+      position: absolute;
+      width: 120px;
+      border: 0;
+      background: transparent;
+      color: #0f172a;
+      text-align: center;
+      transform: translate(-50%);
+      cursor: pointer;
+      z-index: 4;
+      transition: transform 0.2s;
+      outline: none;
+    }
+
+    .road-stop:hover:not([disabled]) {
+      transform: translate(-50%) scale(1.08);
+      z-index: 6;
+    }
+
+    .road-stop span {
+      display: grid;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      margin: auto;
+      border-radius: 50%;
+      border: 4px solid #38bdf8;
+      background: #fff;
+      font-size: 30px;
+      box-shadow: 0 6px 12px rgba(15, 23, 42, 0.15);
+      transition: all 0.3s;
+    }
+
+    .road-stop b {
+      display: inline-grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      margin-top: 4px;
+      border-radius: 50%;
+      background: #0284c7;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .road-stop small, .road-stop em {
+      display: block;
+      font-style: normal;
+      line-height: 1.15;
+    }
+
+    .road-stop small {
+      margin-top: 3px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .road-stop em {
+      margin-top: 2px;
+      color: #d97706;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .road-stop.active span {
+      border-color: #f59e0b;
+      animation: gentlePulse 1.6s infinite;
+    }
+
+    .road-stop.active b { background: #f59e0b; }
+    .road-stop.done span { border-color: #10b981; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
+    .road-stop.done b { background: #10b981; }
+    .road-stop.locked { opacity: 0.65; filter: grayscale(1); cursor: not-allowed; }
+
+    .opt-btn {
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .opt-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+    .opt-btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .rhyme-line.highlight {
+      background: #fef08a !important;
+      color: #92400e !important;
+      transform: scale(1.02);
+      font-weight: 800;
+      border-left: 6px solid #f59e0b;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #certificate-card, #certificate-card * { visibility: visible; }
+      #certificate-card {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 24px;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- ============================================== -->
+  <!-- HEADER CHUNG                                    -->
+  <!-- ============================================== -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b-2 border-emerald-100 shadow-sm py-2 px-3 sm:px-6">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <!-- Title & Icon -->
+      <div class="flex items-center space-x-2.5 cursor-pointer" id="nav-home-btn">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 bg-gradient-to-tr from-amber-400 to-emerald-400 rounded-2xl flex items-center justify-center text-2xl shadow-sm border border-amber-200">
+          💎
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-sm sm:text-base font-black text-slate-800 leading-tight">BÀI 40: TÍNH CHẤT PHÉP NHÂN</h1>
+            <span class="text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-extrabold">Toán 4</span>
+          </div>
+          <p class="text-xs text-slate-500 font-medium">Trường TH & THCS Thụy Lâm • Giao hoán & Kết hợp</p>
+        </div>
+      </div>
+
+      <!-- User Stats -->
+      <div class="flex items-center flex-wrap gap-2 sm:gap-3">
+        <!-- Student Info Badge -->
+        <div id="student-badge" class="bg-emerald-50 border border-emerald-200 text-emerald-900 px-3 py-1 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5">
+          <span>👦</span>
+          <span id="badge-name">Học sinh</span>
+          <span class="text-emerald-400">|</span>
+          <span id="badge-class">Lớp 4</span>
+        </div>
+
+        <!-- Diamond Score -->
+        <div class="bg-amber-50 border-2 border-amber-300 text-amber-900 px-3 py-1 rounded-xl text-xs sm:text-sm font-black flex items-center gap-1.5 shadow-sm">
+          <span class="text-sky-500 text-base animate-bounce">💎</span>
+          <span id="total-score-display">0</span>
+          <span class="text-amber-500 text-xs font-bold">/ 100</span>
+        </div>
+
+        <!-- Sound Button -->
+        <button type="button" id="sound-toggle-btn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1 transition">
+          <span id="sound-icon">🔊</span>
+          <span class="hidden sm:inline">Âm thanh</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================== -->
+  <!-- MAIN CONTAINER                                 -->
+  <!-- ============================================== -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 flex flex-col justify-center">
+
+    <!-- ============================================== -->
+    <!-- SCREEN 1: LOGIN & ĐĂNG KÝ HỌC SINH             -->
+    <!-- ============================================== -->
+    <section id="screen-welcome" class="max-w-xl mx-auto my-6 sm:my-10 bg-white rounded-3xl p-6 sm:p-10 shadow-card border-2 border-emerald-100 text-center">
+      <div class="w-24 h-24 bg-gradient-to-tr from-amber-400 via-emerald-400 to-teal-400 rounded-3xl flex items-center justify-center text-5xl mx-auto mb-4 shadow-inner border-2 border-amber-200 animate-bounce">
+        ✨
+      </div>
+      <div class="text-xs font-black uppercase tracking-wider text-emerald-600 mb-1">Toán Lớp 4 • Bộ Sách Mới</div>
+      <h2 class="text-xl sm:text-3xl font-black text-slate-800 mb-2 leading-snug text-balance">
+        Đấu Trường Phép Nhân <span class="whitespace-nowrap">Kỳ Thú</span>
+      </h2>
+      <p class="text-slate-600 text-xs sm:text-sm mb-6 leading-relaxed">
+        Chào mừng em đến với Bài 40: <strong>Tính chất giao hoán và kết hợp của phép nhân</strong>! Hãy khám phá mô hình trực quan ở <strong>Tab Lý thuyết</strong> và chinh phục 5 chặng săn <strong>100 Kim Cương 💎</strong> ở <strong>Tab Luyện tập</strong> nhé!
+      </p>
+
+      <form id="start-form" class="space-y-4 text-left">
+        <div>
+          <label for="input-student-name" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1">Họ và tên của em:</label>
+          <input type="text" id="input-student-name" required placeholder="Ví dụ: Nguyễn Văn An" 
+                 class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-800 font-bold transition text-sm sm:text-base" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="input-student-class" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1">Lớp:</label>
+            <input type="text" id="input-student-class" required placeholder="Ví dụ: 4A1" 
+                   class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-800 font-bold transition text-sm sm:text-base" />
+          </div>
+          <div>
+            <label for="input-student-school" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1">Trường:</label>
+            <input type="text" id="input-student-school" required value="TH & THCS Thụy Lâm" 
+                   class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-800 font-bold transition text-sm sm:text-base" />
+          </div>
+        </div>
+
+        <button type="submit" id="btn-start-journey" class="w-full mt-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-500 hover:from-emerald-600 hover:to-amber-600 text-white font-black py-4 px-6 rounded-2xl text-base sm:text-lg shadow-pop-green transition-transform active:translate-y-1">
+          🚀 Bắt đầu Khám phá & Luyện tập ngay!
+        </button>
+      </form>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SCREEN 2: MÀN CHÍNH (2 TAB: LÝ THUYẾT & LUYỆN TẬP) -->
+    <!-- ============================================== -->
+    <div id="screen-main-tabs" class="hidden space-y-5">
+      
+      <!-- TAB BAR CHÍNH (LÝ THUYẾT & LUYỆN TẬP) -->
+      <div class="bg-white rounded-2xl p-2 shadow-sm border-2 border-emerald-100 flex items-center gap-2">
+        <button type="button" id="tab-btn-theory" class="flex-1 py-3 px-4 rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 transition bg-emerald-600 text-white shadow-md">
+          <span>📖</span>
+          <span>Tab 1: Lý Thuyết Trực Quan</span>
+        </button>
+        <button type="button" id="tab-btn-practice" class="flex-1 py-3 px-4 rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 transition text-slate-600 hover:bg-slate-100">
+          <span>🎮</span>
+          <span>Tab 2: Luyện Tập (5 Chặng)</span>
+        </button>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- TAB CONTENT 1: LÝ THUYẾT TƯƠNG TÁC TRỰC QUAN (TỪNG BƯỚC) -->
+      <!-- ============================================== -->
+      <div id="tab-content-theory" class="space-y-5">
+        
+        <!-- Hero Banner Lý Thuyết -->
+        <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 text-white rounded-3xl p-6 sm:p-7 shadow-card relative overflow-hidden">
+          <div class="relative z-10">
+            <span class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider text-emerald-100 inline-block mb-2">
+              Khám Phá Bài Học Từng Bước • Năng Lực Số 5.2
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-black mb-1">Khám Phá Tính Chất Phép Nhân</h2>
+            <p class="text-xs sm:text-sm text-emerald-100 max-w-2xl leading-relaxed">
+              Trải nghiệm từng bước khám phá với các mô hình trực quan sinh động: đổi chỗ ma trận kẹo, ghép nhóm khối bánh và ghi nhớ các Cặp Số Vàng.
+            </p>
+          </div>
+          <div class="absolute right-4 bottom-2 text-7xl opacity-20 pointer-events-none">✨</div>
+        </div>
+
+        <!-- Step Navigator Pills (4 Bước) -->
+        <div class="bg-white rounded-2xl p-3 shadow-sm border-2 border-emerald-100 space-y-3">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span id="theory-step-counter" class="text-xs font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
+                Bước 1 / 4
+              </span>
+              <span class="text-xs text-slate-500 font-bold hidden sm:inline">• Bấm từng bước hoặc dùng nút chuyển ở chân trang</span>
+            </div>
+          </div>
+
+          <!-- Step Buttons Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button type="button" id="theory-pill-1" class="theory-pill-btn flex-1 py-2 px-3 rounded-xl font-black text-xs sm:text-sm transition flex items-center justify-center gap-1.5 bg-emerald-600 text-white shadow-sm">
+              <span>🔄</span>
+              <span>1. Giao hoán</span>
+            </button>
+            <button type="button" id="theory-pill-2" class="theory-pill-btn flex-1 py-2 px-3 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200">
+              <span>📦</span>
+              <span>2. Kết hợp</span>
+            </button>
+            <button type="button" id="theory-pill-3" class="theory-pill-btn flex-1 py-2 px-3 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200">
+              <span>⭐</span>
+              <span>3. Cặp Số Vàng</span>
+            </button>
+            <button type="button" id="theory-pill-4" class="theory-pill-btn flex-1 py-2 px-3 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200">
+              <span>📝</span>
+              <span>4. Ví dụ mẫu</span>
+            </button>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+            <div id="theory-step-progress" class="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full transition-all duration-300" style="width: 25%;"></div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- BƯỚC 1: TÍNH CHẤT GIAO HOÁN                -->
+        <!-- ========================================== -->
+        <div id="theory-step-1" class="theory-step-card bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-emerald-100 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 font-black flex items-center justify-center text-sm">1</span>
+              <h3 class="text-lg sm:text-xl font-black text-slate-800">Tính chất giao hoán: a × b = b × a</h3>
+            </div>
+            <span class="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full">
+              Đổi chỗ thừa số ➔ Tích không đổi
+            </span>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Quan sát lưới kẹo sô-cô-la bên dưới. Bấm nút <strong>"🔄 Đổi chỗ (Giao hoán)"</strong> để xoay hàng thành cột và kiểm tra kết quả:
+          </p>
+
+          <!-- Interactive Grid Visualizer -->
+          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-5 text-center">
+            <div class="flex items-center justify-center gap-4 flex-wrap mb-4">
+              <div class="bg-white border-2 border-emerald-300 px-4 py-2 rounded-xl text-center shadow-sm">
+                <span class="text-xs text-slate-500 font-bold block">Biểu thức hiện tại:</span>
+                <span id="commu-expression" class="text-xl sm:text-2xl font-black text-emerald-700">3 hàng × 5 cột = 15 viên</span>
+              </div>
+              <button type="button" id="btn-toggle-commu" class="bg-amber-500 hover:bg-amber-600 text-white font-black px-5 py-2.5 rounded-xl shadow-pop text-xs sm:text-sm transition-transform active:translate-y-1 flex items-center gap-1.5">
+                <span>🔄</span>
+                <span id="commu-btn-txt">Đổi chỗ thành: 5 hàng × 3 cột</span>
+              </button>
+            </div>
+
+            <!-- Visual Grid of Candies -->
+            <div id="commu-grid-container" class="inline-grid gap-2 p-4 bg-white rounded-2xl border-2 border-emerald-200 shadow-inner transition-all duration-500 mx-auto">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="mt-4 p-3 bg-emerald-100 text-emerald-950 rounded-xl text-xs sm:text-sm font-bold max-w-lg mx-auto">
+              💡 <strong>Quy tắc ghi nhớ:</strong> Khi đổi chỗ các thừa số trong một tích thì tích không thay đổi: <span class="text-emerald-800 underline font-black">a × b = b × a</span>.
+            </div>
+          </div>
+
+          <!-- Sandbox Năng Lực Số: Tự nhập a và b để thử nghiệm -->
+          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4">
+            <div class="text-xs font-black uppercase tracking-wider text-amber-800 mb-2">🧪 Phòng Thử Nghiệm Số Học (Tự kiểm chứng)</div>
+            <div class="flex items-center gap-3 flex-wrap text-sm font-bold text-slate-700">
+              <div class="flex items-center gap-1.5">
+                <label>a =</label>
+                <input type="number" id="sandbox-a" value="12" class="w-16 px-2.5 py-1.5 rounded-lg border-2 border-amber-300 font-black text-center" />
+              </div>
+              <div class="flex items-center gap-1.5">
+                <label>b =</label>
+                <input type="number" id="sandbox-b" value="5" class="w-16 px-2.5 py-1.5 rounded-lg border-2 border-amber-300 font-black text-center" />
+              </div>
+              <button type="button" id="btn-test-sandbox" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-1.5 rounded-xl font-black text-xs shadow-sm">
+                So sánh ngay
+              </button>
+              <div id="sandbox-result" class="text-xs sm:text-sm font-black text-emerald-800 bg-white px-3 py-1.5 rounded-xl border border-emerald-200">
+                12 × 5 = 60 &nbsp; và &nbsp; 5 × 12 = 60 &nbsp;➔ Bằng nhau!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- BƯỚC 2: TÍNH CHẤT KẾT HỢP                  -->
+        <!-- ========================================== -->
+        <div id="theory-step-2" class="theory-step-card hidden bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-sky-100 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-sky-100 text-sky-800 font-black flex items-center justify-center text-sm">2</span>
+              <h3 class="text-lg sm:text-xl font-black text-slate-800">Tính chất kết hợp: (a × b) × c = a × (b × c)</h3>
+            </div>
+            <span class="text-xs font-bold bg-sky-50 text-sky-800 border border-sky-200 px-3 py-1 rounded-full">
+              Nhóm các thừa số thuận tiện
+            </span>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Tình huống: Bác An xếp bánh vào <strong>2 thùng lớn</strong>, mỗi thùng có <strong>3 hộp bánh</strong>, mỗi hộp chứa <strong>4 chiếc bánh</strong>. Bấm nút để đổi cách tính:
+          </p>
+
+          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-5 text-center space-y-4">
+            <div class="flex items-center justify-center gap-3 flex-wrap">
+              <button type="button" id="btn-assoc-mode-1" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition bg-sky-600 text-white shadow-sm">
+                Cách 1: Tính số hộp trước (2 × 3) × 4
+              </button>
+              <button type="button" id="btn-assoc-mode-2" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition bg-slate-200 text-slate-700 hover:bg-slate-300">
+                Cách 2: Tính số bánh trong 1 thùng trước 2 × (3 × 4)
+              </button>
+            </div>
+
+            <!-- Visual Demonstration -->
+            <div id="assoc-visual-box" class="bg-white border-2 border-sky-200 rounded-2xl p-4 text-center max-w-lg mx-auto">
+              <div class="text-3xl mb-2">📦 📦 &nbsp;➔&nbsp; 6 hộp &nbsp;➔&nbsp; 24 chiếc bánh 🍪</div>
+              <div class="text-base sm:text-lg font-black text-sky-900" id="assoc-math-step">
+                (2 × 3) × 4 = 6 × 4 = 24 (chiếc bánh)
+              </div>
+            </div>
+
+            <div class="p-3 bg-sky-100 text-sky-950 rounded-xl text-xs sm:text-sm font-bold max-w-lg mx-auto">
+              💡 <strong>Quy tắc ghi nhớ:</strong> Khi nhân một tích hai số với số thứ ba, ta có thể nhân số thứ nhất với tích của số thứ hai và số thứ ba: <span class="text-sky-800 underline font-black">(a × b) × c = a × (b × c)</span>.
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- BƯỚC 3: BỘ CẶP SỐ VÀNG                     -->
+        <!-- ========================================== -->
+        <div id="theory-step-3" class="theory-step-card hidden bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-amber-200 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 font-black flex items-center justify-center text-sm">3</span>
+              <h3 class="text-lg sm:text-xl font-black text-slate-800">Bí Kíp: "Bộ Cặp Số Vàng" Tính Nhẩm Nhanh</h3>
+            </div>
+            <span class="text-xs font-black bg-amber-100 text-amber-900 px-3 py-1 rounded-full">
+              ⭐ Bắt buộc thuộc lòng!
+            </span>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Trong bài toán tính thuận tiện, hãy tìm và ghép đôi các <strong>Cặp số vàng</strong> này lại với nhau trước:
+          </p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-2xl p-4 text-center hover:scale-105 transition cursor-pointer">
+              <span class="text-xs font-black uppercase text-emerald-600 block mb-1">Cặp tròn chục</span>
+              <div class="text-xl sm:text-2xl font-black text-emerald-800">2 × 5 = 10</div>
+              <span class="text-[11px] text-slate-500 font-semibold">hoặc 5 × 2 = 10</span>
+            </div>
+
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-2xl p-4 text-center hover:scale-105 transition cursor-pointer">
+              <span class="text-xs font-black uppercase text-amber-600 block mb-1">Cặp tròn trăm</span>
+              <div class="text-xl sm:text-2xl font-black text-amber-800">4 × 25 = 100</div>
+              <span class="text-[11px] text-slate-500 font-semibold">25 × 4 = 100</span>
+            </div>
+
+            <div class="bg-gradient-to-br from-sky-50 to-blue-50 border-2 border-sky-300 rounded-2xl p-4 text-center hover:scale-105 transition cursor-pointer">
+              <span class="text-xs font-black uppercase text-sky-600 block mb-1">Cặp tròn trăm</span>
+              <div class="text-xl sm:text-2xl font-black text-sky-800">5 × 20 = 100</div>
+              <span class="text-[11px] text-slate-500 font-semibold">hoặc 50 × 2 = 100</span>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-300 rounded-2xl p-4 text-center hover:scale-105 transition cursor-pointer">
+              <span class="text-xs font-black uppercase text-purple-600 block mb-1">Cặp tròn nghìn</span>
+              <div class="text-xl sm:text-2xl font-black text-purple-800">8 × 125 = 1 000</div>
+              <span class="text-[11px] text-slate-500 font-semibold">125 × 8 = 1 000</span>
+            </div>
+
+            <div class="bg-gradient-to-br from-rose-50 to-red-50 border-2 border-rose-300 rounded-2xl p-4 text-center hover:scale-105 transition cursor-pointer">
+              <span class="text-xs font-black uppercase text-rose-600 block mb-1">Cặp tròn nghìn</span>
+              <div class="text-xl sm:text-2xl font-black text-rose-800">250 × 4 = 1 000</div>
+              <span class="text-[11px] text-slate-500 font-semibold">4 × 250 = 1 000</span>
+            </div>
+
+            <div class="bg-gradient-to-br from-indigo-50 to-blue-50 border-2 border-indigo-300 rounded-2xl p-4 text-center hover:scale-105 transition cursor-pointer">
+              <span class="text-xs font-black uppercase text-indigo-600 block mb-1">Cặp tròn nghìn</span>
+              <div class="text-xl sm:text-2xl font-black text-indigo-800">500 × 2 = 1 000</div>
+              <span class="text-[11px] text-slate-500 font-semibold">hoặc 125 × 8</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- BƯỚC 4: VÍ DỤ MẪU 3 BƯỚC                   -->
+        <!-- ========================================== -->
+        <div id="theory-step-4" class="theory-step-card hidden bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-emerald-100 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 font-black flex items-center justify-center text-sm">4</span>
+              <h3 class="text-lg sm:text-xl font-black text-slate-800">Ví dụ mẫu: Tính thuận tiện biểu thức 25 × 7 × 4</h3>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-start gap-3">
+              <span class="w-7 h-7 rounded-full bg-amber-500 text-white font-black flex items-center justify-center text-xs shrink-0 mt-0.5">1</span>
+              <div>
+                <div class="text-xs font-extrabold uppercase text-amber-700">Bước 1: Áp dụng tính chất GIAO HOÁN</div>
+                <div class="text-sm font-bold text-slate-800 mt-0.5">Đổi chỗ số 7 và số 4 để cặp số vàng 25 và 4 đứng cạnh nhau:</div>
+                <div class="text-base font-black text-emerald-800 mt-1 font-mono">25 × 4 × 7</div>
+              </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-start gap-3">
+              <span class="w-7 h-7 rounded-full bg-sky-500 text-white font-black flex items-center justify-center text-xs shrink-0 mt-0.5">2</span>
+              <div>
+                <div class="text-xs font-extrabold uppercase text-sky-700">Bước 2: Áp dụng tính chất KẾT HỢP</div>
+                <div class="text-sm font-bold text-slate-800 mt-0.5">Đặt dấu ngoặc đơn nhóm cặp số tròn trăm:</div>
+                <div class="text-base font-black text-sky-800 mt-1 font-mono">(25 × 4) × 7</div>
+              </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-start gap-3">
+              <span class="w-7 h-7 rounded-full bg-emerald-500 text-white font-black flex items-center justify-center text-xs shrink-0 mt-0.5">3</span>
+              <div>
+                <div class="text-xs font-extrabold uppercase text-emerald-700">Bước 3: TÍNH NHẨM THẦN TỐC</div>
+                <div class="text-sm font-bold text-slate-800 mt-0.5">Nhân số tròn trăm với số còn lại:</div>
+                <div class="text-lg font-black text-emerald-900 mt-1 font-mono">100 × 7 = 700</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theory Navigation Bottom Bar (Bước trước / Bước tiếp / Vào Luyện tập) -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border-2 border-emerald-100 flex flex-wrap items-center justify-between gap-3">
+          <button type="button" id="btn-theory-prev" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-black px-5 py-2.5 rounded-xl transition text-xs sm:text-sm disabled:opacity-40 disabled:cursor-not-allowed">
+            ⬅ Bước trước
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-theory-next" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 py-2.5 rounded-xl shadow-pop-green text-xs sm:text-sm transition-transform active:translate-y-1">
+              Bước tiếp theo ➡
+            </button>
+            <button type="button" id="btn-theory-finish" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black px-6 py-2.5 rounded-xl shadow-pop text-xs sm:text-sm transition-transform active:translate-y-1">
+              🎮 Đã nắm vững Lý thuyết! Vào Luyện tập ngay ➔
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================== -->
+      <!-- TAB CONTENT 2: LUYỆN TẬP (BẢN ĐỒ 5 CHẶNG)      -->
+      <!-- ============================================== -->
+      <div id="tab-content-practice" class="hidden space-y-6">
+
+        <!-- SUB-VIEW 1: ROADMAP JOURNEY MAP -->
+        <div id="view-practice-roadmap" class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-emerald-100 space-y-4">
+          <!-- Header of Roadmap -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
+            <div>
+              <p class="text-xs font-black uppercase tracking-wider text-amber-600 mb-1">BẢN ĐỒ ĐẤU TRƯỜNG • 5 CHẶNG SĂN 100 KIM CƯƠNG</p>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-800">
+                Chào <span id="roadmap-user-name" class="text-emerald-700">bạn</span>! Xe đua đã sẵn sàng.
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">Vượt qua từng chặng câu hỏi để tích lũy tối đa <strong>100 💎</strong> và mở khóa Sân khấu vinh danh!</p>
+            </div>
+            <div class="flex items-center gap-2 bg-amber-50 border-2 border-amber-300 px-4 py-2 rounded-2xl self-start sm:self-auto shadow-sm">
+              <span class="text-3xl animate-bounce">💎</span>
+              <div>
+                <div class="text-[10px] font-bold text-amber-800 uppercase">Kim cương tích lũy</div>
+                <div class="text-lg font-black text-amber-900" id="roadmap-score">💎 0 / 100</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Journey Road Visualizer -->
+          <div class="journey-road">
+            <div class="road-curve"></div>
+            <div class="road-truck" id="moving-truck" style="left: 8%;">🚚</div>
+
+            <!-- Stop 1: Khởi động (5 câu) -->
+            <button type="button" class="road-stop active" id="road-stop-1" data-stage="1" style="left: 8%; top: 26%;">
+              <span id="stop-icon-1">🚀</span>
+              <b>1</b>
+              <small>Khởi động</small>
+              <em>5 câu • 20 💎</em>
+            </button>
+
+            <!-- Stop 2: Khám phá (5 câu) -->
+            <button type="button" disabled class="road-stop locked" id="road-stop-2" data-stage="2" style="left: 29%; top: 59%;">
+              <span id="stop-icon-2">🔒</span>
+              <b>2</b>
+              <small>Khám phá</small>
+              <em>5 câu • 20 💎</em>
+            </button>
+
+            <!-- Stop 3: Luyện tập (10 câu) -->
+            <button type="button" disabled class="road-stop locked" id="road-stop-3" data-stage="3" style="left: 50%; top: 26%;">
+              <span id="stop-icon-3">🔒</span>
+              <b>3</b>
+              <small>Luyện tập</small>
+              <em>10 câu • 40 💎</em>
+            </button>
+
+            <!-- Stop 4: Vận dụng (5 câu) -->
+            <button type="button" disabled class="road-stop locked" id="road-stop-4" data-stage="4" style="left: 71%; top: 59%;">
+              <span id="stop-icon-4">🔒</span>
+              <b>4</b>
+              <small>Vận dụng</small>
+              <em>5 câu • 20 💎</em>
+            </button>
+
+            <!-- Stop 5: Vinh danh & Đồng dao -->
+            <button type="button" disabled class="road-stop locked" id="road-stop-5" data-stage="5" style="left: 92%; top: 26%;">
+              <span id="stop-icon-5">🔒</span>
+              <b>5</b>
+              <small>Vinh danh</small>
+              <em>Cúp & Giấy khen</em>
+            </button>
+          </div>
+
+          <!-- Legend & Next Button -->
+          <div class="flex items-center justify-between flex-wrap gap-3 pt-4 border-t border-slate-100">
+            <div class="text-xs sm:text-sm text-slate-600 font-semibold flex items-center gap-1.5">
+              <span>📍</span> Chặng hiện tại: <strong id="current-truck-location" class="text-emerald-800">Chặng 1: Khởi động</strong>
+            </div>
+            <button type="button" id="btn-enter-current-stage" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black px-6 py-3 rounded-2xl shadow-pop text-xs sm:text-sm transition-transform active:translate-y-1">
+              Vào chặng đang mở ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- SUB-VIEW 2: QUIZ ARENA (CHẶNG 1, 2, 3, 4) -->
+        <div id="view-practice-quiz" class="hidden space-y-4">
+          <!-- Quiz Top Nav -->
+          <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <span id="quiz-stage-icon" class="text-2xl p-2 bg-emerald-50 rounded-xl border border-emerald-200">🚀</span>
+              <div>
+                <div id="quiz-stage-name" class="font-extrabold text-slate-800 text-sm sm:text-base">Chặng 1: Khởi động</div>
+                <div id="quiz-stage-desc" class="text-xs text-slate-500">Mỗi câu đúng lần đầu nhận +4 💎</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" id="btn-back-to-map" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                <span>🗺️</span> Bản đồ
+              </button>
+              <div class="bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black">
+                Câu <span id="quiz-question-current">1</span> / <span id="quiz-question-total">5</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+            <div id="quiz-progress-fill" class="bg-gradient-to-r from-emerald-500 to-amber-500 h-2.5 rounded-full transition-all duration-300" style="width: 20%;"></div>
+          </div>
+
+          <!-- Question Card -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-emerald-100">
+            <!-- Question Meta -->
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span id="q-sticker" class="text-3xl p-2 bg-amber-100 rounded-2xl border border-amber-200 shadow-sm">💡</span>
+                <div>
+                  <span id="q-tag" class="text-[11px] font-black uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                    CÂU HỎI NHẬN BIẾT
+                  </span>
+                  <div class="text-xs font-bold text-slate-500 mt-0.5">Lượt trả lời hiện tại: <span id="attempt-badge" class="text-emerald-700 font-extrabold">Lần 1 (Tối đa +4 💎)</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question Text -->
+            <h3 id="question-text" class="text-base sm:text-lg font-black text-slate-800 leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-6">
+              Đang tải câu hỏi...
+            </h3>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <div></div>
+              <button type="button" id="btn-check-answer" disabled class="bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 py-3 rounded-2xl shadow-pop-green transition-transform active:translate-y-1 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                <span>Kiểm tra đáp án</span>
+                <span>✓</span>
+              </button>
+            </div>
+
+            <!-- Feedback Panel -->
+            <div id="feedback-panel" class="hidden mt-6 rounded-2xl p-5 border-2 transition-all">
+              <div class="flex items-start gap-3">
+                <div id="feedback-icon" class="text-3xl">🎉</div>
+                <div class="flex-1">
+                  <h4 id="feedback-title" class="font-black text-base sm:text-lg"></h4>
+                  <p id="feedback-explanation" class="text-xs sm:text-sm text-slate-700 mt-1 leading-relaxed"></p>
+
+                  <div class="mt-4 flex flex-wrap items-center gap-3">
+                    <!-- Retry Button -->
+                    <button type="button" id="btn-retry-question" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-black px-5 py-2.5 rounded-xl shadow-pop text-xs sm:text-sm transition-transform active:translate-y-1 flex items-center gap-1.5">
+                      <span>🔄 Làm lại câu này</span>
+                    </button>
+                    <!-- Next Question -->
+                    <button type="button" id="btn-next-question" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-black px-5 py-2.5 rounded-xl shadow-pop-green text-xs sm:text-sm transition-transform active:translate-y-1 flex items-center gap-1.5">
+                      <span>Câu tiếp theo ➔</span>
+                    </button>
+                    <!-- Finish Stage Button -->
+                    <button type="button" id="btn-finish-stage" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black px-6 py-2.5 rounded-xl shadow-pop text-xs sm:text-sm transition-transform active:translate-y-1 flex items-center gap-1.5">
+                      <span>Hoàn thành chặng này! 🏁</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- SUB-VIEW 3: STAGE 5 CELEBRATION (VINH DANH, ĐỒNG DAO, VÒNG QUAY, GIẤY KHEN) -->
+        <div id="view-practice-stage5" class="hidden space-y-6">
+          
+          <!-- Top Hero -->
+          <div class="bg-gradient-to-br from-amber-500 via-emerald-600 to-teal-600 text-white rounded-3xl p-6 sm:p-8 shadow-card text-center relative overflow-hidden">
+            <div class="text-5xl sm:text-6xl mb-2 animate-bounce">🏆</div>
+            <span class="inline-block bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full text-xs font-black text-amber-100 uppercase tracking-wider mb-2">
+              CHẶNG 5: ĐẠI HỘI VINH DANH & SÂN KHẤU ĐỒNG DAO
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-black">Chúc mừng Kiện Tướng Phép Nhân!</h2>
+            <p class="text-amber-100 text-xs sm:text-sm mt-2 max-w-xl mx-auto leading-relaxed">
+              Em đã xuất sắc vượt qua toàn bộ 4 chặng đấu trường với số điểm kim cương tuyệt vời! Hãy ngân vang bài đồng dao, quay vòng quay may mắn và in Giấy Chứng Nhận về nhà nhé!
+            </p>
+          </div>
+
+          <!-- Đồng Dao Karaoke Player -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-amber-200">
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">🎤</span>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-slate-800">Đồng Dao Phép Nhân (Giai điệu vui tươi)</h3>
+                  <p class="text-xs text-slate-500">Từng câu hát nhấp nháy sáng theo nhịp điệu rộn ràng</p>
+                </div>
+              </div>
+              <button type="button" id="btn-play-rhyme" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black px-5 py-2.5 rounded-2xl text-xs sm:text-sm shadow-pop flex items-center gap-2 transition active:scale-95">
+                <span id="rhyme-play-icon">▶️</span>
+                <span id="rhyme-play-text">Bật giai điệu đồng dao</span>
+              </button>
+            </div>
+
+            <div id="karaoke-container" class="bg-gradient-to-b from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200 text-center font-bold text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+              <div class="text-xs font-extrabold uppercase tracking-widest text-amber-700 mb-2">✨ BÀI VÈ PHÉP NHÂN LỚP 4 ✨</div>
+              <div id="rhyme-line-0" class="rhyme-line py-1.5 px-3 rounded-xl transition-all duration-300">Nghe vẻ nghe ve, nghe vè phép nhân 🥁</div>
+              <div id="rhyme-line-1" class="rhyme-line py-1.5 px-3 rounded-xl transition-all duration-300">Đổi chỗ trước sau, tích nào có đổi! (a × b = b × a) 🔄</div>
+              <div id="rhyme-line-2" class="rhyme-line py-1.5 px-3 rounded-xl transition-all duration-300">Giao hoán là đây, rõ ràng ghi nhớ ✨</div>
+              <div id="rhyme-line-3" class="rhyme-line py-1.5 px-3 rounded-xl transition-all duration-300">Ba thừa số nhân, nhóm nào cũng đặng! ((a × b) × c = a × (b × c)) 📦</div>
+              <div id="rhyme-line-4" class="rhyme-line py-1.5 px-3 rounded-xl transition-all duration-300">Bốn nhân hăm lăm (4 × 25), ra tròn một trăm 💯</div>
+              <div id="rhyme-line-5" class="rhyme-line py-1.5 px-3 rounded-xl transition-all duration-300">Tám nhân một hai lăm (8 × 125), nghìn vàng lấp lánh ⭐</div>
+              <div id="rhyme-line-6" class="rhyme-line py-1.5 px-3 rounded-xl transition-all duration-300">Tính nhẩm thần tốc, bài khó hóa thông! 🚀</div>
+            </div>
+          </div>
+
+          <!-- Vòng Quay May Mắn & Ba Lô -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+            <!-- Lucky Wheel -->
+            <div class="md:col-span-7 bg-white rounded-3xl p-6 shadow-card border-2 border-amber-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-2xl">🎡</span>
+                  <h3 class="font-black text-lg text-slate-800">Vòng Quay Cúp May Mắn</h3>
+                </div>
+                <p class="text-xs text-slate-500 mb-4">
+                  Mỗi bạn được quay <strong>duy nhất 1 lần</strong> để rinh Cúp danh dự siêu đáng yêu về Ba lô!
+                </p>
+
+                <!-- Wheel Disc -->
+                <div class="relative w-60 h-60 mx-auto my-2 flex items-center justify-center">
+                  <div class="absolute -top-3 z-20 text-3xl text-rose-600 filter drop-shadow animate-bounce">🔻</div>
+                  <div id="wheel-disc" class="w-56 h-56 rounded-full border-4 border-amber-400 shadow-xl relative overflow-hidden transition-all duration-[3800ms] cubic-bezier(0.15, 0.85, 0.2, 0.99) flex items-center justify-center"
+                       style="background: conic-gradient(#f87171 0deg 45deg, #fbbf24 45deg 90deg, #34d399 90deg 135deg, #60a5fa 135deg 180deg, #a78bfa 180deg 225deg, #f472b6 225deg 270deg, #38bdf8 270deg 315deg, #fb923c 315deg 360deg);">
+                    <div class="w-16 h-16 rounded-full bg-white border-4 border-amber-400 flex items-center justify-center text-xl font-black text-amber-600 shadow-md z-10">
+                      🎯
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mt-4">
+                <button type="button" id="btn-spin-wheel" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black px-6 py-3 rounded-2xl shadow-pop text-xs sm:text-sm transition-transform active:translate-y-1">
+                  🎡 Quay Thưởng Ngay! (1 lượt)
+                </button>
+                <div id="wheel-status-txt" class="text-xs text-slate-500 font-semibold mt-2">
+                  Bấm để bắt đầu quay nhận cúp
+                </div>
+              </div>
+            </div>
+
+            <!-- Backpack -->
+            <div class="md:col-span-5 bg-white rounded-3xl p-6 shadow-card border-2 border-emerald-100 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-2xl">🎒</span>
+                  <h3 class="font-black text-lg text-slate-800">Ba Lô Phần Thưởng Của Em</h3>
+                </div>
+                <p class="text-xs text-slate-500 mb-3">Nơi cất giữ Cúp và các Huy hiệu danh dự</p>
+
+                <div class="space-y-3">
+                  <!-- Won Trophy Slot -->
+                  <div id="backpack-prize-slot" class="bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl p-4 text-center transition-all">
+                    <div id="backpack-empty-txt" class="text-xs font-bold text-amber-800 py-3">
+                      🎁 [Ô CÚP MAY MẮN TRỐNG]<br>
+                      <span class="font-normal text-[11px] text-slate-500">Hãy bấm vòng quay bên cạnh để rinh Cúp nhé!</span>
+                    </div>
+                    <div id="backpack-won-card" class="hidden flex items-center gap-3 text-left">
+                      <div class="w-14 h-14 bg-amber-200 rounded-2xl flex items-center justify-center text-3xl shadow-sm border border-amber-300" id="backpack-prize-icon">🏆</div>
+                      <div>
+                        <span class="text-[10px] font-black uppercase text-amber-700 bg-white px-2 py-0.5 rounded-full border border-amber-200">CÚP DANH DỰ ĐÃ NHẬN</span>
+                        <div class="text-sm font-black text-slate-800 mt-0.5" id="backpack-prize-name">Cúp Bậc Thầy Phép Nhân</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Badges -->
+                  <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center gap-3">
+                    <span class="text-3xl">🌟</span>
+                    <div>
+                      <div class="text-xs font-black text-emerald-900">Huy hiệu: Kiện Tướng Tính Nhẩm</div>
+                      <div class="text-[11px] text-slate-600">Làm chủ tính chất giao hoán & kết hợp</div>
+                    </div>
+                  </div>
+                  <div class="bg-sky-50 border border-sky-200 rounded-2xl p-3 flex items-center gap-3">
+                    <span class="text-3xl">⚡</span>
+                    <div>
+                      <div class="text-xs font-black text-sky-900">Huy hiệu: Bậc Thầy Cặp Số Vàng</div>
+                      <div class="text-[11px] text-slate-600">Thuộc làu bộ số tròn trăm, tròn nghìn</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4 text-center">
+                <span class="inline-block bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-xl">
+                  🎒 Ba lô đã sẵn sàng khoe với cô giáo & bố mẹ
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Authentic Certificate -->
+          <div id="certificate-card" class="bg-gradient-to-b from-amber-50/70 via-white to-amber-50/70 rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-amber-500 relative text-center">
+            <div class="border-4 border-double border-amber-400 rounded-2xl p-6 sm:p-10 bg-white shadow-inner relative">
+              
+              <!-- Quốc hiệu -->
+              <div class="text-xs uppercase font-extrabold tracking-widest text-slate-700">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+              <div class="text-xs font-bold text-slate-600 mb-2">Độc lập - Tự do - Hạnh phúc</div>
+              <div class="w-32 h-0.5 bg-red-500 mx-auto mb-4"></div>
+
+              <div class="text-xs font-extrabold uppercase tracking-wider text-amber-800 mb-2">
+                HỌC LIỆU SỐ TOÁN 4 • BÀI 40: TÍNH CHẤT GIAO HOÁN & KẾT HỢP
+              </div>
+
+              <h2 class="text-3xl sm:text-5xl font-black text-red-600 tracking-wider my-2 uppercase font-serif drop-shadow-sm">
+                GIẤY CHỨNG NHẬN
+              </h2>
+              <div class="text-xs sm:text-sm font-bold text-slate-600 mb-4 tracking-wide uppercase">
+                TRAO TẶNG DANH HIỆU: KIỆN TƯỚNG TÍNH NHẨM XUẤT SẮC
+              </div>
+
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mb-6">
+                Chứng nhận em: <strong class="text-lg sm:text-2xl text-emerald-800 font-black border-b-2 border-emerald-400 pb-0.5 mx-1" id="cert-student-name">Nguyễn Văn An</strong><br>
+                Học sinh lớp: <strong class="text-slate-800 font-bold" id="cert-student-class">4A1</strong> &nbsp;—&nbsp; 
+                Trường: <strong class="text-slate-800 font-bold" id="cert-student-school">TH & THCS Thụy Lâm</strong><br>
+                Đã hoàn thành xuất sắc 5 chặng thử thách và đạt thành tích:
+                <span class="inline-block bg-amber-100 text-amber-900 font-black text-sm px-3 py-1 rounded-full border border-amber-300 mt-2">
+                  💎 Tổng điểm: <span id="cert-student-score">100</span> / 100 Kim Cương
+                </span>
+              </p>
+
+              <!-- Footer with Seal -->
+              <div class="flex items-center justify-between mt-8 pt-4 border-t border-slate-200 text-xs sm:text-sm">
+                <div class="text-left">
+                  <div class="text-slate-500 text-[11px]">Đông Anh, ngày 14 tháng 11 năm 2026</div>
+                  <div class="font-bold text-slate-700 mt-1">Giáo viên phụ trách môn Toán</div>
+                  <div class="font-black text-emerald-800 mt-6 text-sm sm:text-base">Cô Trần Thị Hoan</div>
+                </div>
+
+                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-red-600 text-red-600 flex flex-col items-center justify-center font-bold text-[9px] sm:text-[10px] transform -rotate-12 uppercase tracking-tighter shadow-sm bg-red-50/30">
+                  <span>★ CHỨNG NHẬN ★</span>
+                  <span class="text-xs font-black">XUẤT SẮC</span>
+                  <span>THỤY LÂM</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Print Action Button -->
+            <div class="mt-6 no-print">
+              <button type="button" onclick="window.print()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black px-6 py-3 rounded-2xl shadow-pop-green text-xs sm:text-sm transition-transform active:translate-y-1">
+                🖨️ In Giấy Chứng Nhận Này
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Authentic WAV Sound Effects extracted from ÂM THANH.pptx -->
+  <audio id="sound-correct" src="correct.wav" preload="auto"></audio>
+  <audio id="sound-wrong" src="wrong.wav" preload="auto"></audio>
+
+  <!-- ============================================== -->
+  <!-- JAVASCRIPT GAME LOGIC & SOUND ENGINE           -->
+  <!-- ============================================== -->
+  <script>
+    /* Sound Engine using exact WAV files from ÂM THANH.pptx */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+        this.audioCorrect = document.getElementById('sound-correct') || new Audio('correct.wav');
+        this.audioWrong = document.getElementById('sound-wrong') || new Audio('wrong.wav');
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playPop() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.06);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      }
+      playRight() {
+        if (!this.enabled) return;
+        try {
+          const el = document.getElementById('sound-correct') || this.audioCorrect;
+          if (el) {
+            el.currentTime = 0;
+            const p = el.play();
+            if (p !== undefined) {
+              p.catch(() => this.fallbackRight());
+            }
+            return;
+          }
+        } catch (e) {}
+        this.fallbackRight();
+      }
+      fallbackRight() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.16, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.22);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.25);
+        });
+      }
+      playWrong() {
+        if (!this.enabled) return;
+        try {
+          const el = document.getElementById('sound-wrong') || this.audioWrong;
+          if (el) {
+            el.currentTime = 0;
+            const p = el.play();
+            if (p !== undefined) {
+              p.catch(() => this.fallbackWrong());
+            }
+            return;
+          }
+        } catch (e) {}
+        this.fallbackWrong();
+      }
+      fallbackWrong() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [280, 220].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.14, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.18);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.12);
+          osc.stop(now + idx * 0.12 + 0.2);
+        });
+      }
+      playWoodblock() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(750, now);
+        osc.frequency.exponentialRampToValueAtTime(500, now + 0.04);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.06);
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* 25 CÂU HỎI CHUẨN 4 CHẶNG TỪ STUDIO TEMPLATES */
+    const STAGE_QUESTIONS = {
+      1: [
+        {
+          question: "Điền số thích hợp vào chỗ chấm: 125 × 6 = 6 × ...",
+          options: ["6", "125", "750", "12"],
+          correctIndex: 1,
+          explanation: "Theo tính chất giao hoán của phép nhân: a × b = b × a, nên 125 × 6 = 6 × 125."
+        },
+        {
+          question: "Điền Đúng hoặc Sai: \"Khi đổi chỗ các thừa số trong một tích thì tích không thay đổi.\"",
+          options: ["Đúng", "Sai", "Chỉ đúng với số bé", "Chỉ đúng với phép cộng"],
+          correctIndex: 0,
+          explanation: "Đúng! Đây chính là quy tắc tính chất giao hoán của phép nhân: a × b = b × a."
+        },
+        {
+          question: "Biểu thức 45 × 9 có giá trị bằng biểu thức nào dưới đây?",
+          options: ["45 + 9", "9 × 45", "45 : 9", "9 + 45"],
+          correctIndex: 1,
+          explanation: "Khi đổi chỗ hai thừa số 45 và 9 ta được 9 × 45, tích không đổi."
+        },
+        {
+          question: "Cho m × 8 = 8 × 24. Giá trị của m là:",
+          options: ["8", "16", "24", "32"],
+          correctIndex: 2,
+          explanation: "Vì m × 8 = 8 × m, mà 8 × m = 8 × 24 nên m = 24."
+        },
+        {
+          question: "Phép tính nào dưới đây có kết quả bằng a × 1?",
+          options: ["1 × a", "a + 1", "a : 1", "Cả A và C đều đúng"],
+          correctIndex: 3,
+          explanation: "a × 1 = 1 × a = a và a : 1 = a. Do đó cả A và C đều đúng!"
+        }
+      ],
+      2: [
+        {
+          question: "Công thức nào dưới đây thể hiện Tính chất kết hợp của phép nhân?",
+          options: [
+            "a × b = b × a",
+            "(a × b) × c = a × (b × c)",
+            "(a + b) × c = a × c + b × c",
+            "a × (b - c) = a × b - a × c"
+          ],
+          correctIndex: 1,
+          explanation: "Quy tắc SGK Toán 4: (a × b) × c = a × (b × c)."
+        },
+        {
+          question: "Không tính kết quả, hãy chọn dấu thích hợp: (14 × 5) × 2 ... 14 × (5 × 2)",
+          options: [">", "<", "=", "Không so sánh được"],
+          correctIndex: 2,
+          explanation: "Dấu = ! Theo tính chất kết hợp của phép nhân, (14 × 5) × 2 = 14 × (5 × 2)."
+        },
+        {
+          question: "Cặp thừa số nào dưới đây có tích bằng 100?",
+          options: ["2 × 5", "4 × 25", "8 × 125", "6 × 15"],
+          correctIndex: 1,
+          explanation: "4 × 25 = 100 là Cặp số vàng tạo số tròn trăm!"
+        },
+        {
+          question: "Cặp thừa số nào dưới đây có tích bằng 1 000?",
+          options: ["5 × 20", "4 × 25", "8 × 125", "50 × 2"],
+          correctIndex: 2,
+          explanation: "8 × 125 = 1 000 là Cặp số vàng tạo số tròn nghìn!"
+        },
+        {
+          question: "Giá trị của biểu thức (3 × 2) × 5 tính theo cách thuận tiện là:",
+          options: ["30", "25", "35", "40"],
+          correctIndex: 0,
+          explanation: "3 × (2 × 5) = 3 × 10 = 30."
+        }
+      ],
+      3: [
+        {
+          question: "Tính bằng cách thuận tiện nhất: 5 × 19 × 2 = ?",
+          options: ["190", "180", "95", "380"],
+          correctIndex: 0,
+          explanation: "Nhóm (5 × 2) × 19 = 10 × 19 = 190."
+        },
+        {
+          question: "Tính bằng cách thuận tiện nhất: 25 × 36 × 4 = ?",
+          options: ["900", "3 600", "360", "7 200"],
+          correctIndex: 1,
+          explanation: "Nhóm (25 × 4) × 36 = 100 × 36 = 3 600."
+        },
+        {
+          question: "Tính bằng cách thuận tiện nhất: 8 × 17 × 125 = ?",
+          options: ["1 700", "17 000", "136 000", "1 360"],
+          correctIndex: 1,
+          explanation: "Nhóm (8 × 125) × 17 = 1 000 × 17 = 17 000."
+        },
+        {
+          question: "Biểu thức 2 × 47 × 50 được nhóm thuận tiện nhất theo cách nào?",
+          options: [
+            "(2 × 47) × 50",
+            "(2 × 50) × 47",
+            "2 × (47 × 50)",
+            "Tính từ trái sang phải lần lượt"
+          ],
+          correctIndex: 1,
+          explanation: "Nhóm (2 × 50) × 47 = 100 × 47 = 4 700."
+        },
+        {
+          question: "Kết quả của phép tính 50 × 38 × 2 là:",
+          options: ["3 800", "1 900", "7 600", "380"],
+          correctIndex: 0,
+          explanation: "Đổi chỗ và nhóm: (50 × 2) × 38 = 100 × 38 = 3 800."
+        },
+        {
+          question: "Tính nhẩm nhanh: 4 × 18 × 25 = ?",
+          options: ["1 800", "720", "4 500", "180"],
+          correctIndex: 0,
+          explanation: "(4 × 25) × 18 = 100 × 18 = 1 800."
+        },
+        {
+          question: "Để tính 125 × 9 × 8, bạn An đổi thành (125 × 8) × 9 = 1000 × 9 = 9000. An đã áp dụng những tính chất nào?",
+          options: [
+            "Chỉ tính chất giao hoán",
+            "Chỉ tính chất kết hợp",
+            "Cả tính chất giao hoán và tính chất kết hợp",
+            "Không áp dụng tính chất nào"
+          ],
+          correctIndex: 2,
+          explanation: "Đổi chỗ thừa số (giao hoán) và đặt ngoặc nhóm (kết hợp)!"
+        },
+        {
+          question: "Tính: 20 × 9 × 5 = ?",
+          options: ["90", "900", "1 800", "450"],
+          correctIndex: 1,
+          explanation: "Nhóm (20 × 5) × 9 = 100 × 9 = 900."
+        },
+        {
+          question: "Tìm x biết: x : 25 = 4 × 7",
+          options: ["700", "100", "28", "175"],
+          correctIndex: 0,
+          explanation: "x = 25 × (4 × 7) = (25 × 4) × 7 = 100 × 7 = 700."
+        },
+        {
+          question: "Biểu thức 250 × 13 × 4 có giá trị là:",
+          options: ["13 000", "1 300", "26 000", "130 000"],
+          correctIndex: 0,
+          explanation: "Nhóm (250 × 4) × 13 = 1 000 × 13 = 13 000."
+        }
+      ],
+      4: [
+        {
+          question: "Bác An ở xã Thụy Lâm đóng gói cam Canh vào các thùng. Mỗi thùng có 4 hộp cam, mỗi hộp có 25 quả. Bác An xếp được tất cả 8 thùng cam như vậy. Hỏi bác An đã đóng gói tất cả bao nhiêu quả cam?",
+          options: ["800 quả", "1 000 quả", "600 quả", "1 200 quả"],
+          correctIndex: 0,
+          explanation: "Mỗi thùng có 4 × 25 = 100 quả. 8 thùng có: 8 × 100 = 800 (quả cam)."
+        },
+        {
+          question: "Trường TH & THCS Thụy Lâm có 5 dãy phòng học, mỗi dãy có 4 phòng, mỗi phòng trang bị 25 bộ bàn ghế mới. Hỏi trường đã trang bị tất cả bao nhiêu bộ bàn ghế?",
+          options: ["400 bộ", "500 bộ", "600 bộ", "250 bộ"],
+          correctIndex: 1,
+          explanation: "5 × 4 × 25 = 5 × (4 × 25) = 5 × 100 = 500 (bộ bàn ghế)."
+        },
+        {
+          question: "Đội thiếu niên mua 8 hộp bánh làm quà trung thu. Mỗi hộp có 125 gói bánh nhỏ. Hỏi tổng số gói bánh của cả 8 hộp là bao nhiêu?",
+          options: ["1 000 gói", "800 gói", "1 250 gói", "900 gói"],
+          correctIndex: 0,
+          explanation: "8 × 125 = 1 000 (gói bánh)."
+        },
+        {
+          question: "Một cửa hàng nông sản ở Đông Anh xuất bán 2 chuyến xe, mỗi chuyến chở 50 bao gạo, mỗi bao gạo cân nặng 35 kg. Hỏi cả hai chuyến chở được tất cả bao nhiêu ki-lô-gam gạo?",
+          options: ["3 500 kg", "1 750 kg", "7 000 kg", "350 kg"],
+          correctIndex: 0,
+          explanation: "(2 × 50) × 35 = 100 × 35 = 3 500 (kg)."
+        },
+        {
+          question: "Để chuẩn bị phần thưởng cho học sinh xuất sắc, cô giáo Hoan xếp các cuốn vở thành 4 chồng, mỗi chồng có 25 cọc, mỗi cọc có 10 cuốn vở. Hỏi có tất cả bao nhiêu cuốn vở phần thưởng?",
+          options: ["1 000 cuốn", "10 000 cuốn", "500 cuốn", "2 500 cuốn"],
+          correctIndex: 0,
+          explanation: "(4 × 25) × 10 = 100 × 10 = 1 000 (cuốn vở)."
+        }
+      ]
+    };
+
+    /* App State */
+    window.appState = {
+      student: { name: '', class: '', school: '' },
+      hasRegistered: false,
+      activeTab: 'theory', // 'theory' | 'practice'
+      currentTheoryStep: 1, // 1 to 4
+      currentStage: 1,
+      unlockedStages: [1],
+      currentQuestionIndex: 0,
+      questionAttempt: 1, // 1 -> 4
+      selectedOptionIndex: null,
+      stageScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+      hasSpunWheel: false,
+      rhymePlaying: false,
+      rhymeInterval: null,
+      commuFlipped: false
+    };
+
+    /* DOM Elements */
+    const screenWelcome = document.getElementById('screen-welcome');
+    const screenMainTabs = document.getElementById('screen-main-tabs');
+    const tabBtnTheory = document.getElementById('tab-btn-theory');
+    const tabBtnPractice = document.getElementById('tab-btn-practice');
+    const tabContentTheory = document.getElementById('tab-content-theory');
+    const tabContentPractice = document.getElementById('tab-content-practice');
+
+    const viewPracticeRoadmap = document.getElementById('view-practice-roadmap');
+    const viewPracticeQuiz = document.getElementById('view-practice-quiz');
+    const viewPracticeStage5 = document.getElementById('view-practice-stage5');
+
+    const totalScoreDisplay = document.getElementById('total-score-display');
+    const roadmapScore = document.getElementById('roadmap-score');
+    const movingTruck = document.getElementById('moving-truck');
+
+    /* SCORE UPDATER */
+    window.updateScoreDisplays = function() {
+      let total = 0;
+      for (let s = 1; s <= 5; s++) {
+        total += window.appState.stageScores[s] || 0;
+      }
+      if (totalScoreDisplay) totalScoreDisplay.textContent = total;
+      if (roadmapScore) roadmapScore.textContent = `💎 ${total} / 100`;
+
+      const certScore = document.getElementById('cert-student-score');
+      if (certScore) certScore.textContent = total;
+
+      // Update roadmap stop buttons state
+      for (let s = 1; s <= 5; s++) {
+        const stopBtn = document.getElementById(`road-stop-${s}`);
+        const stopIcon = document.getElementById(`stop-icon-${s}`);
+        if (!stopBtn) continue;
+
+        if (window.appState.unlockedStages.includes(s)) {
+          stopBtn.removeAttribute('disabled');
+          stopBtn.classList.remove('locked');
+          if (s === window.appState.currentStage) {
+            stopBtn.classList.add('active');
+            stopBtn.classList.remove('done');
+          } else if (s < window.appState.currentStage || window.appState.stageScores[s] > 0) {
+            stopBtn.classList.add('done');
+            stopBtn.classList.remove('active');
+          }
+          if (stopIcon) {
+            const icons = { 1: '🚀', 2: '✨', 3: '🎯', 4: '🌟', 5: '🏆' };
+            stopIcon.textContent = icons[s];
+          }
+        } else {
+          stopBtn.setAttribute('disabled', 'true');
+          stopBtn.classList.add('locked');
+          stopBtn.classList.remove('active', 'done');
+          if (stopIcon) stopIcon.textContent = '🔒';
+        }
+      }
+    };
+
+    /* TAB SWITCHING */
+    function switchTab(tab) {
+      sound.playPop();
+      window.appState.activeTab = tab;
+      if (tab === 'theory') {
+        tabBtnTheory.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 transition bg-emerald-600 text-white shadow-md';
+        tabBtnPractice.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 transition text-slate-600 hover:bg-slate-100';
+        tabContentTheory.classList.remove('hidden');
+        tabContentPractice.classList.add('hidden');
+      } else {
+        tabBtnPractice.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 transition bg-emerald-600 text-white shadow-md';
+        tabBtnTheory.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 transition text-slate-600 hover:bg-slate-100';
+        tabContentPractice.classList.remove('hidden');
+        tabContentTheory.classList.add('hidden');
+      }
+    }
+
+    tabBtnTheory.addEventListener('click', () => switchTab('theory'));
+    tabBtnPractice.addEventListener('click', () => switchTab('practice'));
+
+    /* THEORY STEP-BY-STEP CONTROLLER */
+    function showTheoryStep(step) {
+      sound.playPop();
+      window.appState.currentTheoryStep = step;
+
+      for (let s = 1; s <= 4; s++) {
+        const stepEl = document.getElementById(`theory-step-${s}`);
+        const pillBtn = document.getElementById(`theory-pill-${s}`);
+        if (stepEl) {
+          if (s === step) stepEl.classList.remove('hidden');
+          else stepEl.classList.add('hidden');
+        }
+        if (pillBtn) {
+          if (s === step) {
+            pillBtn.className = 'theory-pill-btn flex-1 py-2 px-3 rounded-xl font-black text-xs sm:text-sm transition flex items-center justify-center gap-1.5 bg-emerald-600 text-white shadow-sm';
+          } else {
+            pillBtn.className = 'theory-pill-btn flex-1 py-2 px-3 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200';
+          }
+        }
+      }
+
+      const counter = document.getElementById('theory-step-counter');
+      if (counter) counter.textContent = `Bước ${step} / 4`;
+
+      const progress = document.getElementById('theory-step-progress');
+      if (progress) progress.style.width = `${step * 25}%`;
+
+      const btnPrev = document.getElementById('btn-theory-prev');
+      const btnNext = document.getElementById('btn-theory-next');
+      const btnFinish = document.getElementById('btn-theory-finish');
+
+      if (btnPrev) {
+        if (step === 1) {
+          btnPrev.setAttribute('disabled', 'true');
+          btnPrev.classList.add('opacity-40', 'cursor-not-allowed');
+        } else {
+          btnPrev.removeAttribute('disabled');
+          btnPrev.classList.remove('opacity-40', 'cursor-not-allowed');
+        }
+      }
+
+      if (step === 4) {
+        if (btnNext) btnNext.classList.add('hidden');
+        if (btnFinish) btnFinish.classList.remove('hidden');
+      } else {
+        if (btnNext) btnNext.classList.remove('hidden');
+        if (btnFinish) btnFinish.classList.add('hidden');
+      }
+    }
+
+    // Attach step pill listeners
+    for (let s = 1; s <= 4; s++) {
+      const pill = document.getElementById(`theory-pill-${s}`);
+      if (pill) pill.addEventListener('click', () => showTheoryStep(s));
+    }
+
+    const btnTheoryPrev = document.getElementById('btn-theory-prev');
+    if (btnTheoryPrev) {
+      btnTheoryPrev.addEventListener('click', () => {
+        if (window.appState.currentTheoryStep > 1) {
+          showTheoryStep(window.appState.currentTheoryStep - 1);
+        }
+      });
+    }
+
+    const btnTheoryNext = document.getElementById('btn-theory-next');
+    if (btnTheoryNext) {
+      btnTheoryNext.addEventListener('click', () => {
+        if (window.appState.currentTheoryStep < 4) {
+          showTheoryStep(window.appState.currentTheoryStep + 1);
+        }
+      });
+    }
+
+    const btnTheoryFinish = document.getElementById('btn-theory-finish');
+    if (btnTheoryFinish) {
+      btnTheoryFinish.addEventListener('click', () => {
+        sound.playRight();
+        switchTab('practice');
+      });
+    }
+
+    /* LOGIN HANDLER */
+    document.getElementById('start-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('input-student-name').value.trim();
+      const sClass = document.getElementById('input-student-class').value.trim();
+      const school = document.getElementById('input-student-school').value.trim();
+
+      if (!name || !sClass) return;
+
+      window.appState.student = { name, class: sClass, school };
+      window.appState.hasRegistered = true;
+
+      // Update Badges
+      document.getElementById('badge-name').textContent = name;
+      document.getElementById('badge-class').textContent = sClass;
+      document.getElementById('roadmap-user-name').textContent = name;
+      document.getElementById('cert-student-name').textContent = name;
+      document.getElementById('cert-student-class').textContent = sClass;
+      document.getElementById('cert-student-school').textContent = school;
+
+      sound.playRight();
+      try { confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } }); } catch (e) {}
+
+      screenWelcome.classList.add('hidden');
+      screenMainTabs.classList.remove('hidden');
+      switchTab('theory');
+      showTheoryStep(1);
+      window.updateScoreDisplays();
+    });
+
+    /* SOUND TOGGLE */
+    document.getElementById('sound-toggle-btn').addEventListener('click', function() {
+      sound.enabled = !sound.enabled;
+      document.getElementById('sound-icon').textContent = sound.enabled ? '🔊' : '🔇';
+    });
+
+    /* ============================================== */
+    /* TAB 1: INTERACTIVE THEORY SCRIPTS              */
+    /* ============================================== */
+    function renderCommuGrid() {
+      const container = document.getElementById('commu-grid-container');
+      const expr = document.getElementById('commu-expression');
+      const btnTxt = document.getElementById('commu-btn-txt');
+      container.innerHTML = '';
+
+      const isFlipped = window.appState.commuFlipped;
+      const rows = isFlipped ? 5 : 3;
+      const cols = isFlipped ? 3 : 5;
+
+      container.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+      expr.textContent = `${rows} hàng × ${cols} cột = 15 viên kẹo`;
+      btnTxt.textContent = isFlipped ? 'Đổi chỗ thành: 3 hàng × 5 cột' : 'Đổi chỗ thành: 5 hàng × 3 cột';
+
+      for (let i = 0; i < 15; i++) {
+        const item = document.createElement('div');
+        item.className = 'w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-tr from-amber-400 to-amber-500 rounded-xl flex items-center justify-center text-xl shadow-sm border border-amber-300 transform hover:scale-110 transition';
+        item.textContent = '🍫';
+        container.appendChild(item);
+      }
+    }
+    renderCommuGrid();
+
+    document.getElementById('btn-toggle-commu').addEventListener('click', function() {
+      sound.playPop();
+      window.appState.commuFlipped = !window.appState.commuFlipped;
+      renderCommuGrid();
+    });
+
+    // Sandbox Test
+    document.getElementById('btn-test-sandbox').addEventListener('click', function() {
+      sound.playPop();
+      const a = parseInt(document.getElementById('sandbox-a').value) || 0;
+      const b = parseInt(document.getElementById('sandbox-b').value) || 0;
+      const res = a * b;
+      document.getElementById('sandbox-result').innerHTML = 
+        `${a} × ${b} = ${res} &nbsp; và &nbsp; ${b} × ${a} = ${res} &nbsp;➔ Luôn bằng nhau!`;
+    });
+
+    // Associative Demonstration
+    const btnAssoc1 = document.getElementById('btn-assoc-mode-1');
+    const btnAssoc2 = document.getElementById('btn-assoc-mode-2');
+    const assocVisual = document.getElementById('assoc-visual-box');
+    const assocMath = document.getElementById('assoc-math-step');
+
+    btnAssoc1.addEventListener('click', function() {
+      sound.playPop();
+      btnAssoc1.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition bg-sky-600 text-white shadow-sm';
+      btnAssoc2.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition bg-slate-200 text-slate-700 hover:bg-slate-300';
+      assocVisual.innerHTML = `
+        <div class="text-3xl mb-2">📦 📦 &nbsp;➔&nbsp; 6 hộp &nbsp;➔&nbsp; 24 chiếc bánh 🍪</div>
+        <div class="text-base sm:text-lg font-black text-sky-900">(2 × 3) × 4 = 6 × 4 = 24 (chiếc bánh)</div>
+      `;
+    });
+
+    btnAssoc2.addEventListener('click', function() {
+      sound.playPop();
+      btnAssoc2.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition bg-sky-600 text-white shadow-sm';
+      btnAssoc1.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition bg-slate-200 text-slate-700 hover:bg-slate-300';
+      assocVisual.innerHTML = `
+        <div class="text-3xl mb-2">📦 (12 bánh) + 📦 (12 bánh) &nbsp;➔&nbsp; 24 chiếc bánh 🍪</div>
+        <div class="text-base sm:text-lg font-black text-sky-900">2 × (3 × 4) = 2 × 12 = 24 (chiếc bánh)</div>
+      `;
+    });
+
+    /* ============================================== */
+    /* TAB 2: ROADMAP & QUIZ ENGINE                   */
+    /* ============================================== */
+    const stagePos = { 1: '8%', 2: '29%', 3: '50%', 4: '71%', 5: '92%' };
+    const stageNames = {
+      1: 'Chặng 1: Khởi động',
+      2: 'Chặng 2: Khám phá',
+      3: 'Chặng 3: Luyện tập',
+      4: 'Chặng 4: Vận dụng',
+      5: 'Chặng 5: Sân khấu vinh danh'
+    };
+
+    function showRoadmapView() {
+      viewPracticeRoadmap.classList.remove('hidden');
+      viewPracticeQuiz.classList.add('hidden');
+      viewPracticeStage5.classList.add('hidden');
+
+      if (movingTruck) {
+        movingTruck.style.left = stagePos[window.appState.currentStage] || '8%';
+      }
+      document.getElementById('current-truck-location').textContent = stageNames[window.appState.currentStage] || '';
+      window.updateScoreDisplays();
+    }
+
+    function openStage(stageNum) {
+      sound.playPop();
+      if (!window.appState.unlockedStages.includes(stageNum)) return;
+      window.appState.currentStage = stageNum;
+
+      if (stageNum === 5) {
+        viewPracticeRoadmap.classList.add('hidden');
+        viewPracticeQuiz.classList.add('hidden');
+        viewPracticeStage5.classList.remove('hidden');
+        sound.playRight();
+        try { confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } }); } catch (e) {}
+      } else {
+        viewPracticeRoadmap.classList.add('hidden');
+        viewPracticeStage5.classList.add('hidden');
+        viewPracticeQuiz.classList.remove('hidden');
+        window.appState.currentQuestionIndex = 0;
+        loadQuestion();
+      }
+    }
+
+    // Road stop click handlers
+    for (let s = 1; s <= 5; s++) {
+      const btn = document.getElementById(`road-stop-${s}`);
+      if (btn) {
+        btn.addEventListener('click', () => openStage(s));
+      }
+    }
+    document.getElementById('btn-enter-current-stage').addEventListener('click', () => {
+      openStage(window.appState.currentStage);
+    });
+    document.getElementById('btn-back-to-map').addEventListener('click', () => {
+      sound.playPop();
+      showRoadmapView();
+    });
+
+    /* QUIZ QUESTION RENDERER & SCORER */
+    const questionTextEl = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const btnCheckAnswer = document.getElementById('btn-check-answer');
+    const feedbackPanel = document.getElementById('feedback-panel');
+    const feedbackIcon = document.getElementById('feedback-icon');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const feedbackExplanation = document.getElementById('feedback-explanation');
+    const btnRetryQuestion = document.getElementById('btn-retry-question');
+    const btnNextQuestion = document.getElementById('btn-next-question');
+    const btnFinishStage = document.getElementById('btn-finish-stage');
+    const attemptBadge = document.getElementById('attempt-badge');
+
+    function loadQuestion() {
+      const qList = STAGE_QUESTIONS[window.appState.currentStage];
+      const q = qList[window.appState.currentQuestionIndex];
+
+      window.appState.selectedOptionIndex = null;
+      window.appState.questionAttempt = 1;
+
+      // Header info
+      document.getElementById('quiz-stage-name').textContent = stageNames[window.appState.currentStage];
+      document.getElementById('quiz-question-current').textContent = window.appState.currentQuestionIndex + 1;
+      document.getElementById('quiz-question-total').textContent = qList.length;
+
+      const pct = Math.round(((window.appState.currentQuestionIndex + 1) / qList.length) * 100);
+      document.getElementById('quiz-progress-fill').style.width = `${pct}%`;
+
+      updateAttemptUI();
+
+      questionTextEl.textContent = q.question;
+      renderOptions(q);
+
+      feedbackPanel.classList.add('hidden');
+      btnCheckAnswer.classList.remove('hidden');
+      btnCheckAnswer.setAttribute('disabled', 'true');
+      btnRetryQuestion.classList.add('hidden');
+      btnNextQuestion.classList.add('hidden');
+      btnFinishStage.classList.add('hidden');
+    }
+
+    function updateAttemptUI() {
+      const att = window.appState.questionAttempt;
+      const labels = {
+        1: 'Lần 1 (Đúng nhận +4 💎)',
+        2: 'Lần 2 (Đúng nhận +3 💎)',
+        3: 'Lần 3 (Đúng nhận +2 💎)',
+        4: 'Lần 4 (Đúng nhận 0 💎)'
+      };
+      attemptBadge.textContent = labels[att] || 'Lần 4 (Đúng nhận 0 💎)';
+    }
+
+    function renderOptions(q) {
+      optionsContainer.innerHTML = '';
+      const prefixes = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-btn bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-800 p-4 rounded-2xl font-bold text-left text-xs sm:text-sm flex items-center gap-3 transition shadow-sm';
+        btn.innerHTML = `
+          <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-black flex items-center justify-center shrink-0 border border-slate-300">${prefixes[idx]}</span>
+          <span class="flex-1">${opt}</span>
+        `;
+        btn.addEventListener('click', () => {
+          sound.playPop();
+          window.appState.selectedOptionIndex = idx;
+          // highlight selected
+          Array.from(optionsContainer.children).forEach((child, cIdx) => {
+            if (cIdx === idx) {
+              child.className = 'opt-btn bg-emerald-50 border-2 border-emerald-500 text-emerald-950 p-4 rounded-2xl font-black text-left text-xs sm:text-sm flex items-center gap-3 shadow-md';
+              child.querySelector('span').className = 'w-8 h-8 rounded-xl bg-emerald-600 text-white font-black flex items-center justify-center shrink-0';
+            } else {
+              child.className = 'opt-btn bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 p-4 rounded-2xl font-bold text-left text-xs sm:text-sm flex items-center gap-3 shadow-sm';
+              child.querySelector('span').className = 'w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-black flex items-center justify-center shrink-0 border border-slate-300';
+            }
+          });
+          btnCheckAnswer.removeAttribute('disabled');
+        });
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    /* CHECK ANSWER LOGIC (DIAMOND RULES) */
+    btnCheckAnswer.addEventListener('click', function() {
+      if (window.appState.selectedOptionIndex === null) return;
+
+      const qList = STAGE_QUESTIONS[window.appState.currentStage];
+      const q = qList[window.appState.currentQuestionIndex];
+      const isCorrect = (window.appState.selectedOptionIndex === q.correctIndex);
+      const att = window.appState.questionAttempt;
+
+      btnCheckAnswer.classList.add('hidden');
+      feedbackPanel.classList.remove('hidden');
+
+      // Disable option clicks
+      Array.from(optionsContainer.children).forEach(btn => btn.setAttribute('disabled', 'true'));
+
+      if (isCorrect) {
+        // SCORING RULE:
+        // Lần 1: +4
+        // Lần 2: +3
+        // Lần 3: +2
+        // Lần 4: +0
+        let earned = 0;
+        if (att === 1) earned = 4;
+        else if (att === 2) earned = 3;
+        else if (att === 3) earned = 2;
+        else if (att === 4) earned = 0;
+
+        sound.playRight();
+        try { confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } }); } catch (e) {}
+
+        window.appState.stageScores[window.appState.currentStage] += earned;
+        window.updateScoreDisplays();
+
+        feedbackPanel.className = 'mt-6 rounded-2xl p-5 border-2 border-emerald-300 bg-emerald-50 text-emerald-950';
+        feedbackIcon.textContent = '🎉';
+        feedbackTitle.textContent = `Chính xác! (+${earned} 💎 Kim cương)`;
+        feedbackExplanation.textContent = `${q.explanation} (Hoàn thành ở lượt thứ ${att}/4).`;
+
+        btnRetryQuestion.classList.add('hidden');
+        if (window.appState.currentQuestionIndex + 1 < qList.length) {
+          btnNextQuestion.classList.remove('hidden');
+          btnFinishStage.classList.add('hidden');
+        } else {
+          btnNextQuestion.classList.add('hidden');
+          btnFinishStage.classList.remove('hidden');
+        }
+      } else {
+        sound.playWrong();
+
+        if (att < 4) {
+          feedbackPanel.className = 'mt-6 rounded-2xl p-5 border-2 border-amber-300 bg-amber-50 text-amber-950';
+          feedbackIcon.textContent = '🤔';
+          feedbackTitle.textContent = `Chưa chính xác rồi bạn ơi! (Lượt ${att}/4)`;
+          
+          let nextEarn = (att === 1 ? 3 : (att === 2 ? 2 : 0));
+          feedbackExplanation.textContent = `Hãy bấm nút 'Làm lại câu này' để suy nghĩ thêm nhé! (Làm đúng ở lượt tiếp theo nhận +${nextEarn} 💎).`;
+
+          btnRetryQuestion.classList.remove('hidden');
+          btnNextQuestion.classList.add('hidden');
+          btnFinishStage.classList.add('hidden');
+        } else {
+          // Over 4 attempts -> 0 diamonds & show explanation
+          feedbackPanel.className = 'mt-6 rounded-2xl p-5 border-2 border-rose-300 bg-rose-50 text-rose-950';
+          feedbackIcon.textContent = '💡';
+          feedbackTitle.textContent = `Rất tiếc! Đã hết 4 lượt thử (0 💎)`;
+          feedbackExplanation.textContent = `Đáp án đúng là lựa chọn số ${q.correctIndex + 1}: ${q.options[q.correctIndex]}. Lời giải: ${q.explanation}`;
+
+          btnRetryQuestion.classList.add('hidden');
+          if (window.appState.currentQuestionIndex + 1 < qList.length) {
+            btnNextQuestion.classList.remove('hidden');
+          } else {
+            btnFinishStage.classList.remove('hidden');
+          }
+        }
+      }
+    });
+
+    // RETRY QUESTION
+    btnRetryQuestion.addEventListener('click', function() {
+      sound.playPop();
+      window.appState.questionAttempt += 1;
+      window.appState.selectedOptionIndex = null;
+      updateAttemptUI();
+
+      // Reset options
+      const q = STAGE_QUESTIONS[window.appState.currentStage][window.appState.currentQuestionIndex];
+      renderOptions(q);
+
+      feedbackPanel.classList.add('hidden');
+      btnCheckAnswer.classList.remove('hidden');
+      btnCheckAnswer.setAttribute('disabled', 'true');
+      btnRetryQuestion.classList.add('hidden');
+    });
+
+    // NEXT QUESTION
+    btnNextQuestion.addEventListener('click', function() {
+      sound.playPop();
+      window.appState.currentQuestionIndex += 1;
+      loadQuestion();
+    });
+
+    // FINISH STAGE
+    btnFinishStage.addEventListener('click', function() {
+      sound.playRight();
+      try { confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } }); } catch (e) {}
+
+      const nextSt = window.appState.currentStage + 1;
+      if (!window.appState.unlockedStages.includes(nextSt) && nextSt <= 5) {
+        window.appState.unlockedStages.push(nextSt);
+      }
+      window.appState.currentStage = nextSt;
+      showRoadmapView();
+    });
+
+    /* ============================================== */
+    /* TAB 2: STAGE 5 VINH DANH & CELEBRATION SCRIPTS */
+    /* ============================================== */
+
+    // Đồng Dao Karaoke Synchronized
+    const btnPlayRhyme = document.getElementById('btn-play-rhyme');
+    const rhymePlayIcon = document.getElementById('rhyme-play-icon');
+    const rhymePlayText = document.getElementById('rhyme-play-text');
+    const totalRhymeLines = 7;
+
+    function stopRhyme() {
+      if (window.appState.rhymeInterval) {
+        clearInterval(window.appState.rhymeInterval);
+        window.appState.rhymeInterval = null;
+      }
+      window.appState.rhymePlaying = false;
+      rhymePlayIcon.textContent = '▶️';
+      rhymePlayText.textContent = 'Bật giai điệu đồng dao';
+      for (let i = 0; i < totalRhymeLines; i++) {
+        const line = document.getElementById(`rhyme-line-${i}`);
+        if (line) line.classList.remove('highlight');
+      }
+    }
+
+    function startRhyme() {
+      window.appState.rhymePlaying = true;
+      rhymePlayIcon.textContent = '⏹️';
+      rhymePlayText.textContent = 'Dừng đồng dao';
+
+      let currentLine = 0;
+      function step() {
+        for (let i = 0; i < totalRhymeLines; i++) {
+          const line = document.getElementById(`rhyme-line-${i}`);
+          if (line) {
+            if (i === currentLine) line.classList.add('highlight');
+            else line.classList.remove('highlight');
+          }
+        }
+        sound.playWoodblock();
+        currentLine = (currentLine + 1) % totalRhymeLines;
+      }
+      step();
+      window.appState.rhymeInterval = setInterval(step, 1800);
+    }
+
+    btnPlayRhyme.addEventListener('click', function() {
+      if (window.appState.rhymePlaying) stopRhyme();
+      else startRhyme();
+    });
+
+    // Lucky Wheel Spin
+    const btnSpinWheel = document.getElementById('btn-spin-wheel');
+    const wheelDisc = document.getElementById('wheel-disc');
+    const wheelStatusTxt = document.getElementById('wheel-status-txt');
+    const backpackWonCard = document.getElementById('backpack-won-card');
+    const backpackEmptyTxt = document.getElementById('backpack-empty-txt');
+    const backpackPrizeName = document.getElementById('backpack-prize-name');
+
+    const TROPHIES = [
+      { name: "Cúp Kiện Tướng Phép Nhân", deg: 22 },
+      { name: "Cúp Tính Nhẩm Thần Tốc", deg: 67 },
+      { name: "Cúp Kim Cương Toán Học", deg: 112 },
+      { name: "Cúp Tròn Trăm Thông Thái", deg: 157 },
+      { name: "Cúp Tròn Nghìn Siêu Đẳng", deg: 202 },
+      { name: "Cúp Thám Tử Số Học", deg: 247 },
+      { name: "Cúp Bàn Tay Vàng Thụy Lâm", deg: 292 },
+      { name: "Cúp Ngôi Sao Toán 4", deg: 337 }
+    ];
+
+    btnSpinWheel.addEventListener('click', function() {
+      if (window.appState.hasSpunWheel) {
+        alert("Em đã quay nhận Cúp danh dự rồi nhé!");
+        return;
+      }
+
+      window.appState.hasSpunWheel = true;
+      btnSpinWheel.setAttribute('disabled', 'true');
+      btnSpinWheel.classList.add('opacity-50', 'cursor-not-allowed');
+      wheelStatusTxt.textContent = "Vòng quay đang xoay tít mù...";
+      sound.playPop();
+
+      const prizeIndex = Math.floor(Math.random() * TROPHIES.length);
+      const chosenTrophy = TROPHIES[prizeIndex];
+
+      const totalDegrees = 360 * 5 + (360 - chosenTrophy.deg);
+      wheelDisc.style.transform = `rotate(${totalDegrees}deg)`;
+
+      setTimeout(() => {
+        sound.playRight();
+        try { confetti({ particleCount: 90, spread: 80, origin: { y: 0.6 } }); } catch (e) {}
+
+        wheelStatusTxt.textContent = `🎉 Chúc mừng em đã nhận: ${chosenTrophy.name}!`;
+        backpackEmptyTxt.classList.add('hidden');
+        backpackWonCard.classList.remove('hidden');
+        backpackPrizeName.textContent = chosenTrophy.name;
+      }, 3900);
+    });
+
+  </script>
+
+  <!-- Teacher Toolbar Integration -->
+  <script src="teacher-toolbar.js"></script>
+</body>
+</html>

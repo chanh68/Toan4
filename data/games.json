@@ -1,5 +1,38 @@
 [
   {
+    "id": "toan4_bai42_tinh_chat_phan_phoi",
+    "title": "Bài 42: Tính chất phân phối của phép nhân đối với phép cộng",
+    "subtitle": "Đại hội đồng diễn Thụy Lâm • Rút thừa số chung & Đấu trường 5 chặng săn 100 kim cương",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🤖",
+    "color": "from-indigo-600 via-purple-600 to-pink-600",
+    "filename": "toan4_bai42_tinh_chat_phan_phoi.html",
+    "createdAt": "2026-11-14T18:15:00.000Z"
+  },
+  {
+    "id": "toan4_bai41_nhan_chia_10_100_1000",
+    "title": "Bài 41: Nhân, chia với 10, 100, 1 000...",
+    "subtitle": "Vương Quốc Số 0 Diệu Kỳ • Cỗ máy số 0 tương tác & Đấu trường 5 miền đất săn 100 kim cương",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🐰",
+    "color": "from-pink-500 via-rose-500 to-amber-500",
+    "filename": "toan4_bai41_nhan_chia_10_100_1000.html",
+    "createdAt": "2026-11-14T17:50:00.000Z"
+  },
+  {
+    "id": "toan4_bai40_tinh_chat_phep_nhan",
+    "title": "Bài 40: Tính chất giao hoán và kết hợp của phép nhân",
+    "subtitle": "Khám phá trực quan sinh động (Tab 1) & Đấu trường 5 chặng săn 100 kim cương (Tab 2)",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "✨",
+    "color": "from-emerald-500 via-teal-500 to-pink-500",
+    "filename": "toan4_bai40_tinh_chat_phep_nhan.html",
+    "createdAt": "2026-11-14T15:25:00.000Z"
+  },
+  {
     "id": "link_1794623978181",
     "title": "On tap giua ki 1 de 3",
     "subtitle": "đề 3",

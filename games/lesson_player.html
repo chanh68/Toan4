@@ -917,6 +917,18 @@
         } catch (e) {}
       }
 
+      // Static games.json fallback
+      if (lessonId && appState.lesson.id !== lessonId) {
+        try {
+          const res = await fetch(`../data/games.json?t=${Date.now()}`);
+          if (res.ok) {
+            const list = await res.json();
+            const found = list.find(g => g.id === lessonId);
+            if (found && Array.isArray(found.stages)) appState.lesson = found;
+          }
+        } catch (e) {}
+      }
+
       // Apply lesson meta to DOM
       const l = appState.lesson;
       document.title = `${l.title} - Toán 4 Thụy Lâm`;

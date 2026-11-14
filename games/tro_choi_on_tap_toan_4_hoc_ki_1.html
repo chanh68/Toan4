@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VƯỢT CHƯỚNG NGẠI VẬT - TOÁN 4</title>
+<style>
+:root{--ink:#26324b;--blue:#4169e1;--pink:#ff719a;--yellow:#ffd166;--green:#39b982;--paper:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#e7f6ff,#fff0f5 55%,#fff7dc);min-height:100vh}
+header{padding:24px 16px 18px;text-align:center;background:linear-gradient(110deg,#5278ed,#8b6be8);color:white;border-radius:0 0 30px 30px;box-shadow:0 5px 18px #5269a633}
+h1{margin:0;font-size:clamp(24px,4vw,38px);letter-spacing:1px}header p{margin:8px 0 0}
+.wrap{max-width:980px;margin:18px auto;padding:0 14px 40px}.top{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:14px 0}
+.pill{background:white;border-radius:18px;padding:10px 16px;box-shadow:0 3px 10px #26324b12;font-weight:bold}
+.progress{height:12px;background:#ffffffbd;border-radius:20px;overflow:hidden;flex:1;min-width:130px}.bar{height:100%;width:0;background:linear-gradient(90deg,#39b982,#ffd166);transition:.3s}
+.card{background:#ffffffed;border:2px solid #fff;border-radius:22px;padding:22px;margin:15px 0;box-shadow:0 8px 22px #5269a61a}
+.card h2{font-size:20px;margin:0 0 12px;color:#4159bb}.tag{display:inline-block;background:#fff0c9;color:#8a5a00;border-radius:12px;padding:5px 10px;font-size:13px;font-weight:bold;margin-bottom:10px}
+.q{font-size:17px;line-height:1.55}.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:13px}
+button,.choice,.drop,.tile{font:inherit}.choice{background:#f3f6ff;border:2px solid #dbe3ff;border-radius:14px;padding:12px;text-align:left;cursor:pointer;transition:.15s}.choice:hover{transform:translateY(-2px);border-color:#8298f2}.choice.selected{background:#e6edff;border-color:#5278ed}.choice.correct{background:#e2fff1;border-color:#39b982}.choice.wrong{background:#fff0f0;border-color:#ed7777}
+input,select{font:inherit;padding:10px 12px;border:2px solid #cbd5f2;border-radius:11px;max-width:100%}.blank{width:150px;margin:5px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}.matchgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.matchitem{background:#f5f7ff;border-radius:13px;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dragzone{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tile{background:#fff2c9;border:2px dashed #dca83b;border-radius:12px;padding:10px 14px;cursor:grab;font-weight:bold}.drop{min-width:115px;min-height:42px;border:2px dashed #9aa9d7;border-radius:10px;background:#f8faff;padding:8px;text-align:center}
+.feedback{font-weight:bold;min-height:24px;margin-top:10px}.good{color:#15965f}.bad{color:#d34e57}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:22px 0}button.primary{border:0;border-radius:14px;padding:12px 22px;background:#5278ed;color:white;font-weight:bold;cursor:pointer;box-shadow:0 4px 0 #3455be}button.secondary{border:0;border-radius:14px;padding:12px 18px;background:#ffe19a;color:#694900;font-weight:bold;cursor:pointer}
+.small{font-size:13px;color:#68738b}.result{display:none;text-align:center;background:white;border-radius:22px;padding:24px;margin-top:20px}.result strong{font-size:32px;color:#5278ed}
+@media(max-width:600px){.card{padding:16px}.matchgrid{grid-template-columns:1fr}.q{font-size:16px}}
+</style></head>
+<body>
+<header><h1>🌟 VƯỢT CHƯỚNG NGẠI VẬT 🌟</h1><p>TRÒ CHƠI ÔN TẬP TOÁN LỚP 4 · HỌC KÌ I</p></header>
+<div class="wrap">
+<div class="top"><div class="pill">⭐ Điểm: <span id="score">0</span></div><div class="progress"><div class="bar" id="bar"></div></div><div class="pill">📍 Câu <span id="count">1</span>/10</div></div>
+<div id="game">
+<section class="card" id="q1"><span class="tag">1 · CHỌN ĐÁP ÁN</span><h2>🔎 Thử tài nhanh trí</h2><div class="q">Trong các số <b>158 743; 165 341; 178 259; 157 843</b>, số bé nhất là:</div><div class="choices" data-single="1"><button class="choice">A. 158 743</button><button class="choice">B. 178 259</button><button class="choice" data-correct="1">C. 157 843</button><button class="choice">D. 165 341</button></div><div class="feedback"></div></section>
+<section class="card" id="q2"><span class="tag">2 · KÉO THẢ / GHÉP CẶP</span><h2>🏠 Những ngôi nhà thế kỉ</h2><div class="q">Kéo năm vào đúng thế kỉ tương ứng (hoặc chọn đáp án trong ô).</div><div class="matchgrid" id="centuries">
+<div class="matchitem">Năm 1229 <select data-answer="Thế kỉ XIII"><option value="">Chọn thế kỉ</option><option>Thế kỉ X</option><option>Thế kỉ XIII</option><option>Thế kỉ XV</option><option>Thế kỉ XX</option></select></div>
+<div class="matchitem">Năm 1480 <select data-answer="Thế kỉ XV"><option value="">Chọn thế kỉ</option><option>Thế kỉ X</option><option>Thế kỉ XIII</option><option>Thế kỉ XV</option><option>Thế kỉ XX</option></select></div>
+<div class="matchitem">Năm 923 <select data-answer="Thế kỉ X"><option value="">Chọn thế kỉ</option><option>Thế kỉ X</option><option>Thế kỉ XIII</option><option>Thế kỉ XV</option><option>Thế kỉ XX</option></select></div>
+<div class="matchitem">Năm 2000 <select data-answer="Thế kỉ XX"><option value="">Chọn thế kỉ</option><option>Thế kỉ X</option><option>Thế kỉ XIII</option><option>Thế kỉ XV</option><option>Thế kỉ XX</option></select></div>
+</div><div class="feedback"></div></section>
+<section class="card" id="q3"><span class="tag">3 · ĐÚNG HAY SAI?</span><h2>🤖 Robot kiểm tra kiến thức</h2><div class="q">Chọn Đúng hoặc Sai cho từng nhận định:</div>
+<div class="row">a) Số 6 234 là số liền trước của 6 235. <select data-answer="Đúng"><option value="">Chọn</option><option>Đúng</option><option>Sai</option></select></div>
+<div class="row">b) Số 6 234 là số liền trước của 6 235. <select data-answer="Đúng"><option value="">Chọn</option><option>Đúng</option><option>Sai</option></select></div>
+<div class="row">c) Số liền sau của 6 455 là 6 457. <select data-answer="Sai"><option value="">Chọn</option><option>Đúng</option><option>Sai</option></select></div>
+<div class="row">d) Số 1 000 là số bé nhất có 4 chữ số. <select data-answer="Đúng"><option value="">Chọn</option><option>Đúng</option><option>Sai</option></select></div><div class="feedback"></div></section>
+<section class="card" id="q4"><span class="tag">4 · CHỌN NHIỀU ĐÁP ÁN</span><h2>📐 Nhà hình học tí hon</h2><div class="q">Quan sát hình gồm ba đường thẳng ngang AB, MN, DC và hai đường thẳng đứng AD, BC. Chọn <b>tất cả</b> các đường thẳng song song với AB:</div><div class="choices" data-multi="1"><button class="choice" data-correct="1">MN</button><button class="choice" data-correct="1">DC</button><button class="choice">AD</button><button class="choice">BC</button></div><div class="feedback"></div>
+<div class="q" style="margin-top:16px">Trong ba hình có số đo diện tích dưới đây, hình nào có diện tích lớn nhất?</div>
+<div class="choices" data-single="1"><button class="choice">A. 2 m² 3 cm²</button><button class="choice">B. 200 dm² 30 mm²</button><button class="choice" data-correct="1">C. 2 m² 3 dm²</button></div>
+<section class="card" id="q5"><span class="tag">5 · NỐI / GHÉP KẾT QUẢ</span><h2>🧮 Nhà máy tính toán</h2><div class="q">Nối phép tính với kết quả đúng bằng cách chọn kết quả ở mỗi dòng.</div>
+<div class="matchgrid">
+<div class="matchitem">104 562 + 458 273 <select data-answer="562 835"><option value="">Kết quả</option><option>562 835</option><option>525 313</option><option>103 140</option><option>6 502</option></select></div>
+<div class="matchitem">693 450 − 168 137 <select data-answer="525 313"><option value="">Kết quả</option><option>562 835</option><option>525 313</option><option>103 140</option><option>6 502</option></select></div>
+<div class="matchitem">17 190 × 6 <select data-answer="103 140"><option value="">Kết quả</option><option>562 835</option><option>525 313</option><option>103 140</option><option>6 502</option></select></div>
+<div class="matchitem">32 510 : 5 <select data-answer="6 502"><option value="">Kết quả</option><option>562 835</option><option>525 313</option><option>103 140</option><option>6 502</option></select></div>
+</div><div class="feedback"></div></section>
+<section class="card" id="q6"><span class="tag">6 · ĐIỀN SỐ</span><h2>⏰ Nhà thám hiểm đo lường</h2><div class="q">Điền số thích hợp vào chỗ trống:</div>
+<div class="row">360 giây = <input class="blank" data-answer="6" inputmode="numeric"> phút</div>
+<div class="row">2 ngày = <input class="blank" data-answer="48" inputmode="numeric"> giờ</div>
+<div class="row">600 kg = <input class="blank" data-answer="60" inputmode="numeric"> yến</div>
+<div class="row">7 tấn 15 kg = <input class="blank" data-answer="7015" inputmode="numeric"> kg</div><div class="feedback"></div></section>
+<section class="card" id="q7"><span class="tag">7 · ĐIỀN DẤU / SỬA LỖI</span><h2>🧠 Thử thách so sánh</h2><div class="q">Điền dấu &gt;, &lt; hoặc = vào chỗ trống:</div>
+<div class="row">1 256 324 <input class="blank" data-answer="<" maxlength="1"> 1 265 423</div>
+<div class="row">1 652 342 <input class="blank" data-answer=">" maxlength="1"> 1 625 234</div>
+<div class="row">6 234 <input class="blank" data-answer="<" maxlength="1"> 6 235</div><div class="feedback"></div></section>
+<section class="card" id="q8"><span class="tag">8 · BÀI TOÁN THỰC TẾ</span><h2>🌷 Khu vườn của bạn Xuân</h2><div class="q">Một mảnh vườn hình chữ nhật có chu vi 98 m, chiều dài hơn chiều rộng 9 m. Tính diện tích mảnh vườn.</div>
+<div class="row">Nửa chu vi: <input class="blank" data-answer="49" inputmode="numeric"> m</div><div class="row">Chiều dài: <input class="blank" data-answer="29" inputmode="numeric"> m</div><div class="row">Chiều rộng: <input class="blank" data-answer="20" inputmode="numeric"> m</div><div class="row">Diện tích: <input class="blank" data-answer="580" inputmode="numeric"> m²</div><div class="feedback"></div></section>
+<section class="card" id="q9"><span class="tag">9 · VẬN DỤNG</span><h2>🌼 Trồng hoa trong vườn</h2><div class="q">Cứ 1 m² trồng được 5 chậu hoa. Mảnh vườn ở câu trước trồng được tất cả bao nhiêu chậu hoa?</div><div class="row">Số chậu hoa: <input class="blank" data-answer="2900" inputmode="numeric"> chậu</div><div class="feedback"></div></section>
+<section class="card" id="q10"><span class="tag">10 · SUY LUẬN</span><h2>⚽ Hai người bạn và những viên bi</h2><div class="q">Tùng và Linh có tất cả 50 viên bi. Nếu Tùng có thêm 6 viên bi thì Tùng sẽ nhiều hơn Linh 10 viên. Hỏi hiện nay mỗi bạn có bao nhiêu viên bi?</div><div class="row">Tùng có: <input class="blank" data-answer="27" inputmode="numeric"> viên bi</div><div class="row">Linh có: <input class="blank" data-answer="23" inputmode="numeric"> viên bi</div><div class="feedback"></div></section>
+</div>
+<div class="actions"><button class="primary" onclick="checkAll()">🏁 Nộp bài – Xem kết quả</button><button class="secondary" onclick="resetGame()">↻ Làm lại từ đầu</button></div>
+<div class="result" id="result"><h2>🎉 Hoàn thành thử thách!</h2><strong id="finalScore">0/10</strong><p id="message"></p><p class="small">Điểm được tính theo số ý đúng. Hãy xem lại những câu chưa chính xác và thử lại nhé!</p></div>
+</div>
+<script>
+function norm(s){return (s||'').trim().toLowerCase().replace(/\s+/g,'').replace(/,/g,'')}
+function checkAll(){
+ let points=0,total=0,idx=0;
+ document.querySelectorAll('.card').forEach(card=>{
+   let earned=0,possible=0;
+   card.querySelectorAll('.choices[data-single]').forEach(group=>{possible++;let sel=group.querySelector('.selected');if(sel&&sel.dataset.correct){earned++}group.querySelectorAll('.choice').forEach(b=>{if(b.dataset.correct)b.classList.add('correct');else if(b===sel)b.classList.add('wrong')})});
+   card.querySelectorAll('.choices[data-multi]').forEach(group=>{let buttons=[...group.querySelectorAll('.choice')],correct=buttons.filter(b=>b.dataset.correct).length,chosen=buttons.filter(b=>b.classList.contains('selected'));possible++;let right=chosen.length===correct&&chosen.every(b=>b.dataset.correct);if(right)earned++;buttons.forEach(b=>{if(b.dataset.correct)b.classList.add('correct');else if(b.classList.contains('selected'))b.classList.add('wrong')})});
+   card.querySelectorAll('select[data-answer],input[data-answer]').forEach(el=>{possible++;let ok=norm(el.value)===norm(el.dataset.answer);if(ok)earned++;el.style.borderColor=ok?'#39b982':'#e47777';});
+   let fb=card.querySelector('.feedback');if(fb){fb.textContent=`Bạn đúng ${earned}/${possible} ý.`;fb.className='feedback '+(earned===possible?'good':'bad')}
+   points+=earned;total+=possible;
+ });
+ let score=Math.round(points/total*100)/10;document.getElementById('score').textContent=score;document.getElementById('bar').style.width=(points/total*100)+'%';document.getElementById('count').textContent='10';
+ document.getElementById('finalScore').textContent=score+'/10';
+ document.getElementById('message').textContent=score>=9?'Xuất sắc! Em đã vượt qua thử thách rất tốt.':score>=7?'Rất tốt! Em hãy xem lại một vài câu nhé.':score>=5?'Cố gắng thêm nhé! Ôn lại kiến thức rồi thử sức lần nữa.':'Đừng nản lòng, luyện tập thêm sẽ giúp em tiến bộ!';
+ document.getElementById('result').style.display='block';document.getElementById('result').scrollIntoView({behavior:'smooth'});
+}
+document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{let g=b.parentElement;if(g.dataset.single)g.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.toggle('selected')}));
+function resetGame(){document.querySelectorAll('.choice').forEach(b=>b.classList.remove('selected','correct','wrong'));document.querySelectorAll('input').forEach(x=>{x.value='';x.style.borderColor=''});document.querySelectorAll('select').forEach(x=>{x.value='';x.style.borderColor=''});document.querySelectorAll('.feedback').forEach(x=>{x.textContent='';x.className='feedback'});document.getElementById('result').style.display='none';document.getElementById('score').textContent='0';document.getElementById('bar').style.width='0';document.getElementById('count').textContent='1';window.scrollTo({top:0,behavior:'smooth'})}
+</script></body></html>
