@@ -1524,10 +1524,28 @@
 
     const DEFAULT_GAMES = [
       {
+        "id": "toan4_bai42_tinh_chat_phan_phoi",
+        "title": "Bài 42: Tính chất phân phối của phép nhân đối với phép cộng",
+        "subtitle": "Đại hội đồng diễn Thụy Lâm • Rút thừa số chung & Đấu trường 5 chặng săn 100 kim cương",
+        "category": "Bài học",
+        "grade": "Toán 4",
+        "icon": "🤖",
+        "filename": "toan4_bai42_tinh_chat_phan_phoi.html"
+      },
+      {
+        "id": "toan4_bai41_nhan_chia_10_100_1000",
+        "title": "Bài 41: Nhân, chia với 10, 100, 1 000...",
+        "subtitle": "Vương Quốc Số 0 Diệu Kỳ • Cỗ máy số 0 tương tác & Đấu trường 5 miền đất săn 100 kim cương",
+        "category": "Bài học",
+        "grade": "Toán 4",
+        "icon": "🐰",
+        "filename": "toan4_bai41_nhan_chia_10_100_1000.html"
+      },
+      {
         "id": "toan4_bai40_tinh_chat_phep_nhan",
         "title": "Bài 40: Tính chất giao hoán và kết hợp của phép nhân",
-        "subtitle": "Khám phá mô hình xoay ô vuông, 4 trạm lý thuyết & 5 quầy hội chợ săn 100 kim cương",
-        "category": "Số và Phép tính",
+        "subtitle": "Khám phá trực quan sinh động (Tab 1) & Đấu trường 5 chặng săn 100 kim cương (Tab 2)",
+        "category": "Bài học",
         "grade": "Toán 4",
         "icon": "✨",
         "filename": "toan4_bai40_tinh_chat_phep_nhan.html"
@@ -1769,15 +1787,50 @@
         try {
           const docRef = doc(fbDb, FIRESTORE_COL, FIRESTORE_DOC);
           onSnapshot(docRef, async (snap) => {
+            let firestoreList = [];
             if (snap.exists()) {
               const data = snap.data();
               if (Array.isArray(data.games) && data.games.length > 0) {
-                allGames = data.games;
-                renderGames();
-                return;
+                firestoreList = data.games;
               }
             }
-            await seedFirestoreIfEmpty();
+
+            // Luôn nạp games.json mới nhất từ repo để bổ sung các bài học mới
+            let staticList = DEFAULT_GAMES;
+            try {
+              const res = await fetch(`./data/games.json?t=${Date.now()}`);
+              if (res.ok) {
+                const list = await res.json();
+                if (Array.isArray(list) && list.length > 0) staticList = list;
+              }
+            } catch (e) {}
+
+            // Tự động gộp các bài học SGK mới vào danh sách nếu Firestore chưa có
+            const merged = [...firestoreList];
+            let hasNew = false;
+            for (let i = staticList.length - 1; i >= 0; i--) {
+              const staticGame = staticList[i];
+              const exists = merged.some(g => g.id === staticGame.id);
+              if (!exists) {
+                merged.unshift(staticGame);
+                hasNew = true;
+              }
+            }
+
+            allGames = merged.length > 0 ? merged : staticList;
+            renderGames();
+
+            // Nếu phát hiện bài học mới chưa có trong Firestore, tự động đồng bộ lên Cloud
+            if (snap.exists() && hasNew) {
+              try {
+                await setDoc(docRef, { games: allGames, updatedAt: Date.now() }, { merge: true });
+                console.log("☁️ Đã tự động cập nhật bài học mới lên Google Firestore!");
+              } catch (e) {
+                console.warn("Lỗi auto-sync Firestore:", e);
+              }
+            } else if (!snap.exists()) {
+              await seedFirestoreIfEmpty();
+            }
           }, (err) => {
             console.warn("Firestore listener warning:", err);
             fallbackLocalLoad();
