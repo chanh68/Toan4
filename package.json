@@ -8,6 +8,9 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "docx": "^9.15.3",
+    "puppeteer-core": "^25.17.0"
   }
 }
-
