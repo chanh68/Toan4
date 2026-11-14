@@ -2032,14 +2032,15 @@
           const docRef = doc(fbDb, FIRESTORE_COL, FIRESTORE_DOC);
           onSnapshot(docRef, async (snap) => {
             let firestoreList = [];
+            let cloudData = {};
             if (snap.exists()) {
-              const data = snap.data();
-              if (Array.isArray(data.games) && data.games.length > 0) {
-                firestoreList = data.games;
+              cloudData = snap.data() || {};
+              if (Array.isArray(cloudData.games) && cloudData.games.length > 0) {
+                firestoreList = cloudData.games;
               }
               // Tự động đồng bộ Gemini API Key từ Cloud về trình duyệt
-              if (data.geminiApiKey && typeof data.geminiApiKey === 'string') {
-                const cloudKey = data.geminiApiKey.trim();
+              if (cloudData.geminiApiKey && typeof cloudData.geminiApiKey === 'string') {
+                const cloudKey = cloudData.geminiApiKey.trim();
                 const currentLocal = (localStorage.getItem('gemini_api_key') || '').trim();
                 if (cloudKey && (!currentLocal || currentLocal !== cloudKey)) {
                   localStorage.setItem('gemini_api_key', cloudKey);
@@ -2068,7 +2069,7 @@
             } catch (e) {}
 
             // Lấy danh sách các bài học đã xóa để KHÔNG tự động phục hồi lại
-            const deletedIds = new Set(Array.isArray(data.deletedGameIds) ? data.deletedGameIds : []);
+            const deletedIds = new Set(Array.isArray(cloudData.deletedGameIds) ? cloudData.deletedGameIds : []);
             try {
               const localDels = JSON.parse(localStorage.getItem('toan4_deleted_game_ids') || '[]');
               if (Array.isArray(localDels)) localDels.forEach(id => deletedIds.add(id));
