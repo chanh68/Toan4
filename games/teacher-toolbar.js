@@ -127,6 +127,7 @@
       <span style="display:flex;align-items:center;gap:3px;color:#fbbf24;padding:0 4px;">
         <span>👑</span> <span>GV:</span>
       </span>
+      <button type="button" id="btn-gv-theory" title="Mở Lý thuyết tương tác" style="background:#0d9488;color:#fff;border:none;padding:5px 8px;border-radius:8px;cursor:pointer;font-weight:800;font-size:11px;">📖 Lý Thuyết</button>
       <button type="button" id="btn-gv-s1" title="Vào Chặng 1" style="background:#334155;color:#fff;border:none;padding:5px 8px;border-radius:8px;cursor:pointer;font-weight:800;font-size:11px;">1️⃣ C1</button>
       <button type="button" id="btn-gv-s2" title="Vào Chặng 2" style="background:#0284c7;color:#fff;border:none;padding:5px 8px;border-radius:8px;cursor:pointer;font-weight:800;font-size:11px;">2️⃣ C2</button>
       <button type="button" id="btn-gv-s3" title="Vào Chặng 3" style="background:#0284c7;color:#fff;border:none;padding:5px 8px;border-radius:8px;cursor:pointer;font-weight:800;font-size:11px;">3️⃣ C3</button>
@@ -137,6 +138,16 @@
     `;
 
     document.body.appendChild(bar);
+
+    const btnGvTheory = document.getElementById('btn-gv-theory');
+    if (btnGvTheory) {
+      btnGvTheory.addEventListener('click', () => {
+        unlockAllStages();
+        if (typeof window.showScreen === 'function') {
+          window.showScreen('theory');
+        }
+      });
+    }
 
     document.getElementById('btn-gv-s1').addEventListener('click', () => jumpToStage(1));
     document.getElementById('btn-gv-s2').addEventListener('click', () => jumpToStage(2));

@@ -6,6 +6,7 @@
   <title>🌟 Vương Quốc Toán Học Lớp 4 — Trường TH &amp; THCS Thụy Lâm</title>
   <link rel="icon" type="image/jpeg" href="./logo.jpg" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -820,19 +821,114 @@
       <form id="studio-form" class="space-y-4 overflow-y-auto pr-1 flex-1">
         <input id="studio-id" type="hidden" />
 
-        <!-- AI Assistant / Template Bar -->
-        <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-sky-50 border-2 border-emerald-200 rounded-2xl p-3.5 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-black uppercase text-emerald-800 flex items-center gap-1.5">
-              <span>🪄</span> <span>AI Điền Nhanh Câu Hỏi Mẫu Chuẩn SGK:</span>
+        <!-- GEMINI AI ASSISTANT & FILE UPLOAD ZONE -->
+        <div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-indigo-200 rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-xs">
+          <div class="flex items-center justify-between border-b border-indigo-100 pb-2">
+            <span class="text-xs font-black uppercase text-indigo-900 flex items-center gap-1.5">
+              <span>🤖</span> <span>Trợ Lý AI Triển Khai Game Từ Giáo Án (Gemini):</span>
             </span>
-            <span class="text-[11px] text-emerald-600 font-bold hidden sm:inline">(Bấm để điền mẫu tức thì)</span>
+            <button type="button" id="btn-toggle-gemini-key" class="text-[11px] text-indigo-600 hover:text-indigo-800 font-bold underline flex items-center gap-1">
+              <span>🔑 Cài đặt Gemini API Key</span>
+            </button>
           </div>
-          <div class="flex flex-wrap gap-1.5">
-            <button type="button" class="studio-template-btn bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs px-2.5 py-1.5 rounded-xl transition" data-template="trung_binh_cong">📊 Trung bình cộng</button>
-            <button type="button" class="studio-template-btn bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs px-2.5 py-1.5 rounded-xl transition" data-template="tong_hieu">➕ Tìm 2 số (Tổng & Hiệu)</button>
-            <button type="button" class="studio-template-btn bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs px-2.5 py-1.5 rounded-xl transition" data-template="phan_so">🍰 Khái niệm phân số</button>
-            <button type="button" class="studio-template-btn bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs px-2.5 py-1.5 rounded-xl transition" data-template="hinh_binh_hanh">📐 Hình bình hành</button>
+
+          <!-- API Key Input (Toggleable / Saved in LocalStorage) -->
+          <div id="gemini-key-box" class="hidden bg-white p-3 rounded-xl border border-indigo-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-[11px] font-black uppercase text-slate-600">Khóa Gemini API Key của cô:</label>
+              <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="text-[10px] text-emerald-600 font-extrabold hover:underline">Lấy key miễn phí tại Google AI Studio ↗</a>
+            </div>
+            <div class="flex gap-2">
+              <input id="input-gemini-api-key" type="password" placeholder="Dán mã API Key bắt đầu bằng AIzaSy..."
+                     class="flex-1 px-3 py-1.5 rounded-lg border text-xs font-mono bg-slate-50 focus:outline-none focus:border-indigo-400" />
+              <button type="button" id="btn-save-gemini-key" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs px-3 py-1.5 rounded-lg transition whitespace-nowrap">
+                Lưu khóa
+              </button>
+            </div>
+            <p class="text-[10px] text-slate-400 font-medium">Khóa được lưu bảo mật trong trình duyệt của cô, không chia sẻ lên máy chủ.</p>
+          </div>
+
+          <!-- File Upload or Direct Paste -->
+          <div class="space-y-2">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <label class="text-xs font-extrabold text-slate-700">Tải file hoặc dán nội dung giáo án / bài tập:</label>
+              <div class="flex items-center gap-2">
+                <label for="input-lesson-file" class="cursor-pointer bg-white hover:bg-indigo-50 border-2 border-dashed border-indigo-300 text-indigo-700 font-bold text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-2xs">
+                  <span>📂</span> <span>Tải file Word (.docx) / Text (.txt)</span>
+                </label>
+                <input id="input-lesson-file" type="file" accept=".docx,.txt,.json,.md" class="hidden" />
+              </div>
+            </div>
+
+            <textarea id="ai-source-text" rows="3"
+                      placeholder="Dán nội dung bài học, lý thuyết, công thức hoặc danh sách bài tập vào đây... (Hoặc bấm 'Tải file Word' ở trên). AI sẽ tự động tạo bài học chuẩn: Học lý thuyết tương tác + 35 câu hỏi (5 câu Chặng 1, 10 câu Chặng 2, 10 câu Chặng 3, 10 câu Chặng 4)!"
+                      class="w-full px-3 py-2.5 rounded-xl border-2 border-indigo-200 text-xs sm:text-sm font-medium bg-white focus:outline-none focus:border-indigo-500"></textarea>
+          </div>
+
+          <!-- Action Button: AI Generate Game -->
+          <div class="flex flex-col sm:flex-row items-center gap-2">
+            <button type="button" id="btn-ai-generate-game"
+                    class="w-full sm:w-auto flex-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-black text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+              <span>🪄 AI Triển Khai Game 5 Chặng (Lý Thuyết + 35 Câu)</span>
+            </button>
+            <div id="ai-loading-indicator" class="hidden text-xs font-bold text-indigo-700 flex items-center gap-1.5 animate-pulse">
+              <span>⏳</span> <span>AI đang phân tích và thiết kế trò chơi...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Assistant / Template Bar -->
+        <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-sky-50 border-2 border-emerald-200 rounded-2xl p-3.5 space-y-2.5">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+            <span class="text-xs font-black uppercase text-emerald-800 flex items-center gap-1.5">
+              <span>🪄</span> <span>Thư viện câu hỏi SGK Toán 4 chuẩn kiến thức:</span>
+            </span>
+            <span class="text-[11px] text-emerald-600 font-bold">16 Chủ đề • Nhiều câu hỏi/chặng</span>
+          </div>
+
+          <!-- Dropdown + Apply Button -->
+          <div class="flex flex-col sm:flex-row gap-2">
+            <select id="studio-template-select" class="flex-1 px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs sm:text-sm font-bold bg-white text-slate-800 focus:outline-none focus:border-emerald-500">
+              <optgroup label="🔢 SỐ VÀ PHÉP TÍNH">
+                <option value="trung_binh_cong">📊 Tìm số trung bình cộng (8 câu hỏi mẫu)</option>
+                <option value="tong_hieu">➕ Tìm hai số khi biết Tổng và Hiệu (8 câu hỏi mẫu)</option>
+                <option value="dau_hieu_chia_het">🔢 Dấu hiệu chia hết cho 2, 5, 9, 3 (8 câu hỏi mẫu)</option>
+                <option value="nhan_chia_so">✖️ Nhân & Chia số có hai chữ số (8 câu hỏi mẫu)</option>
+                <option value="bieu_thuc_chua_chu">🔤 Biểu thức có chứa một chữ (8 câu hỏi mẫu)</option>
+              </optgroup>
+              <optgroup label="🍰 PHÂN SỐ TOÁN 4">
+                <option value="phan_so">🍰 Khái niệm phân số & Tử số - Mẫu số (8 câu hỏi mẫu)</option>
+                <option value="rut_gon_phan_so">✂️ Rút gọn phân số & Phân số bằng nhau (8 câu hỏi mẫu)</option>
+                <option value="quy_dong_mau_so">🔄 Quy đồng mẫu số các phân số (8 câu hỏi mẫu)</option>
+                <option value="so_sanh_phan_so">⚖️ So sánh hai phân số (8 câu hỏi mẫu)</option>
+                <option value="phep_cong_tru_phan_so">➕ Phép cộng & Trừ phân số (8 câu hỏi mẫu)</option>
+                <option value="phep_nhan_chia_phan_so">✖️ Phép nhân & Chia phân số (8 câu hỏi mẫu)</option>
+              </optgroup>
+              <optgroup label="⚖️ ĐẠI LƯỢNG & ĐO LƯỜNG">
+                <option value="yen_ta_tan">⚖️ Bảng đơn vị đo khối lượng: Yến, tạ, tấn (8 câu hỏi mẫu)</option>
+                <option value="dien_tich_m2_dm2">🟩 Đơn vị đo diện tích: dm², m², mm², km² (8 câu hỏi mẫu)</option>
+                <option value="thoi_gian_giay_the_ki">⏳ Giây, thế kỉ & Thời gian (8 câu hỏi mẫu)</option>
+              </optgroup>
+              <optgroup label="📐 HÌNH HỌC">
+                <option value="hinh_binh_hanh">📐 Hình bình hành & Công thức diện tích (8 câu hỏi mẫu)</option>
+                <option value="hinh_thoi">🔶 Hình thoi & Công thức diện tích (8 câu hỏi mẫu)</option>
+              </optgroup>
+            </select>
+            <button type="button" id="btn-apply-template" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs px-3.5 py-2 rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs whitespace-nowrap">
+              <span>🪄 Điền mẫu này</span>
+            </button>
+          </div>
+
+          <!-- Quick chips -->
+          <div class="flex flex-wrap gap-1.5 pt-0.5">
+            <span class="text-[11px] font-bold text-slate-500 self-center mr-0.5">Chọn nhanh:</span>
+            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="trung_binh_cong">📊 Trung bình cộng</button>
+            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="tong_hieu">➕ Tổng & Hiệu</button>
+            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="phan_so">🍰 Khái niệm phân số</button>
+            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="rut_gon_phan_so">✂️ Rút gọn phân số</button>
+            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="hinh_binh_hanh">📐 Hình bình hành</button>
+            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="yen_ta_tan">⚖️ Yến, tạ, tấn</button>
+            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="dau_hieu_chia_het">🔢 Dấu hiệu chia hết</button>
           </div>
         </div>
 
@@ -865,143 +961,147 @@
                  class="w-full px-3.5 py-2 rounded-xl border-2 border-slate-200 focus:border-emerald-400 focus:outline-none text-xs sm:text-sm font-semibold bg-white" />
         </div>
 
-        <!-- 4 Stages Tabs Navigation -->
+        <!-- Stages Tabs Navigation -->
         <div>
           <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-black uppercase text-slate-700">Nội Dung 4 Chặng Thử Thách:</label>
-            <span class="text-[11px] text-slate-400 font-bold">(Chặng 5 tự động cấp Giấy khen)</span>
+            <label class="text-xs font-black uppercase text-slate-700">Các Trạm Học Tập &amp; Thử Thách:</label>
+            <span class="text-[11px] text-emerald-600 font-extrabold">Học Lý Thuyết + 35 Câu Luyện Tập!</span>
           </div>
 
           <div class="flex gap-1.5 border-b border-slate-200 pb-2 overflow-x-auto">
-            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-black text-xs bg-emerald-500 text-white whitespace-nowrap" data-target="stage-pane-1">1️⃣ Khởi Động</button>
-            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-2">2️⃣ Khám Phá</button>
-            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-3">3️⃣ Luyện Tập</button>
-            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-4">4️⃣ Vận Dụng</button>
+            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-black text-xs bg-emerald-500 text-white whitespace-nowrap" data-target="stage-pane-0">📖 Lý Thuyết Tương Tác</button>
+            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-1">1️⃣ Khởi Động <span id="tab-count-1" class="font-normal opacity-90">(0)</span></button>
+            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-2">2️⃣ Khám Phá <span id="tab-count-2" class="font-normal opacity-90">(0)</span></button>
+            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-3">3️⃣ Luyện Tập <span id="tab-count-3" class="font-normal opacity-90">(0)</span></button>
+            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-4">4️⃣ Vận Dụng <span id="tab-count-4" class="font-normal opacity-90">(0)</span></button>
+          </div>
+        </div>
+
+        <!-- Pane 0: Lý Thuyết Tương Tác -->
+        <div id="stage-pane-0" class="studio-pane space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+          <div class="flex items-center justify-between border-b pb-2 border-slate-200">
+            <div class="font-black text-xs text-teal-800 uppercase flex items-center gap-1.5">
+              <span>📖</span> <span>Trạm 0: Học Lý Thuyết Tương Tác &amp; Ví Dụ Minh Họa</span>
+            </div>
+            <span class="text-xs font-extrabold px-2 py-0.5 rounded-lg bg-teal-100 text-teal-800">Kiến thức cốt lõi</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-extrabold text-slate-600 mb-1">Tiêu đề phần lý thuyết:</label>
+            <input id="theory-title" type="text" placeholder="Ví dụ: Kiến thức trọng tâm &amp; Quy tắc tính..."
+                   class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 focus:border-teal-400 focus:outline-none bg-white text-xs sm:text-sm font-bold" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-extrabold text-slate-600 mb-1">Tóm tắt ngắn gọn khái niệm:</label>
+            <textarea id="theory-summary" rows="2" placeholder="Tóm tắt ngắn gọn khái niệm, ý nghĩa thực tế để học sinh dễ nhớ..."
+                      class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 focus:border-teal-400 focus:outline-none bg-white text-xs sm:text-sm font-medium"></textarea>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-extrabold text-slate-600">Quy tắc ghi nhớ (chuẩn SGK Toán 4):</label>
+              <button type="button" id="btn-add-theory-rule" class="text-xs font-bold text-teal-700 hover:text-teal-900 bg-teal-50 px-2 py-1 rounded-lg border border-teal-200">+ Thêm quy tắc</button>
+            </div>
+            <div id="theory-rules-list" class="space-y-2"></div>
+          </div>
+
+          <div class="border-t border-slate-200 pt-2 space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-extrabold text-slate-600">Ví dụ minh họa tương tác từng bước (Step-by-step):</label>
+              <button type="button" id="btn-add-theory-step" class="text-xs font-bold text-teal-700 hover:text-teal-900 bg-teal-50 px-2 py-1 rounded-lg border border-teal-200">+ Thêm bước giải</button>
+            </div>
+            <div>
+              <input id="theory-example-title" type="text" placeholder="Đề bài ví dụ: Ví dụ: Tìm số trung bình cộng của 10 và 20..."
+                     class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 focus:border-teal-400 focus:outline-none bg-white text-xs font-bold" />
+            </div>
+            <div id="theory-steps-list" class="space-y-2"></div>
           </div>
         </div>
 
         <!-- 4 Stage Panes -->
         <!-- Pane 1 -->
-        <div id="stage-pane-1" class="studio-pane space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
-          <div class="font-black text-xs text-emerald-800 uppercase">🌱 Chặng 1: Khởi Động</div>
-          <div>
-            <label class="block text-xs font-extrabold text-slate-600 mb-1">Câu hỏi / Đề bài:</label>
-            <textarea id="s1-question" rows="2" required placeholder="Nhập câu hỏi khởi động..."
-                      class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:outline-none focus:border-emerald-400"></textarea>
-          </div>
-          <div class="grid grid-cols-2 gap-2 text-xs font-bold">
-            <div><span class="text-slate-500">A:</span> <input id="s1-opt-0" type="text" required placeholder="Đáp án A" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">B:</span> <input id="s1-opt-1" type="text" required placeholder="Đáp án B" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">C:</span> <input id="s1-opt-2" type="text" required placeholder="Đáp án C" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">D:</span> <input id="s1-opt-3" type="text" required placeholder="Đáp án D" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-          </div>
-          <div class="grid grid-cols-2 gap-2 pt-1">
-            <div>
-              <label class="block text-xs font-extrabold text-emerald-700 mb-1">Đáp án đúng:</label>
-              <select id="s1-correct" class="w-full px-2.5 py-1.5 rounded-xl border-2 border-emerald-300 font-bold text-xs bg-white text-emerald-900">
-                <option value="0">Đáp án A</option>
-                <option value="1" selected>Đáp án B</option>
-                <option value="2">Đáp án C</option>
-                <option value="3">Đáp án D</option>
-              </select>
+        <div id="stage-pane-1" class="studio-pane hidden space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+          <div class="flex items-center justify-between border-b pb-2 border-slate-200">
+            <div class="font-black text-xs text-emerald-800 uppercase flex items-center gap-1.5">
+              <span>🌱</span> <span>Chặng 1: Khởi Động</span>
             </div>
-            <div>
-              <label class="block text-xs font-extrabold text-slate-600 mb-1">Lời giải / Hướng dẫn:</label>
-              <input id="s1-explanation" type="text" placeholder="Lời giải chi tiết..." class="w-full px-2.5 py-1.5 rounded-xl border bg-white text-xs font-medium" />
-            </div>
+            <span id="s1-q-badge" class="text-xs font-extrabold px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800">0 câu</span>
           </div>
+          <div id="s1-questions-list" class="space-y-3"></div>
+          <button type="button" class="btn-add-question w-full py-2.5 px-4 rounded-xl border-2 border-dashed border-emerald-400 bg-white hover:bg-emerald-50 text-emerald-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition shadow-2xs" data-stage="1">
+            <span>➕ Thêm câu hỏi vào Chặng 1</span>
+          </button>
         </div>
 
         <!-- Pane 2 -->
         <div id="stage-pane-2" class="studio-pane hidden space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
-          <div class="font-black text-xs text-sky-800 uppercase">🔍 Chặng 2: Khám Phá</div>
-          <div>
-            <label class="block text-xs font-extrabold text-slate-600 mb-1">Câu hỏi / Đề bài:</label>
-            <textarea id="s2-question" rows="2" placeholder="Nhập câu hỏi khám phá..."
-                      class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:outline-none focus:border-sky-400"></textarea>
-          </div>
-          <div class="grid grid-cols-2 gap-2 text-xs font-bold">
-            <div><span class="text-slate-500">A:</span> <input id="s2-opt-0" type="text" placeholder="Đáp án A" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">B:</span> <input id="s2-opt-1" type="text" placeholder="Đáp án B" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">C:</span> <input id="s2-opt-2" type="text" placeholder="Đáp án C" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">D:</span> <input id="s2-opt-3" type="text" placeholder="Đáp án D" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-          </div>
-          <div class="grid grid-cols-2 gap-2 pt-1">
-            <div>
-              <label class="block text-xs font-extrabold text-sky-700 mb-1">Đáp án đúng:</label>
-              <select id="s2-correct" class="w-full px-2.5 py-1.5 rounded-xl border-2 border-sky-300 font-bold text-xs bg-white text-sky-900">
-                <option value="0">Đáp án A</option>
-                <option value="1" selected>Đáp án B</option>
-                <option value="2">Đáp án C</option>
-                <option value="3">Đáp án D</option>
-              </select>
+          <div class="flex items-center justify-between border-b pb-2 border-slate-200">
+            <div class="font-black text-xs text-sky-800 uppercase flex items-center gap-1.5">
+              <span>🔍</span> <span>Chặng 2: Khám Phá</span>
             </div>
-            <div>
-              <label class="block text-xs font-extrabold text-slate-600 mb-1">Lời giải / Hướng dẫn:</label>
-              <input id="s2-explanation" type="text" placeholder="Lời giải chi tiết..." class="w-full px-2.5 py-1.5 rounded-xl border bg-white text-xs font-medium" />
-            </div>
+            <span id="s2-q-badge" class="text-xs font-extrabold px-2 py-0.5 rounded-lg bg-sky-100 text-sky-800">0 câu</span>
           </div>
+          <div id="s2-questions-list" class="space-y-3"></div>
+          <button type="button" class="btn-add-question w-full py-2.5 px-4 rounded-xl border-2 border-dashed border-sky-400 bg-white hover:bg-sky-50 text-sky-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition shadow-2xs" data-stage="2">
+            <span>➕ Thêm câu hỏi vào Chặng 2</span>
+          </button>
         </div>
 
         <!-- Pane 3 -->
         <div id="stage-pane-3" class="studio-pane hidden space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
-          <div class="font-black text-xs text-purple-800 uppercase">⚡ Chặng 3: Luyện Tập</div>
-          <div>
-            <label class="block text-xs font-extrabold text-slate-600 mb-1">Câu hỏi / Đề bài:</label>
-            <textarea id="s3-question" rows="2" placeholder="Nhập câu hỏi luyện tập..."
-                      class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:outline-none focus:border-purple-400"></textarea>
-          </div>
-          <div class="grid grid-cols-2 gap-2 text-xs font-bold">
-            <div><span class="text-slate-500">A:</span> <input id="s3-opt-0" type="text" placeholder="Đáp án A" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">B:</span> <input id="s3-opt-1" type="text" placeholder="Đáp án B" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">C:</span> <input id="s3-opt-2" type="text" placeholder="Đáp án C" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">D:</span> <input id="s3-opt-3" type="text" placeholder="Đáp án D" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-          </div>
-          <div class="grid grid-cols-2 gap-2 pt-1">
-            <div>
-              <label class="block text-xs font-extrabold text-purple-700 mb-1">Đáp án đúng:</label>
-              <select id="s3-correct" class="w-full px-2.5 py-1.5 rounded-xl border-2 border-purple-300 font-bold text-xs bg-white text-purple-900">
-                <option value="0">Đáp án A</option>
-                <option value="1" selected>Đáp án B</option>
-                <option value="2">Đáp án C</option>
-                <option value="3">Đáp án D</option>
-              </select>
+          <div class="flex items-center justify-between border-b pb-2 border-slate-200">
+            <div class="font-black text-xs text-purple-800 uppercase flex items-center gap-1.5">
+              <span>⚡</span> <span>Chặng 3: Luyện Tập</span>
             </div>
-            <div>
-              <label class="block text-xs font-extrabold text-slate-600 mb-1">Lời giải / Hướng dẫn:</label>
-              <input id="s3-explanation" type="text" placeholder="Lời giải chi tiết..." class="w-full px-2.5 py-1.5 rounded-xl border bg-white text-xs font-medium" />
-            </div>
+            <span id="s3-q-badge" class="text-xs font-extrabold px-2 py-0.5 rounded-lg bg-purple-100 text-purple-800">0 câu</span>
           </div>
+          <div id="s3-questions-list" class="space-y-3"></div>
+          <button type="button" class="btn-add-question w-full py-2.5 px-4 rounded-xl border-2 border-dashed border-purple-400 bg-white hover:bg-purple-50 text-purple-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition shadow-2xs" data-stage="3">
+            <span>➕ Thêm câu hỏi vào Chặng 3</span>
+          </button>
         </div>
 
         <!-- Pane 4 -->
         <div id="stage-pane-4" class="studio-pane hidden space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
-          <div class="font-black text-xs text-rose-800 uppercase">🎯 Chặng 4: Vận Dụng</div>
-          <div>
-            <label class="block text-xs font-extrabold text-slate-600 mb-1">Câu hỏi / Đề bài:</label>
-            <textarea id="s4-question" rows="2" placeholder="Nhập câu hỏi vận dụng thực tế..."
-                      class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:outline-none focus:border-rose-400"></textarea>
-          </div>
-          <div class="grid grid-cols-2 gap-2 text-xs font-bold">
-            <div><span class="text-slate-500">A:</span> <input id="s4-opt-0" type="text" placeholder="Đáp án A" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">B:</span> <input id="s4-opt-1" type="text" placeholder="Đáp án B" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">C:</span> <input id="s4-opt-2" type="text" placeholder="Đáp án C" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-            <div><span class="text-slate-500">D:</span> <input id="s4-opt-3" type="text" placeholder="Đáp án D" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
-          </div>
-          <div class="grid grid-cols-2 gap-2 pt-1">
-            <div>
-              <label class="block text-xs font-extrabold text-rose-700 mb-1">Đáp án đúng:</label>
-              <select id="s4-correct" class="w-full px-2.5 py-1.5 rounded-xl border-2 border-rose-300 font-bold text-xs bg-white text-rose-900">
-                <option value="0">Đáp án A</option>
-                <option value="1" selected>Đáp án B</option>
-                <option value="2">Đáp án C</option>
-                <option value="3">Đáp án D</option>
-              </select>
+          <div class="flex items-center justify-between border-b pb-2 border-slate-200">
+            <div class="font-black text-xs text-rose-800 uppercase flex items-center gap-1.5">
+              <span>🎯</span> <span>Chặng 4: Vận Dụng</span>
             </div>
-            <div>
-              <label class="block text-xs font-extrabold text-slate-600 mb-1">Lời giải / Hướng dẫn:</label>
-              <input id="s4-explanation" type="text" placeholder="Lời giải chi tiết..." class="w-full px-2.5 py-1.5 rounded-xl border bg-white text-xs font-medium" />
-            </div>
+            <span id="s4-q-badge" class="text-xs font-extrabold px-2 py-0.5 rounded-lg bg-rose-100 text-rose-800">0 câu</span>
+          </div>
+          <div id="s4-questions-list" class="space-y-3"></div>
+          <button type="button" class="btn-add-question w-full py-2.5 px-4 rounded-xl border-2 border-dashed border-rose-400 bg-white hover:bg-rose-50 text-rose-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition shadow-2xs" data-stage="4">
+            <span>➕ Thêm câu hỏi vào Chặng 4</span>
+          </button>
+        </div>
+
+        <!-- AI Co-Pilot Revision Box (Cô nhận xét để AI sửa lại) -->
+        <div class="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-2 border-amber-300 rounded-2xl p-3.5 sm:p-4 space-y-2.5 shadow-xs">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black uppercase text-amber-900 flex items-center gap-1.5">
+              <span>🤖</span> <span>Trợ Lý AI Tiếp Thu Nhận Xét &amp; Sửa Lại Bài Cho Cô:</span>
+            </span>
+            <span class="text-[11px] font-bold text-amber-700">Tương tác 2 chiều</span>
+          </div>
+          <p class="text-xs text-amber-950 font-medium">
+            Cô xem các câu hỏi và lý thuyết phía trên. Nếu cần thay đổi gì, cô chỉ cần gõ vào đây để AI sửa lại theo đúng ý cô:
+          </p>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input id="ai-feedback-input" type="text"
+                   placeholder="Ví dụ: 'Chặng 4 hãy gắn bài toán vào nông sản Thụy Lâm', 'Thêm câu hỏi Đúng/Sai vào chặng 1'..."
+                   class="flex-1 px-3.5 py-2.5 rounded-xl border-2 border-amber-300 focus:border-amber-500 focus:outline-none text-xs sm:text-sm font-bold bg-white" />
+            <button type="button" id="btn-ai-refine"
+                    class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs px-4 py-2.5 rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 whitespace-nowrap">
+              <span>⚡ AI Chỉnh Sửa Lại</span>
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-1.5 pt-0.5">
+            <span class="text-[11px] font-bold text-slate-500 self-center">Gợi ý nhận xét nhanh:</span>
+            <button type="button" class="ai-feedback-chip bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-text="Hãy gắn các bài toán ở Chặng 4 vào thực tế làng quê, lúa nếp, nông sản Thụy Lâm Đông Anh">🌾 Thực tế Thụy Lâm</button>
+            <button type="button" class="ai-feedback-chip bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-text="Bổ sung thêm ví dụ minh họa từng bước giải vào phần lý thuyết tương tác">💡 Thêm ví dụ lý thuyết</button>
+            <button type="button" class="ai-feedback-chip bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-text="Đổi 2 câu hỏi ở Chặng 1 thành dạng Đúng / Sai">✅ Thêm câu Đúng / Sai</button>
+            <button type="button" class="ai-feedback-chip bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-text="Viết lời giải thích chi tiết, ngắn gọn, ấm áp giọng cô giáo cho tất cả các câu">💖 Lời giải giọng cô ấm áp</button>
           </div>
         </div>
 
@@ -1021,6 +1121,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { STUDIO_TEMPLATES } from "./data/studio-templates.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD3YKpOktmxNpTe6k5poO72nAcjhHN4eNs",
@@ -1745,204 +1846,446 @@
     });
 
     // ==========================================
-    // INTERACTIVE LESSON STUDIO (5 CHẶNG)
+    // INTERACTIVE LESSON STUDIO (MULTI-QUESTION 5 CHẶNG + AI CO-PILOT)
     // ==========================================
-    const STUDIO_TEMPLATES = {
-      trung_binh_cong: {
-        title: "Bài: Tìm số trung bình cộng",
-        subtitle: "Khám phá quy tắc tính trung bình cộng qua 5 chặng thử thách lý thú",
-        category: "Số và Phép tính",
-        icon: "📊",
-        stages: [
-          {
-            stageNum: 1, name: "Khởi Động",
-            question: "Bình có 10 quả táo, An có 20 quả táo. Nếu chia đều số táo cho cả hai bạn, hỏi mỗi bạn được bao nhiêu quả táo?",
-            options: ["10 quả táo", "15 quả táo", "18 quả táo", "20 quả táo"],
-            correctIndex: 1,
-            explanation: "Tổng số táo là: 10 + 20 = 30. Chia đều cho 2 bạn: 30 : 2 = 15 (quả). Số 15 là số trung bình cộng của 10 và 20!"
-          },
-          {
-            stageNum: 2, name: "Khám Phá",
-            question: "Muốn tìm số trung bình cộng của nhiều số, ta thực hiện như thế nào?",
-            options: [
-              "Lấy số lớn nhất cộng số bé nhất rồi chia 2",
-              "Tính tổng các số đó, rồi chia tổng đó cho số các số hạng",
-              "Lấy số lớn nhất trừ số bé nhất",
-              "Tính tích các số đó rồi chia cho 2"
-            ],
-            correctIndex: 1,
-            explanation: "Quy tắc SGK: Muốn tìm số trung bình cộng của nhiều số, ta tính tổng của các số đó, rồi chia tổng đó cho số các số hạng!"
-          },
-          {
-            stageNum: 3, name: "Luyện Tập",
-            question: "Tìm số trung bình cộng của ba số: 30, 40 và 50.",
-            options: ["35", "40", "45", "50"],
-            correctIndex: 1,
-            explanation: "Tổng ba số là: 30 + 40 + 50 = 120. Có 3 số hạng nên lấy: 120 : 3 = 40."
-          },
-          {
-            stageNum: 4, name: "Vận Dụng",
-            question: "Một cửa hàng ngày thứ nhất bán được 120 kg gạo, ngày thứ hai bán được 140 kg gạo, ngày thứ ba bán được 160 kg gạo. Hỏi trung bình mỗi ngày cửa hàng bán được bao nhiêu kg gạo?",
-            options: ["130 kg", "140 kg", "150 kg", "160 kg"],
-            correctIndex: 1,
-            explanation: "Tổng số gạo là: 120 + 140 + 160 = 420 (kg). Trung bình mỗi ngày bán được: 420 : 3 = 140 (kg)."
-          }
-        ]
-      },
-      tong_hieu: {
-        title: "Bài: Tìm hai số khi biết tổng và hiệu",
-        subtitle: "Nắm vững công thức Số lớn = (Tổng + Hiệu) : 2 và Số bé = (Tổng - Hiệu) : 2",
-        category: "Số và Phép tính",
-        icon: "➕",
-        stages: [
-          {
-            stageNum: 1, name: "Khởi Động",
-            question: "Tổng của hai số là 70, hiệu của hai số là 10. Số lớn là:",
-            options: ["35", "40", "45", "50"],
-            correctIndex: 1,
-            explanation: "Công thức: Số lớn = (Tổng + Hiệu) : 2 = (70 + 10) : 2 = 80 : 2 = 40."
-          },
-          {
-            stageNum: 2, name: "Khám Phá",
-            question: "Tổng của hai số là 70, hiệu của hai số là 10. Số bé là:",
-            options: ["25", "30", "35", "40"],
-            correctIndex: 1,
-            explanation: "Số bé = (Tổng - Hiệu) : 2 = (70 - 10) : 2 = 60 : 2 = 30."
-          },
-          {
-            stageNum: 3, name: "Luyện Tập",
-            question: "Lớp 4A có 32 học sinh, trong đó số bạn nữ nhiều hơn số bạn nam là 4 bạn. Hỏi lớp 4A có bao nhiêu bạn nữ?",
-            options: ["16 bạn", "18 bạn", "20 bạn", "14 bạn"],
-            correctIndex: 1,
-            explanation: "Số bạn nữ (số lớn) = (Tổng + Hiệu) : 2 = (32 + 4) : 2 = 36 : 2 = 18 (bạn)."
-          },
-          {
-            stageNum: 4, name: "Vận Dụng",
-            question: "Hai ngăn sách có tất cả 120 quyển. Nếu chuyển 10 quyển từ ngăn trên xuống ngăn dưới thì hai ngăn bằng nhau. Lúc đầu ngăn trên có:",
-            options: ["60 quyển", "70 quyển", "80 quyển", "50 quyển"],
-            correctIndex: 1,
-            explanation: "Chuyển 10 quyển thì bằng nhau => Ngăn trên hơn ngăn dưới: 10 x 2 = 20. Ngăn trên có: (120 + 20) : 2 = 70 (quyển)."
-          }
-        ]
-      },
-      phan_so: {
-        title: "Bài: Khái niệm phân số",
-        subtitle: "Nhận biết tử số, mẫu số và ý nghĩa thực tế của phân số",
-        category: "Số và Phép tính",
-        icon: "🍰",
-        stages: [
-          {
-            stageNum: 1, name: "Khởi Động",
-            question: "Một chiếc bánh pizza được chia đều thành 8 phần bằng nhau, Nam ăn 3 phần. Phân số chỉ phần bánh Nam đã ăn là:",
-            options: ["8/3", "3/8", "3/5", "5/8"],
-            correctIndex: 1,
-            explanation: "Chiếc bánh chia 8 phần (mẫu số 8), Nam ăn 3 phần (tử số 3) => Phân số là 3/8."
-          },
-          {
-            stageNum: 2, name: "Khám Phá",
-            question: "Trong phân số 5/9, tử số là số nào và mẫu số là số nào?",
-            options: [
-              "Tử số là 9, mẫu số là 5",
-              "Tử số là 5, mẫu số là 9",
-              "Cả 5 và 9 đều là tử số",
-              "Mẫu số bằng 0"
-            ],
-            correctIndex: 1,
-            explanation: "Tử số viết trên gạch ngang (5), mẫu số viết dưới gạch ngang (9)!"
-          },
-          {
-            stageNum: 3, name: "Luyện Tập",
-            question: "Thương của phép chia 7 : 12 được viết dưới dạng phân số là:",
-            options: ["12/7", "7/12", "7/5", "5/12"],
-            correctIndex: 1,
-            explanation: "Thương của phép chia số tự nhiên cho số tự nhiên khác 0 có thể viết thành phân số: 7 : 12 = 7/12."
-          },
-          {
-            stageNum: 4, name: "Vận Dụng",
-            question: "Đội văn nghệ có 15 bạn, trong đó có 7 bạn nam. Phân số chỉ số bạn nữ trong đội văn nghệ là:",
-            options: ["7/15", "8/15", "8/7", "15/8"],
-            correctIndex: 1,
-            explanation: "Số bạn nữ là: 15 - 7 = 8 (bạn). Phân số chỉ số bạn nữ là 8/15."
-          }
-        ]
-      },
-      hinh_binh_hanh: {
-        title: "Bài: Hình bình hành và diện tích",
-        subtitle: "Nhận biết đặc điểm và công thức tính diện tích hình bình hành S = a x h",
-        category: "Hình học",
-        icon: "📐",
-        stages: [
-          {
-            stageNum: 1, name: "Khởi Động",
-            question: "Hình bình hành là hình có:",
-            options: [
-              "4 góc vuông bằng nhau",
-              "Hai cặp cạnh đối diện song song và bằng nhau",
-              "4 cạnh đều bằng nhau",
-              "Chỉ có một cặp cạnh song song"
-            ],
-            correctIndex: 1,
-            explanation: "Hình bình hành có hai cặp cạnh đối diện song song và bằng nhau!"
-          },
-          {
-            stageNum: 2, name: "Khám Phá",
-            question: "Muốn tính diện tích hình bình hành có độ dài đáy a và chiều cao h (cùng đơn vị đo), ta làm thế nào?",
-            options: [
-              "S = (a + h) x 2",
-              "S = a x h",
-              "S = a x h : 2",
-              "S = a x 4"
-            ],
-            correctIndex: 1,
-            explanation: "Diện tích hình bình hành bằng độ dài đáy nhân với chiều cao: S = a x h!"
-          },
-          {
-            stageNum: 3, name: "Luyện Tập",
-            question: "Một hình bình hành có độ dài đáy là 12 cm, chiều cao là 8 cm. Diện tích của hình bình hành đó là:",
-            options: ["40 cm²", "96 cm²", "48 cm²", "20 cm²"],
-            correctIndex: 1,
-            explanation: "Diện tích = 12 x 8 = 96 (cm²)."
-          },
-          {
-            stageNum: 4, name: "Vận Dụng",
-            question: "Một mảnh đất hình bình hành có độ dài đáy là 25 m, chiều cao kém đáy 5 m. Diện tích mảnh đất đó là:",
-            options: ["450 m²", "500 m²", "600 m²", "250 m²"],
-            correctIndex: 1,
-            explanation: "Chiều cao là: 25 - 5 = 20 (m). Diện tích mảnh đất là: 25 x 20 = 500 (m²)."
-          }
-        ]
-      }
-    };
-
     const studioModal = document.getElementById('studio-modal');
     const studioIdInput = document.getElementById('studio-id');
     const studioTitleInput = document.getElementById('studio-title');
     const studioSubtitleInput = document.getElementById('studio-subtitle');
     const studioIconInput = document.getElementById('studio-icon');
+    const studioTemplateSelect = document.getElementById('studio-template-select');
+    const btnApplyTemplate = document.getElementById('btn-apply-template');
 
+    // AI & File Upload elements
+    const geminiKeyBox = document.getElementById('gemini-key-box');
+    const btnToggleGeminiKey = document.getElementById('btn-toggle-gemini-key');
+    const inputGeminiApiKey = document.getElementById('input-gemini-api-key');
+    const btnSaveGeminiKey = document.getElementById('btn-save-gemini-key');
+    const inputLessonFile = document.getElementById('input-lesson-file');
+    const aiSourceText = document.getElementById('ai-source-text');
+    const btnAiGenerateGame = document.getElementById('btn-ai-generate-game');
+    const aiLoadingIndicator = document.getElementById('ai-loading-indicator');
+
+    // AI Feedback & Refinement elements
+    const aiFeedbackInput = document.getElementById('ai-feedback-input');
+    const btnAiRefine = document.getElementById('btn-ai-refine');
+
+    // Theory elements
+    const theoryTitleInput = document.getElementById('theory-title');
+    const theorySummaryInput = document.getElementById('theory-summary');
+    const theoryExampleTitleInput = document.getElementById('theory-example-title');
+    const btnAddTheoryRule = document.getElementById('btn-add-theory-rule');
+    const btnAddTheoryStep = document.getElementById('btn-add-theory-step');
+
+    // State holds Theory and questions for each of the 4 interactive stages
+    let studioTheoryData = {
+      title: '',
+      summary: '',
+      rules: ['Quy tắc chuẩn SGK'],
+      example: {
+        title: 'Ví dụ minh họa mẫu:',
+        steps: [
+          { step: 1, text: 'Bước 1: Tóm tắt bài toán...' },
+          { step: 2, text: 'Bước 2: Thực hiện phép tính...' }
+        ]
+      }
+    };
+
+    let studioStagesData = {
+      1: [],
+      2: [],
+      3: [],
+      4: []
+    };
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // ------------------------------------------
+    // GEMINI KEY & FILE UPLOAD INITIALIZATION
+    // ------------------------------------------
+    if (inputGeminiApiKey) {
+      inputGeminiApiKey.value = localStorage.getItem('gemini_api_key') || '';
+    }
+    if (btnToggleGeminiKey) {
+      btnToggleGeminiKey.addEventListener('click', () => {
+        geminiKeyBox.classList.toggle('hidden');
+      });
+    }
+    if (btnSaveGeminiKey) {
+      btnSaveGeminiKey.addEventListener('click', () => {
+        const key = inputGeminiApiKey.value.trim();
+        if (!key) {
+          showToast('⚠️ Vui lòng dán mã Gemini API Key của cô!');
+          return;
+        }
+        localStorage.setItem('gemini_api_key', key);
+        geminiKeyBox.classList.add('hidden');
+        showToast('🔑 Đã lưu Gemini API Key thành công!');
+      });
+    }
+
+    if (inputLessonFile) {
+      inputLessonFile.addEventListener('change', async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const fileName = file.name.toLowerCase();
+        if (fileName.endsWith('.docx')) {
+          if (typeof JSZip === 'undefined') {
+            showToast('⏳ Đang tải thư viện đọc Word, vui lòng thử lại sau 2 giây!');
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = async (ev) => {
+            try {
+              const zip = await JSZip.loadAsync(ev.target.result);
+              const xmlFile = zip.file("word/document.xml");
+              if (!xmlFile) throw new Error("Không tìm thấy nội dung văn bản trong file docx!");
+              const xmlStr = await xmlFile.async("text");
+              const parser = new DOMParser();
+              const dom = parser.parseFromString(xmlStr, "application/xml");
+              const textNodes = Array.from(dom.querySelectorAll("w\\:t, t")).map(n => n.textContent);
+              aiSourceText.value = textNodes.join(' ').replace(/\s+/g, ' ').trim();
+              showToast(`📄 Đã đọc nội dung file Word: ${file.name}!`);
+            } catch (err) {
+              showToast('❌ Lỗi đọc file .docx: ' + err.message);
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        } else {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            aiSourceText.value = ev.target.result || '';
+            showToast(`📄 Đã tải nội dung file: ${file.name}!`);
+          };
+          reader.readAsText(file);
+        }
+      });
+    }
+
+    // ------------------------------------------
+    // THEORY LAB RENDERING & EDITING
+    // ------------------------------------------
+    function renderTheoryRules() {
+      const list = document.getElementById('theory-rules-list');
+      if (!list) return;
+      list.innerHTML = studioTheoryData.rules.map((rule, idx) => `
+        <div class="flex items-center gap-2">
+          <span class="w-5 h-5 rounded-md bg-teal-500 text-white font-bold text-xs flex items-center justify-center shrink-0">✓</span>
+          <input type="text" class="theory-rule-input flex-1 px-2.5 py-1.5 rounded-lg border bg-white text-xs font-semibold focus:outline-none focus:border-teal-400" value="${escapeHtml(rule)}" data-idx="${idx}" placeholder="Nội dung quy tắc ghi nhớ..." />
+          <button type="button" class="btn-del-rule text-rose-500 hover:text-rose-700 text-xs px-2 py-1 font-bold" data-idx="${idx}" title="Xóa quy tắc">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function renderTheorySteps() {
+      const list = document.getElementById('theory-steps-list');
+      if (!list) return;
+      const steps = studioTheoryData.example?.steps || [];
+      list.innerHTML = steps.map((st, idx) => `
+        <div class="flex items-start gap-2 bg-white p-2.5 rounded-xl border border-teal-200">
+          <span class="px-2 py-0.5 rounded-md bg-teal-100 text-teal-800 font-black text-xs shrink-0 mt-1">Bước ${idx + 1}</span>
+          <textarea rows="1" class="theory-step-input flex-1 px-2.5 py-1 rounded-lg border text-xs font-medium focus:outline-none focus:border-teal-400" data-idx="${idx}" placeholder="Nội dung bước giải...">${escapeHtml(st.text || '')}</textarea>
+          <button type="button" class="btn-del-step text-rose-500 hover:text-rose-700 text-xs px-2 py-1 font-bold shrink-0" data-idx="${idx}" title="Xóa bước này">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function syncTheoryDOMToState() {
+      if (theoryTitleInput) studioTheoryData.title = theoryTitleInput.value.trim();
+      if (theorySummaryInput) studioTheoryData.summary = theorySummaryInput.value.trim();
+      if (theoryExampleTitleInput) {
+        if (!studioTheoryData.example) studioTheoryData.example = { title: '', steps: [] };
+        studioTheoryData.example.title = theoryExampleTitleInput.value.trim();
+      }
+    }
+
+    if (btnAddTheoryRule) {
+      btnAddTheoryRule.addEventListener('click', () => {
+        studioTheoryData.rules.push('Quy tắc mới...');
+        renderTheoryRules();
+      });
+    }
+
+    if (btnAddTheoryStep) {
+      btnAddTheoryStep.addEventListener('click', () => {
+        if (!studioTheoryData.example) studioTheoryData.example = { title: '', steps: [] };
+        if (!Array.isArray(studioTheoryData.example.steps)) studioTheoryData.example.steps = [];
+        const nextStepNum = studioTheoryData.example.steps.length + 1;
+        studioTheoryData.example.steps.push({ step: nextStepNum, text: `Bước ${nextStepNum}: ...` });
+        renderTheorySteps();
+      });
+    }
+
+    const rulesListEl = document.getElementById('theory-rules-list');
+    if (rulesListEl) {
+      rulesListEl.addEventListener('input', (e) => {
+        if (e.target.classList.contains('theory-rule-input')) {
+          const idx = parseInt(e.target.dataset.idx, 10);
+          studioTheoryData.rules[idx] = e.target.value;
+        }
+      });
+      rulesListEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-del-rule');
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.idx, 10);
+        studioTheoryData.rules.splice(idx, 1);
+        renderTheoryRules();
+      });
+    }
+
+    const stepsListEl = document.getElementById('theory-steps-list');
+    if (stepsListEl) {
+      stepsListEl.addEventListener('input', (e) => {
+        if (e.target.classList.contains('theory-step-input')) {
+          const idx = parseInt(e.target.dataset.idx, 10);
+          if (studioTheoryData.example?.steps?.[idx]) {
+            studioTheoryData.example.steps[idx].text = e.target.value;
+          }
+        }
+      });
+      stepsListEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-del-step');
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.idx, 10);
+        studioTheoryData.example?.steps?.splice(idx, 1);
+        renderTheorySteps();
+      });
+    }
+
+    // ------------------------------------------
+    // QUESTION CARDS RENDERING & EDITING
+    // ------------------------------------------
+    function createEmptyQuestion() {
+      return {
+        question: '',
+        options: ['', '', '', ''],
+        correctIndex: 1,
+        explanation: ''
+      };
+    }
+
+    function renderQuestionCardHTML(stageNum, qIdx, qData) {
+      const qNum = qIdx + 1;
+      const opts = Array.isArray(qData.options) ? qData.options : ['', '', '', ''];
+      const correct = qData.correctIndex !== undefined ? qData.correctIndex : 1;
+      const explanation = qData.explanation || '';
+
+      return `
+        <div class="question-card bg-white p-3.5 sm:p-4 rounded-2xl border-2 border-slate-200 space-y-3 shadow-xs relative" data-stage="${stageNum}" data-index="${qIdx}">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-emerald-500 text-white font-black text-xs flex items-center justify-center">
+                ${qNum}
+              </span>
+              <span class="font-extrabold text-xs text-slate-800">Câu hỏi ${qNum}</span>
+            </div>
+            <button type="button" class="btn-remove-q text-rose-500 hover:text-rose-700 text-xs font-bold px-2 py-1 rounded-lg hover:bg-rose-50 transition flex items-center gap-1" data-stage="${stageNum}" data-index="${qIdx}" title="Xóa câu hỏi này">
+              <span>🗑️ Xóa câu ${qNum}</span>
+            </button>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-extrabold text-slate-600 mb-1">Đề bài / Câu hỏi:</label>
+            <textarea class="q-input-text w-full px-3 py-2 rounded-xl border-2 border-slate-200 text-xs sm:text-sm font-bold bg-white focus:outline-none focus:border-emerald-400" rows="2" placeholder="Nhập câu hỏi..." data-stage="${stageNum}" data-index="${qIdx}" required>${escapeHtml(qData.question || '')}</textarea>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold">
+            <div>
+              <span class="text-slate-500 text-[11px]">Đáp án A:</span>
+              <input type="text" class="q-input-opt w-full px-2.5 py-1.5 rounded-lg border bg-white focus:outline-none focus:border-emerald-400" placeholder="Đáp án A" data-stage="${stageNum}" data-index="${qIdx}" data-opt="0" value="${escapeHtml(opts[0] || '')}" required />
+            </div>
+            <div>
+              <span class="text-slate-500 text-[11px]">Đáp án B:</span>
+              <input type="text" class="q-input-opt w-full px-2.5 py-1.5 rounded-lg border bg-white focus:outline-none focus:border-emerald-400" placeholder="Đáp án B" data-stage="${stageNum}" data-index="${qIdx}" data-opt="1" value="${escapeHtml(opts[1] || '')}" required />
+            </div>
+            <div>
+              <span class="text-slate-500 text-[11px]">Đáp án C:</span>
+              <input type="text" class="q-input-opt w-full px-2.5 py-1.5 rounded-lg border bg-white focus:outline-none focus:border-emerald-400" placeholder="Đáp án C" data-stage="${stageNum}" data-index="${qIdx}" data-opt="2" value="${escapeHtml(opts[2] || '')}" required />
+            </div>
+            <div>
+              <span class="text-slate-500 text-[11px]">Đáp án D:</span>
+              <input type="text" class="q-input-opt w-full px-2.5 py-1.5 rounded-lg border bg-white focus:outline-none focus:border-emerald-400" placeholder="Đáp án D" data-stage="${stageNum}" data-index="${qIdx}" data-opt="3" value="${escapeHtml(opts[3] || '')}" required />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-slate-100">
+            <div>
+              <label class="block text-[11px] font-extrabold text-emerald-700 mb-1">Đáp án đúng:</label>
+              <select class="q-input-correct w-full px-2.5 py-1.5 rounded-xl border-2 border-emerald-300 font-bold text-xs bg-white text-emerald-900" data-stage="${stageNum}" data-index="${qIdx}">
+                <option value="0" ${correct === 0 ? 'selected' : ''}>Đáp án A</option>
+                <option value="1" ${correct === 1 ? 'selected' : ''}>Đáp án B</option>
+                <option value="2" ${correct === 2 ? 'selected' : ''}>Đáp án C</option>
+                <option value="3" ${correct === 3 ? 'selected' : ''}>Đáp án D</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-extrabold text-slate-500 mb-1">Lời giải / Hướng dẫn chi tiết:</label>
+              <input type="text" class="q-input-explanation w-full px-2.5 py-1.5 rounded-xl border bg-white text-xs font-medium" placeholder="Hướng dẫn giải khi học sinh làm xong..." data-stage="${stageNum}" data-index="${qIdx}" value="${escapeHtml(explanation)}" />
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStageQuestions(stageNum) {
+      const container = document.getElementById(`s${stageNum}-questions-list`);
+      if (!container) return;
+
+      const list = studioStagesData[stageNum] || [];
+      if (list.length === 0) {
+        list.push(createEmptyQuestion());
+      }
+
+      container.innerHTML = list.map((qData, qIdx) => renderQuestionCardHTML(stageNum, qIdx, qData)).join('');
+
+      // Update counters
+      const countText = `${list.length} câu hỏi`;
+      const badge = document.getElementById(`s${stageNum}-q-badge`);
+      if (badge) badge.textContent = countText;
+
+      const tabCount = document.getElementById(`tab-count-${stageNum}`);
+      if (tabCount) tabCount.textContent = `(${list.length})`;
+    }
+
+    function renderAllStudioStages() {
+      for (let i = 1; i <= 4; i++) {
+        renderStageQuestions(i);
+      }
+      renderTheoryRules();
+      renderTheorySteps();
+    }
+
+    // Event delegation for question editing
+    for (let i = 1; i <= 4; i++) {
+      const container = document.getElementById(`s${i}-questions-list`);
+      if (!container) continue;
+
+      container.addEventListener('input', (e) => {
+        const target = e.target;
+        const qIdx = parseInt(target.dataset.index, 10);
+        if (isNaN(qIdx) || !studioStagesData[i][qIdx]) return;
+
+        if (target.classList.contains('q-input-text')) {
+          studioStagesData[i][qIdx].question = target.value;
+        } else if (target.classList.contains('q-input-opt')) {
+          const optIdx = parseInt(target.dataset.opt, 10);
+          if (!Array.isArray(studioStagesData[i][qIdx].options)) {
+            studioStagesData[i][qIdx].options = ['', '', '', ''];
+          }
+          studioStagesData[i][qIdx].options[optIdx] = target.value;
+        } else if (target.classList.contains('q-input-explanation')) {
+          studioStagesData[i][qIdx].explanation = target.value;
+        }
+      });
+
+      container.addEventListener('change', (e) => {
+        const target = e.target;
+        const qIdx = parseInt(target.dataset.index, 10);
+        if (isNaN(qIdx) || !studioStagesData[i][qIdx]) return;
+
+        if (target.classList.contains('q-input-correct')) {
+          studioStagesData[i][qIdx].correctIndex = parseInt(target.value, 10);
+        }
+      });
+
+      container.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-remove-q');
+        if (!btn) return;
+        const qIdx = parseInt(btn.dataset.index, 10);
+        if (isNaN(qIdx)) return;
+
+        if (studioStagesData[i].length <= 1) {
+          showToast('⚠️ Mỗi chặng cần tối thiểu 1 câu hỏi!');
+          return;
+        }
+
+        studioStagesData[i].splice(qIdx, 1);
+        renderStageQuestions(i);
+        showToast(`🗑️ Đã xóa câu hỏi khỏi Chặng ${i}!`);
+      });
+    }
+
+    // Add Question Button handler for each stage
+    document.querySelectorAll('.btn-add-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const stageNum = parseInt(btn.dataset.stage, 10);
+        if (!studioStagesData[stageNum]) studioStagesData[stageNum] = [];
+        studioStagesData[stageNum].push(createEmptyQuestion());
+        renderStageQuestions(stageNum);
+        showToast(`➕ Đã thêm câu hỏi vào Chặng ${stageNum}!`);
+
+        const container = document.getElementById(`s${stageNum}-questions-list`);
+        if (container && container.lastElementChild) {
+          container.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    });
+
+    // ------------------------------------------
+    // POPULATE STUDIO FIELDS FROM LESSON DATA
+    // ------------------------------------------
     function populateStudioFields(data) {
       studioTitleInput.value = data.title || '';
       studioSubtitleInput.value = data.subtitle || '';
       if (data.icon) studioIconInput.value = data.icon;
 
+      // Populate Theory
+      if (data.theory) {
+        studioTheoryData = {
+          title: data.theory.title || 'Kiến thức trọng tâm & Quy tắc',
+          summary: data.theory.summary || '',
+          rules: Array.isArray(data.theory.rules) ? [...data.theory.rules] : ['Quy tắc chuẩn SGK'],
+          example: {
+            title: data.theory.example?.title || 'Ví dụ minh họa mẫu:',
+            steps: Array.isArray(data.theory.example?.steps) ? [...data.theory.example.steps] : []
+          }
+        };
+      } else {
+        studioTheoryData = {
+          title: 'Kiến thức trọng tâm: ' + (data.title || ''),
+          summary: data.subtitle || '',
+          rules: ['Đọc kỹ đề bài và xác định dạng toán cần giải.'],
+          example: {
+            title: 'Ví dụ mẫu:',
+            steps: [
+              { step: 1, text: 'Bước 1: Phân tích các số liệu đã cho.' },
+              { step: 2, text: 'Bước 2: Áp dụng công thức và tính toán kết quả.' }
+            ]
+          }
+        };
+      }
+
+      if (theoryTitleInput) theoryTitleInput.value = studioTheoryData.title;
+      if (theorySummaryInput) theorySummaryInput.value = studioTheoryData.summary;
+      if (theoryExampleTitleInput) theoryExampleTitleInput.value = studioTheoryData.example.title;
+
+      // Populate Stages 1..4
       const stages = Array.isArray(data.stages) ? data.stages : [];
       for (let i = 1; i <= 4; i++) {
         const s = stages.find(x => x.stageNum === i) || (stages[i - 1] || {});
-        const qEl = document.getElementById(`s${i}-question`);
-        if (qEl) qEl.value = s.question || '';
-
-        const opts = Array.isArray(s.options) ? s.options : ['', '', '', ''];
-        for (let j = 0; j < 4; j++) {
-          const optEl = document.getElementById(`s${i}-opt-${j}`);
-          if (optEl) optEl.value = opts[j] || '';
+        if (Array.isArray(s.questions) && s.questions.length > 0) {
+          studioStagesData[i] = JSON.parse(JSON.stringify(s.questions));
+        } else if (s && s.question) {
+          studioStagesData[i] = [{
+            question: s.question,
+            options: Array.isArray(s.options) ? [...s.options] : ['', '', '', ''],
+            correctIndex: s.correctIndex !== undefined ? s.correctIndex : 1,
+            explanation: s.explanation || ''
+          }];
+        } else {
+          studioStagesData[i] = [createEmptyQuestion()];
         }
-
-        const corrEl = document.getElementById(`s${i}-correct`);
-        if (corrEl) corrEl.value = String(s.correctIndex !== undefined ? s.correctIndex : 1);
-
-        const expEl = document.getElementById(`s${i}-explanation`);
-        if (expEl) expEl.value = s.explanation || '';
       }
+
+      renderAllStudioStages();
     }
 
     function openStudioModal(existingLesson = null) {
@@ -1953,7 +2296,8 @@
       } else {
         document.getElementById('studio-modal-title').textContent = 'Soạn Bài Giảng 5 Chặng Tương Tác';
         studioIdInput.value = '';
-        populateStudioFields(STUDIO_TEMPLATES.trung_binh_cong);
+        const defaultTpl = STUDIO_TEMPLATES.trung_binh_cong || Object.values(STUDIO_TEMPLATES)[0];
+        populateStudioFields(defaultTpl);
       }
       studioModal.classList.remove('hidden');
     }
@@ -1985,39 +2329,260 @@
       });
     });
 
-    // Studio AI Template Buttons
-    document.querySelectorAll('.studio-template-btn').forEach(btn => {
+    // Studio AI Template Selection (Dropdown + Chips)
+    function applyTemplateByKey(key) {
+      const tpl = STUDIO_TEMPLATES[key];
+      if (tpl) {
+        populateStudioFields(tpl);
+        showToast(`🪄 Đã điền 8 câu hỏi mẫu: ${tpl.title}!`);
+      }
+    }
+
+    if (btnApplyTemplate && studioTemplateSelect) {
+      btnApplyTemplate.addEventListener('click', () => {
+        applyTemplateByKey(studioTemplateSelect.value);
+      });
+    }
+
+    document.querySelectorAll('.studio-template-chip').forEach(btn => {
       btn.addEventListener('click', () => {
         const key = btn.dataset.template;
-        const tpl = STUDIO_TEMPLATES[key];
-        if (tpl) {
-          populateStudioFields(tpl);
-          showToast(`🪄 Đã điền câu hỏi mẫu: ${tpl.title}!`);
+        if (studioTemplateSelect) studioTemplateSelect.value = key;
+        applyTemplateByKey(key);
+      });
+    });
+
+    // ------------------------------------------
+    // GEMINI AI INTEGRATION (GENERATE & REFINE)
+    // ------------------------------------------
+    async function callGeminiAPI(systemInstruction, userPrompt, apiKey) {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+      const body = {
+        system_instruction: {
+          parts: [{ text: systemInstruction }]
+        },
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: userPrompt }]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.4,
+          responseMimeType: "application/json"
+        }
+      };
+
+      let response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        // Fallback to gemini-1.5-flash
+        const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        response = await fetch(fallbackUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+      }
+
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        throw new Error(errJson.error?.message || `Lỗi gọi Gemini API (Mã lỗi ${response.status})`);
+      }
+
+      const resData = await response.json();
+      const text = resData.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error("AI không trả về dữ liệu.");
+      return JSON.parse(text);
+    }
+
+    // AI Generate Game from uploaded file or pasted text
+    if (btnAiGenerateGame) {
+      btnAiGenerateGame.addEventListener('click', async () => {
+        const apiKey = localStorage.getItem('gemini_api_key') || inputGeminiApiKey?.value.trim();
+        if (!apiKey) {
+          geminiKeyBox.classList.remove('hidden');
+          showToast('🔑 Vui lòng cài đặt Gemini API Key trước khi sử dụng AI!');
+          return;
+        }
+
+        const sourceText = aiSourceText.value.trim();
+        if (!sourceText) {
+          showToast('⚠️ Cô hãy dán nội dung bài học hoặc tải file giáo án lên trước nhé!');
+          return;
+        }
+
+        btnAiGenerateGame.disabled = true;
+        aiLoadingIndicator.classList.remove('hidden');
+
+        const systemInstruction = `Bạn là Trợ Lý Sư Phạm và Chuyên Gia Thiết Kế Game Học Tập Toán 4 của Trường TH & THCS Thụy Lâm.
+Nhiệm vụ: Phân tích giáo án / đề bài của giáo viên và chuyển thành cấu trúc bài học 5 chặng tương tác chuẩn sư phạm:
+1. "theory": {
+  "title": "Tiêu đề phần lý thuyết",
+  "summary": "Tóm tắt ngắn gọn khái niệm trong 2-3 câu",
+  "rules": ["Quy tắc 1...", "Quy tắc 2..."],
+  "example": {
+    "title": "Ví dụ mẫu:",
+    "steps": [
+      { "step": 1, "text": "Bước 1: ..." },
+      { "step": 2, "text": "Bước 2: ..." }
+    ]
+  }
+}
+2. "stages": 4 chặng thử thách:
+- Chặng 1 (Khởi Động): ĐÚNG 5 CÂU HỎI nhẹ nhàng, nhận biết cơ bản hoặc Đúng/Sai.
+- Chặng 2 (Khám Phá): ĐÚNG 10 CÂU HỎI thông hiểu, nhận diện quy tắc, công thức.
+- Chặng 3 (Luyện Tập): ĐÚNG 10 CÂU HỎI rèn luyện kỹ năng tính toán, phân tích số liệu.
+- Chặng 4 (Vận Dụng): ĐÚNG 10 CÂU HỎI bài toán thực tế có lời văn (gắn với làng quê, nông sản Thụy Lâm, trường học).
+Mỗi câu hỏi có:
+- "question": Nội dung câu hỏi rõ ràng, sư phạm
+- "options": Mảng 4 lựa chọn [A, B, C, D] (hoặc 2 lựa chọn ["Đúng", "Sai", "", ""] với correctIndex tương ứng)
+- "correctIndex": Chỉ số đáp án đúng (0, 1, 2, hoặc 3)
+- "explanation": Lời giải chi tiết, ấm áp mang giọng cô giáo Thụy Lâm.
+Trả về duy nhất định dạng JSON chuẩn.`;
+
+        const userPrompt = `Dưới đây là nội dung giáo án / bài tập của tôi:\n\n${sourceText}\n\nHãy triển khai thành Game 5 chặng gồm Lý thuyết tương tác + 35 câu hỏi (5 câu chặng 1, 10 câu chặng 2, 10 câu chặng 3, 10 câu chặng 4).`;
+
+        try {
+          const generated = await callGeminiAPI(systemInstruction, userPrompt, apiKey);
+          populateStudioFields(generated);
+          showToast('🎉 AI đã dựng thành công Game 5 Chặng (Lý thuyết + 35 câu)! Cô xem trước và gửi nhận xét bên dưới nhé.');
+        } catch (err) {
+          showToast('❌ Lỗi AI: ' + err.message);
+        } finally {
+          btnAiGenerateGame.disabled = false;
+          aiLoadingIndicator.classList.add('hidden');
+        }
+      });
+    }
+
+    // AI Refine Lesson based on Teacher's Feedback
+    if (btnAiRefine) {
+      btnAiRefine.addEventListener('click', async () => {
+        const apiKey = localStorage.getItem('gemini_api_key') || inputGeminiApiKey?.value.trim();
+        if (!apiKey) {
+          geminiKeyBox.classList.remove('hidden');
+          showToast('🔑 Vui lòng cài đặt Gemini API Key trước khi sử dụng AI!');
+          return;
+        }
+
+        const feedback = aiFeedbackInput.value.trim();
+        if (!feedback) {
+          showToast('⚠️ Cô hãy nhập nhận xét hoặc yêu cầu chỉnh sửa cho AI nhé!');
+          return;
+        }
+
+        syncTheoryDOMToState();
+        btnAiRefine.disabled = true;
+        btnAiRefine.textContent = '⏳ AI đang sửa...';
+
+        const currentLessonSnapshot = {
+          title: studioTitleInput.value.trim(),
+          subtitle: studioSubtitleInput.value.trim(),
+          icon: studioIconInput.value,
+          theory: studioTheoryData,
+          stages: [
+            { stageNum: 1, name: 'Khởi Động', questions: studioStagesData[1] },
+            { stageNum: 2, name: 'Khám Phá', questions: studioStagesData[2] },
+            { stageNum: 3, name: 'Luyện Tập', questions: studioStagesData[3] },
+            { stageNum: 4, name: 'Vận Dụng', questions: studioStagesData[4] }
+          ]
+        };
+
+        const systemInstruction = `Bạn là Trợ Lý AI của cô giáo Toán 4 Trường TH & THCS Thụy Lâm.
+Giáo viên đã xem trước bản thiết kế bài học hiện tại và đưa ra nhận xét / yêu cầu chỉnh sửa.
+Nhiệm vụ: Cập nhật, chỉnh sửa lại bài học theo đúng ý kiến của cô giáo, đảm bảo giữ vững cấu trúc chuẩn:
+- Lý thuyết tương tác (summary, rules, example steps)
+- Chặng 1: 5 câu hỏi Khởi động
+- Chặng 2: 10 câu hỏi Khám phá
+- Chặng 3: 10 câu hỏi Luyện tập
+- Chặng 4: 10 câu hỏi Vận dụng
+Trả về duy nhất định dạng JSON chuẩn.`;
+
+        const userPrompt = `Dữ liệu bài học hiện tại:\n${JSON.stringify(currentLessonSnapshot)}\n\nNHẬN XÉT VÀ YÊU CẦU CỦA CÔ GIÁO:\n"${feedback}"\n\nHãy chỉnh sửa và cập nhật lại bài học theo đúng yêu cầu trên!`;
+
+        try {
+          const refined = await callGeminiAPI(systemInstruction, userPrompt, apiKey);
+          populateStudioFields(refined);
+          showToast('✨ AI đã tiếp thu nhận xét và hoàn thiện lại bài học theo đúng ý cô!');
+          aiFeedbackInput.value = '';
+        } catch (err) {
+          showToast('❌ Lỗi AI: ' + err.message);
+        } finally {
+          btnAiRefine.disabled = false;
+          btnAiRefine.textContent = '⚡ AI Chỉnh Sửa Lại';
+        }
+      });
+    }
+
+    // Quick feedback chip click
+    document.querySelectorAll('.ai-feedback-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (aiFeedbackInput) {
+          aiFeedbackInput.value = btn.dataset.text || '';
+          aiFeedbackInput.focus();
         }
       });
     });
 
-    // Studio Form Submit
+    // ------------------------------------------
+    // STUDIO FORM SUBMIT (SAVE TO CLOUD)
+    // ------------------------------------------
     document.getElementById('studio-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      syncTheoryDOMToState();
       const existingId = studioIdInput.value;
       const lessonId = existingId || ('lesson_' + Date.now());
 
       const stages = [];
       const stageNames = ['Khởi Động', 'Khám Phá', 'Luyện Tập', 'Vận Dụng'];
+
+      // Validate all stages
       for (let i = 1; i <= 4; i++) {
+        const qList = studioStagesData[i] || [];
+        if (qList.length === 0) {
+          showToast(`⚠️ Chặng ${i} (${stageNames[i - 1]}) cần ít nhất 1 câu hỏi!`);
+          const tabBtn = document.querySelector(`.studio-tab-btn[data-target="stage-pane-${i}"]`);
+          if (tabBtn) tabBtn.click();
+          return;
+        }
+
+        for (let qIdx = 0; qIdx < qList.length; qIdx++) {
+          const q = qList[qIdx];
+          if (!q.question || !q.question.trim()) {
+            showToast(`⚠️ Chặng ${i} - Câu ${qIdx + 1} chưa có nội dung đề bài!`);
+            const tabBtn = document.querySelector(`.studio-tab-btn[data-target="stage-pane-${i}"]`);
+            if (tabBtn) tabBtn.click();
+            return;
+          }
+          const opts = Array.isArray(q.options) ? q.options : [];
+          if (opts.length < 2 || opts.slice(0, 2).some(o => !o || !o.trim())) {
+            showToast(`⚠️ Chặng ${i} - Câu ${qIdx + 1} chưa điền đủ các đáp án!`);
+            const tabBtn = document.querySelector(`.studio-tab-btn[data-target="stage-pane-${i}"]`);
+            if (tabBtn) tabBtn.click();
+            return;
+          }
+        }
+
+        const firstQ = qList[0];
         stages.push({
           stageNum: i,
           name: stageNames[i - 1],
-          question: document.getElementById(`s${i}-question`).value.trim(),
-          options: [
-            document.getElementById(`s${i}-opt-0`).value.trim(),
-            document.getElementById(`s${i}-opt-1`).value.trim(),
-            document.getElementById(`s${i}-opt-2`).value.trim(),
-            document.getElementById(`s${i}-opt-3`).value.trim()
-          ],
-          correctIndex: parseInt(document.getElementById(`s${i}-correct`).value, 10),
-          explanation: document.getElementById(`s${i}-explanation`).value.trim()
+          questions: qList.map(item => ({
+            question: item.question.trim(),
+            options: item.options.map(o => o.trim()),
+            correctIndex: item.correctIndex !== undefined ? item.correctIndex : 1,
+            explanation: (item.explanation || '').trim()
+          })),
+          // Backward compatibility fields
+          question: firstQ.question.trim(),
+          options: firstQ.options.map(o => o.trim()),
+          correctIndex: firstQ.correctIndex !== undefined ? firstQ.correctIndex : 1,
+          explanation: (firstQ.explanation || '').trim()
         });
       }
 
@@ -2029,6 +2594,7 @@
         grade: 'Toán 4',
         icon: studioIconInput.value,
         isStudioLesson: true,
+        theory: studioTheoryData,
         stages: stages,
         createdAt: new Date().toISOString()
       };

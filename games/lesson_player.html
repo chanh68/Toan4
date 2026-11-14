@@ -222,12 +222,101 @@
       </button>
     </div>
 
+    <!-- SCREEN 1.5: INTERACTIVE THEORY LAB (TRẠM 0) -->
+    <div id="screen-theory" class="hidden space-y-5 max-w-2xl mx-auto w-full">
+      <!-- Theory Card -->
+      <div class="cute-card bg-white p-6 sm:p-8 space-y-6 border-4 border-teal-200 shadow-xl">
+        <div class="flex items-center justify-between border-b pb-4 border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-teal-400 to-emerald-500 text-white flex items-center justify-center text-2xl shadow-md">
+              📖
+            </div>
+            <div>
+              <span class="text-xs font-black uppercase text-teal-600 tracking-wider">Trạm 0 • Khám Phá Kiến Thức</span>
+              <h2 id="theory-display-title" class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">Lý Thuyết Trọng Tâm</h2>
+            </div>
+          </div>
+          <button id="btn-theory-to-roadmap" type="button" class="text-xs font-black text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl transition">
+            🗺️ Lộ trình
+          </button>
+        </div>
+
+        <!-- Summary Banner with Chibi -->
+        <div class="bg-gradient-to-r from-teal-50 via-emerald-50 to-sky-50 rounded-2xl p-4 sm:p-5 border-2 border-teal-200 flex items-start gap-3.5">
+          <div class="text-3xl shrink-0">💡</div>
+          <div class="space-y-1">
+            <h4 class="font-black text-xs uppercase text-teal-900">Tóm tắt cốt lõi:</h4>
+            <p id="theory-display-summary" class="text-xs sm:text-sm font-semibold text-slate-700 leading-relaxed">...</p>
+          </div>
+        </div>
+
+        <!-- Rules list -->
+        <div class="space-y-2.5">
+          <h4 class="font-black text-xs uppercase text-slate-700 flex items-center gap-1.5">
+            <span>📌</span> <span>Quy tắc ghi nhớ chuẩn SGK:</span>
+          </h4>
+          <div id="theory-display-rules" class="space-y-2">
+            <!-- Dynamically injected -->
+          </div>
+        </div>
+
+        <!-- Interactive Step-by-Step Example -->
+        <div class="space-y-3 border-t border-slate-100 pt-4">
+          <div class="flex items-center justify-between">
+            <h4 class="font-black text-xs uppercase text-slate-700 flex items-center gap-1.5">
+              <span>🌟</span> <span>Ví dụ minh họa từng bước giải:</span>
+            </h4>
+            <span class="text-[11px] text-teal-600 font-bold hidden sm:inline">(Bấm nút để mở từng bước)</span>
+          </div>
+
+          <div id="theory-display-example-title" class="text-xs sm:text-sm font-bold text-slate-900 bg-amber-50 p-3 rounded-xl border border-amber-200">
+            Ví dụ mẫu...
+          </div>
+
+          <div id="theory-display-steps-list" class="space-y-2.5">
+            <!-- Injected steps -->
+          </div>
+
+          <div class="flex justify-end pt-1">
+            <button type="button" id="btn-reveal-next-step" class="text-xs font-black text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-300 px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-2xs">
+              <span>👉 Xem bước giải tiếp theo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Ready Action Button -->
+        <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <button id="btn-theory-back-map" type="button" class="w-full sm:w-auto px-5 py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-50 transition">
+            🗺️ Xem Bảng Lộ Trình
+          </button>
+          <button id="btn-theory-start-stage1" type="button" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:to-teal-600 text-white font-black text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-[0_5px_0_0_#0f766e] active:translate-y-[2px] transition flex items-center justify-center gap-2">
+            <span>🚀 Em Đã Hiểu Bài! Bắt Đầu Chặng 1 Khởi Động 👉</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- SCREEN 2: ROADMAP (BẢN ĐỒ 5 CHẶNG) -->
     <div id="screen-roadmap" class="hidden space-y-5">
       <div class="text-center space-y-1">
         <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black uppercase">Lộ Trình Thử Thách</span>
         <h2 id="roadmap-heading" class="text-2xl sm:text-3xl font-black text-slate-800">5 Chặng Chinh Phục Kiến Thức</h2>
         <p class="text-xs sm:text-sm text-slate-500 font-semibold">Vượt qua các chặng để mở khóa Cúp Vàng và nhận Giấy Khen danh dự!</p>
+      </div>
+
+      <!-- Theory Stop Banner -->
+      <div id="roadmap-theory-banner" class="cute-card bg-gradient-to-r from-teal-50 via-emerald-50 to-sky-50 border-2 border-teal-300 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 cursor-pointer hover:shadow-md transition">
+        <div class="flex items-center gap-3">
+          <span class="w-12 h-12 rounded-2xl bg-teal-500 text-white font-black text-2xl flex items-center justify-center shrink-0 shadow-sm">📖</span>
+          <div>
+            <div class="text-[11px] font-black uppercase text-teal-700">Trạm 0 • Kiến thức nền tảng</div>
+            <div id="roadmap-theory-title" class="text-base font-black text-slate-800">Khám Phá Lý Thuyết &amp; Ví Dụ Tương Tác</div>
+            <div class="text-xs text-slate-500 font-medium">Bấm vào đây để xem lại quy tắc và ví dụ mẫu bất kỳ lúc nào!</div>
+          </div>
+        </div>
+        <button type="button" class="bg-white hover:bg-teal-50 border border-teal-300 text-teal-800 font-black text-xs px-4 py-2.5 rounded-xl shadow-xs transition whitespace-nowrap">
+          📖 Mở Trạm Lý Thuyết
+        </button>
       </div>
 
       <!-- Roadmap Grid -->
@@ -460,6 +549,23 @@
       category: "Số và Phép tính",
       grade: "Toán 4",
       icon: "📊",
+      theory: {
+        title: "Kiến thức trọng tâm: Tìm số trung bình cộng",
+        summary: "Muốn tìm số trung bình cộng của nhiều số, ta tính tổng của các số đó, rồi chia tổng đó cho số các số hạng.",
+        rules: [
+          "Bước 1: Tính tổng của tất cả các số hạng đã cho.",
+          "Bước 2: Đếm xem có tất cả bao nhiêu số hạng.",
+          "Bước 3: Lấy tổng vừa tính chia cho số các số hạng."
+        ],
+        example: {
+          title: "Ví dụ mẫu: Tìm số trung bình cộng của 10 và 20",
+          steps: [
+            { step: 1, text: "Bước 1: Tính tổng hai số: 10 + 20 = 30." },
+            { step: 2, text: "Bước 2: Có 2 số hạng nên lấy tổng chia cho 2: 30 : 2 = 15." },
+            { step: 3, text: "Bước 3: Kết luận: Số 15 là số trung bình cộng của 10 và 20." }
+          ]
+        }
+      },
       stages: [
         {
           stageNum: 1,
@@ -517,17 +623,81 @@
 
     // Screens
     const screenWelcome = document.getElementById('screen-welcome');
+    const screenTheory = document.getElementById('screen-theory');
     const screenRoadmap = document.getElementById('screen-roadmap');
     const screenQuiz = document.getElementById('screen-quiz');
     const screenStage5 = document.getElementById('screen-stage5');
 
+    let revealedStepsCount = 1;
+
+    function renderTheoryLab() {
+      const theory = appState.lesson.theory || {
+        title: appState.lesson.title || 'Lý Thuyết Trọng Tâm',
+        summary: appState.lesson.subtitle || 'Khám phá các quy tắc và phương pháp giải chuẩn SGK Toán 4.',
+        rules: ['Đọc kỹ đề bài và xác định yêu cầu cần tìm.', 'Thực hiện phép tính cẩn thận theo thứ tự ưu tiên.'],
+        example: {
+          title: 'Ví dụ minh họa mẫu:',
+          steps: [
+            { step: 1, text: 'Bước 1: Tóm tắt bài toán và xác định công thức.' },
+            { step: 2, text: 'Bước 2: Thay số vào và tính toán kết quả.' }
+          ]
+        }
+      };
+
+      document.getElementById('theory-display-title').textContent = theory.title || 'Lý Thuyết Trọng Tâm';
+      document.getElementById('theory-display-summary').textContent = theory.summary || '';
+
+      // Rules list
+      const rulesContainer = document.getElementById('theory-display-rules');
+      rulesContainer.innerHTML = '';
+      (theory.rules || []).forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'flex items-start gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-800';
+        div.innerHTML = `<span class="w-5 h-5 rounded-full bg-teal-500 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">✓</span><span>${r}</span>`;
+        rulesContainer.appendChild(div);
+      });
+
+      // Example Title & Steps
+      document.getElementById('theory-display-example-title').textContent = theory.example?.title || 'Ví dụ minh họa mẫu:';
+      const stepsContainer = document.getElementById('theory-display-steps-list');
+      const allSteps = Array.isArray(theory.example?.steps) ? theory.example.steps : [];
+      stepsContainer.innerHTML = '';
+
+      allSteps.slice(0, revealedStepsCount).forEach((st, idx) => {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'p-3 rounded-xl bg-teal-50 border-2 border-teal-200 text-xs sm:text-sm text-teal-950 font-semibold space-y-1 transition-all';
+        stepDiv.innerHTML = `<div class="font-black text-xs uppercase text-teal-700">Bước ${idx + 1}:</div><div>${st.text}</div>`;
+        stepsContainer.appendChild(stepDiv);
+      });
+
+      const nextBtn = document.getElementById('btn-reveal-next-step');
+      if (nextBtn) {
+        if (revealedStepsCount < allSteps.length) {
+          nextBtn.classList.remove('hidden');
+          nextBtn.onclick = () => {
+            sound.playPop();
+            revealedStepsCount++;
+            renderTheoryLab();
+          };
+        } else {
+          nextBtn.classList.add('hidden');
+        }
+      }
+    }
+    window.renderTheoryLab = renderTheoryLab;
+
     function showScreen(screenId) {
       screenWelcome.classList.add('hidden');
+      if (screenTheory) screenTheory.classList.add('hidden');
       screenRoadmap.classList.add('hidden');
       screenQuiz.classList.add('hidden');
       screenStage5.classList.add('hidden');
 
       if (screenId === 'welcome') screenWelcome.classList.remove('hidden');
+      else if (screenId === 'theory') {
+        if (screenTheory) screenTheory.classList.remove('hidden');
+        renderTheoryLab();
+      }
       else if (screenId === 'roadmap') {
         screenRoadmap.classList.remove('hidden');
         renderRoadmapStatus();
@@ -565,7 +735,23 @@
       }
     }
 
-    function openStage(stageNum) {
+    function getStageQuestions(stageData) {
+      if (!stageData) return [];
+      if (Array.isArray(stageData.questions) && stageData.questions.length > 0) {
+        return stageData.questions;
+      }
+      if (stageData.question) {
+        return [{
+          question: stageData.question,
+          options: stageData.options || [],
+          correctIndex: stageData.correctIndex !== undefined ? stageData.correctIndex : 0,
+          explanation: stageData.explanation || ''
+        }];
+      }
+      return [];
+    }
+
+    function openStage(stageNum, qIdx = 0) {
       sound.playPop();
       if (stageNum === 5) {
         showStage5();
@@ -573,29 +759,39 @@
       }
 
       appState.currentStage = stageNum;
-      const stageData = appState.lesson.stages.find(s => s.stageNum === stageNum) || appState.lesson.stages[0];
+      appState.stageQuestionIdx = qIdx;
 
-      document.getElementById('quiz-badge').textContent = `Chặng ${stageNum}`;
+      const stageData = appState.lesson.stages.find(s => s.stageNum === stageNum) || appState.lesson.stages[0];
+      const questions = getStageQuestions(stageData);
+      if (questions.length === 0) {
+        showStage5();
+        return;
+      }
+
+      const currentQ = questions[qIdx] || questions[0];
+      const totalQ = questions.length;
+
+      document.getElementById('quiz-badge').textContent = `Chặng ${stageNum} • Câu ${qIdx + 1}/${totalQ}`;
       document.getElementById('quiz-stage-title').textContent = stageData.name || `Chặng ${stageNum}`;
-      document.getElementById('quiz-question-text').textContent = stageData.question;
+      document.getElementById('quiz-question-text').textContent = currentQ.question;
 
       // Render 4 options
       const grid = document.getElementById('quiz-options-grid');
       grid.innerHTML = '';
       const letters = ['A', 'B', 'C', 'D'];
 
-      stageData.options.forEach((optText, idx) => {
+      (currentQ.options || []).forEach((optText, idx) => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'opt-btn text-left p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 hover:bg-emerald-50 text-slate-800 font-bold text-sm sm:text-base flex items-center gap-3 shadow-xs';
         btn.innerHTML = `
           <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-black text-xs flex items-center justify-center shrink-0 border border-slate-200">
-            ${letters[idx]}
+            ${letters[idx] || (idx + 1)}
           </span>
           <span class="leading-snug">${optText}</span>
         `;
 
-        btn.addEventListener('click', () => handleAnswer(stageNum, idx, stageData, btn));
+        btn.addEventListener('click', () => handleAnswer(stageNum, qIdx, idx, currentQ, questions, btn));
         grid.appendChild(btn);
       });
 
@@ -608,8 +804,8 @@
     }
     window.openStage = openStage;
 
-    function handleAnswer(stageNum, chosenIdx, stageData, chosenBtn) {
-      const isCorrect = (chosenIdx === stageData.correctIndex);
+    function handleAnswer(stageNum, qIdx, chosenIdx, currentQ, allQuestions, chosenBtn) {
+      const isCorrect = (chosenIdx === currentQ.correctIndex);
       const allBtns = document.querySelectorAll('.opt-btn');
       allBtns.forEach(b => b.disabled = true);
 
@@ -630,24 +826,30 @@
         fbBox.className = 'rounded-2xl p-4 space-y-2 border-2 bg-emerald-50 border-emerald-300 text-emerald-950';
         fbIcon.textContent = '🎉';
         fbTitle.textContent = 'Chính xác! Em giỏi lắm!';
-        fbExpl.textContent = stageData.explanation || 'Em đã trả lời hoàn toàn chính xác!';
+        fbExpl.textContent = currentQ.explanation || 'Em đã trả lời hoàn toàn chính xác!';
 
         appState.stars += 10;
         updateScoreDisplays();
 
-        // Unlock next stage
-        const nextStageNum = stageNum + 1;
-        if (!appState.unlockedStages.includes(nextStageNum) && nextStageNum <= 5) {
-          appState.unlockedStages.push(nextStageNum);
-        }
-
         actionBar.classList.remove('hidden');
-        if (nextStageNum <= 4) {
-          nextBtn.innerHTML = `<span>Tiến vào Chặng ${nextStageNum} 🚀</span>`;
-          nextBtn.onclick = () => openStage(nextStageNum);
+
+        // Nếu còn câu hỏi trong chặng này
+        if (qIdx + 1 < allQuestions.length) {
+          nextBtn.innerHTML = `<span>Câu tiếp theo (${qIdx + 2}/${allQuestions.length}) 👉</span>`;
+          nextBtn.onclick = () => openStage(stageNum, qIdx + 1);
         } else {
-          nextBtn.innerHTML = `<span>Nhận Giấy Khen Vinh Dự 🏆</span>`;
-          nextBtn.onclick = () => showStage5();
+          // Đã hoàn thành toàn bộ câu hỏi của chặng này
+          const nextStageNum = stageNum + 1;
+          if (!appState.unlockedStages.includes(nextStageNum) && nextStageNum <= 5) {
+            appState.unlockedStages.push(nextStageNum);
+          }
+          if (nextStageNum <= 4) {
+            nextBtn.innerHTML = `<span>Hoàn thành Chặng ${stageNum}! Tiến vào Chặng ${nextStageNum} 🚀</span>`;
+            nextBtn.onclick = () => openStage(nextStageNum, 0);
+          } else {
+            nextBtn.innerHTML = `<span>Xuất Sắc! Nhận Giấy Khen Vinh Dự 🏆</span>`;
+            nextBtn.onclick = () => showStage5();
+          }
         }
       } else {
         sound.playWrong();
@@ -656,12 +858,12 @@
         fbBox.className = 'rounded-2xl p-4 space-y-2 border-2 bg-amber-50 border-amber-300 text-amber-950';
         fbIcon.textContent = '💡';
         fbTitle.textContent = 'Chưa đúng rồi! Em hãy xem lời giải nhé:';
-        fbExpl.textContent = stageData.explanation || 'Hãy đọc kỹ lại đề bài và tính toán cẩn thận hơn nhé.';
+        fbExpl.textContent = currentQ.explanation || 'Hãy đọc kỹ lại đề bài và tính toán cẩn thận hơn nhé.';
 
         // Allow retry
         actionBar.classList.remove('hidden');
         nextBtn.innerHTML = `<span>Thử lại câu này 🔄</span>`;
-        nextBtn.onclick = () => openStage(stageNum);
+        nextBtn.onclick = () => openStage(stageNum, qIdx);
       }
     }
 
@@ -740,8 +942,44 @@
       appState.student.name = name || 'Học sinh Thụy Lâm';
       appState.student.class = cls || '4A1';
       appState.hasRegistered = true;
-      showScreen('roadmap');
+      if (appState.lesson.theory) {
+        showScreen('theory');
+      } else {
+        showScreen('roadmap');
+      }
     });
+
+    const theoryBanner = document.getElementById('roadmap-theory-banner');
+    if (theoryBanner) {
+      theoryBanner.addEventListener('click', () => {
+        sound.playPop();
+        showScreen('theory');
+      });
+    }
+
+    const btnTheoryStartStage1 = document.getElementById('btn-theory-start-stage1');
+    if (btnTheoryStartStage1) {
+      btnTheoryStartStage1.addEventListener('click', () => {
+        sound.playPop();
+        openStage(1, 0);
+      });
+    }
+
+    const btnTheoryToRoadmap = document.getElementById('btn-theory-to-roadmap');
+    if (btnTheoryToRoadmap) {
+      btnTheoryToRoadmap.addEventListener('click', () => {
+        sound.playPop();
+        showScreen('roadmap');
+      });
+    }
+
+    const btnTheoryBackMap = document.getElementById('btn-theory-back-map');
+    if (btnTheoryBackMap) {
+      btnTheoryBackMap.addEventListener('click', () => {
+        sound.playPop();
+        showScreen('roadmap');
+      });
+    }
 
     document.querySelectorAll('.road-stop[data-stage]').forEach(btn => {
       btn.addEventListener('click', () => {
