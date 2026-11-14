@@ -337,7 +337,7 @@
   </div>
 
   <!-- 3. Chibi Teacher (Cô giáo Chibi Thụy Lâm hiền dịu thướt tha áo dài) -->
-  <div class="pointer-events-none fixed bottom-3 left-3 2xl:left-8 z-20 hidden lg:flex flex-col items-center select-none transition-all duration-300">
+  <div class="pointer-events-none fixed bottom-3 left-3 2xl:left-8 z-40 hidden lg:flex flex-col items-center select-none transition-all duration-300">
     <div class="relative group animate-bob flex flex-col items-center">
       <div class="w-36 xl:w-44 2xl:w-52 flex flex-col items-center">
         <img src="./chibi_co_giao.png?v=2" alt="Cô giáo Thụy Lâm Chibi" class="w-full h-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.22)]" />
@@ -349,7 +349,7 @@
   </div>
 
   <!-- 4. Chibi Students (Hai bạn học sinh Chibi khăn quàng đỏ tung tăng) -->
-  <div class="pointer-events-none fixed bottom-3 right-3 2xl:right-8 z-20 hidden lg:flex flex-col items-center select-none transition-all duration-300">
+  <div class="pointer-events-none fixed bottom-3 right-3 2xl:right-8 z-40 hidden lg:flex flex-col items-center select-none transition-all duration-300">
     <div class="relative group animate-bob-delay flex flex-col items-center">
       <div class="w-40 xl:w-48 2xl:w-56 flex flex-col items-center">
         <img src="./chibi_hoc_sinh.png?v=2" alt="Học sinh Chibi chăm ngoan" class="w-full h-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.22)]" />
@@ -396,7 +396,7 @@
         <!-- Nút Soạn Bài Giảng 5 Chặng (Studio): Chỉ hiện khi là Giáo viên (Admin) -->
         <button id="btn-open-studio" type="button"
                 class="hidden bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:to-teal-600 text-white font-extrabold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-2xl shadow-[0_4px_0_0_#0f766e] hover:translate-y-[-1px] active:translate-y-[2px] active:shadow-[0_1px_0_0_#0f766e] transition-all whitespace-nowrap items-center gap-1.5">
-          <span>✨</span> <span>Soạn Bài 5 Chặng</span>
+          <span>✨</span> <span>Soạn bài học</span>
         </button>
 
         <!-- Nút Thêm Link Ngoài: Chỉ hiện khi là Giáo viên (Admin) -->
@@ -502,8 +502,8 @@
         <button type="button" data-cat="Ôn tập" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-amber-300 hover:bg-amber-50 font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all">
           🏆 Ôn tập
         </button>
-        <button type="button" data-cat="Bổ sung" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-emerald-300 hover:bg-emerald-50 font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all">
-          🎁 Bổ sung
+        <button type="button" data-cat="Kiểm tra" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-rose-300 hover:bg-rose-50 font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all">
+          📝 Kiểm tra
         </button>
       </div>
 
@@ -1071,7 +1071,7 @@
               <option value="Bài học" selected>Bài học</option>
               <option value="Bài tập tuần">Bài tập tuần</option>
               <option value="Ôn tập">Ôn tập</option>
-              <option value="Bổ sung">Bổ sung</option>
+              <option value="Kiểm tra">Kiểm tra</option>
             </select>
           </div>
           <div>
@@ -1142,7 +1142,7 @@
               <option value="Bài học">Bài học</option>
               <option value="Bài tập tuần">Bài tập tuần</option>
               <option value="Ôn tập">Ôn tập</option>
-              <option value="Bổ sung">Bổ sung</option>
+              <option value="Kiểm tra">Kiểm tra</option>
             </select>
           </div>
           <div>
@@ -1186,7 +1186,7 @@
             ✨
           </div>
           <div>
-            <h3 id="studio-modal-title" class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">Soạn Bài Giảng 5 Chặng Tương Tác</h3>
+            <h3 id="studio-modal-title" class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">Soạn bài học</h3>
             <p class="text-xs text-slate-500 font-semibold">Tự động dựng 5 chặng thử thách, âm thanh, chibi và cấp giấy khen!</p>
           </div>
         </div>
@@ -1280,7 +1280,7 @@
           <div class="flex items-center gap-2">
             <span class="text-lg">📋</span>
             <h4 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wide">
-              Bảng Biên Soạn Bài Giảng 5 Chặng
+              Bảng Biên Soạn Bài Học
             </h4>
           </div>
           <button type="button" id="btn-clear-studio-form" class="bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 font-extrabold text-xs px-3 py-1 rounded-xl transition whitespace-nowrap cursor-pointer shadow-2xs flex items-center gap-1">
@@ -3138,7 +3138,7 @@
         populateStudioFields(existingLesson);
         // edit mode
       } else {
-        document.getElementById('studio-modal-title').textContent = 'Soạn Bài Giảng 5 Chặng Tương Tác';
+        document.getElementById('studio-modal-title').textContent = 'Soạn bài học';
         studioIdInput.value = '';
         populateStudioFields({
           title: '',
