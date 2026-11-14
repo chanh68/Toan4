@@ -1431,7 +1431,7 @@
             </div>
 
             <textarea id="ai-source-text" rows="2"
-                      placeholder="Dán nội dung giáo án, đề bài hoặc bài tập vào đây... Bấm 'AI Triển Khai' để AI tự động điền toàn bộ bài học và 35 câu hỏi xuống bảng bên dưới!"
+                      placeholder="Dán nội dung giáo án, đề bài hoặc bài tập vào đây... Bấm 'AI Triển Khai' để AI thiết kế nhanh Lý thuyết + 16 câu hỏi trọng tâm xuống bảng bên dưới (~15 giây)!"
                       class="w-full px-3 py-2 rounded-xl border-2 border-indigo-200 text-xs sm:text-sm font-medium bg-white focus:outline-none focus:border-indigo-500 shadow-inner"></textarea>
           </div>
 
@@ -1439,10 +1439,10 @@
           <div class="flex flex-col sm:flex-row items-center gap-2">
             <button type="button" id="btn-ai-generate-game"
                     class="w-full sm:w-auto flex-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-black text-xs sm:text-sm py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
-              <span>🪄 AI Triển Khai Game 5 Chặng (Lý Thuyết + 35 Câu)</span>
+              <span>⚡ AI Siêu Tốc Triển Khai Game (Lý Thuyết + 16 Câu Trọng Tâm)</span>
             </button>
             <div id="ai-loading-indicator" class="hidden text-xs font-bold text-indigo-700 flex items-center gap-1.5 animate-pulse bg-white/90 px-3 py-1.5 rounded-xl border border-indigo-200">
-              <span>⏳</span> <span>AI đang phân tích và thiết kế trò chơi...</span>
+              <span>⏳</span> <span id="ai-loading-text">AI đang phân tích và thiết kế trò chơi...</span>
             </div>
           </div>
 
@@ -3302,8 +3302,10 @@
     // ------------------------------------------
     // GEMINI AI INTEGRATION (GENERATE & REFINE)
     // ------------------------------------------
-    // Tự động tìm kiếm model tốt nhất được cấp phép cho API Key của cô
+    let cachedBestModel = null;
+    // Tự động tìm kiếm model tốt nhất được cấp phép cho API Key của cô (kèm bộ nhớ đệm cache)
     async function getBestAvailableGeminiModel(cleanKey) {
+      if (cachedBestModel) return cachedBestModel;
       const endpoints = ['v1beta', 'v1'];
       let debugErrors = [];
 
@@ -3334,9 +3336,13 @@
                 'gemini-1.5-flash'
               ];
               for (const pref of preferred) {
-                if (models.includes(pref)) return { model: pref, apiVersion: ver };
+                if (models.includes(pref)) {
+                  cachedBestModel = { model: pref, apiVersion: ver };
+                  return cachedBestModel;
+                }
               }
-              return { model: models[0], apiVersion: ver };
+              cachedBestModel = { model: models[0], apiVersion: ver };
+              return cachedBestModel;
             }
           } else {
             const errMsg = data.error?.message || `Mã lỗi ${res.status}`;
@@ -3409,10 +3415,10 @@
             body.contents = [{ role: "user", parts: [{ text: userPrompt }] }];
             body.generationConfig.responseMimeType = "application/json";
 
-            // Bật Thinking Effort: MEDIUM cho Gemini 3.8 Flash & Gemini 4
+            // Bật Thinking Effort: LOW cho Gemini 3.8 Flash & Gemini 4 để tốc độ phản hồi siêu nhanh (~15s)
             if (item.model.includes('3.8') || item.model.includes('4-')) {
               body.generationConfig.thinkingConfig = {
-                thinkingEffort: "MEDIUM"
+                thinkingEffort: "LOW"
               };
             }
           }
@@ -3480,8 +3486,26 @@
         btnAiGenerateGame.disabled = true;
         aiLoadingIndicator.classList.remove('hidden');
 
+        let secondsElapsed = 0;
+        const loadingTextEl = document.getElementById('ai-loading-text');
+        const updateLoadingMsg = () => {
+          if (!loadingTextEl) return;
+          if (secondsElapsed < 4) {
+            loadingTextEl.textContent = `🤖 AI đang phân tích bài học... (${secondsElapsed}s)`;
+          } else if (secondsElapsed < 10) {
+            loadingTextEl.textContent = `✨ Đang soạn Lý thuyết & 16 câu hỏi 4 chặng... (${secondsElapsed}s)`;
+          } else {
+            loadingTextEl.textContent = `🎯 Đang hoàn thiện lời giải chi tiết... (${secondsElapsed}s)`;
+          }
+        };
+        updateLoadingMsg();
+        const timerId = setInterval(() => {
+          secondsElapsed++;
+          updateLoadingMsg();
+        }, 1000);
+
         const systemInstruction = `Bạn là Trợ Lý Sư Phạm và Chuyên Gia Thiết Kế Game Học Tập Toán 4 của Trường TH & THCS Thụy Lâm.
-Nhiệm vụ: Phân tích giáo án / đề bài của giáo viên và chuyển thành cấu trúc bài học 5 chặng tương tác chuẩn sư phạm:
+Nhiệm vụ: Phân tích giáo án / đề bài của giáo viên và chuyển thành cấu trúc bài học 5 chặng tương tác chuẩn sư phạm (Tổng 16 câu hỏi tinh chọn, trọng tâm):
 1. "theory": {
   "title": "Tiêu đề phần lý thuyết",
   "summary": "Tóm tắt ngắn gọn khái niệm trong 2-3 câu",
@@ -3494,11 +3518,11 @@ Nhiệm vụ: Phân tích giáo án / đề bài của giáo viên và chuyển 
     ]
   }
 }
-2. "stages": 4 chặng thử thách:
-- Chặng 1 (Khởi Động): ĐÚNG 5 CÂU HỎI nhẹ nhàng, nhận biết cơ bản hoặc Đúng/Sai.
-- Chặng 2 (Khám Phá): ĐÚNG 10 CÂU HỎI thông hiểu, nhận diện quy tắc, công thức.
-- Chặng 3 (Luyện Tập): ĐÚNG 10 CÂU HỎI rèn luyện kỹ năng tính toán, phân tích số liệu.
-- Chặng 4 (Vận Dụng): ĐÚNG 10 CÂU HỎI bài toán thực tế có lời văn (gắn với làng quê, nông sản Thụy Lâm, trường học).
+2. "stages": 4 chặng thử thách (16 câu hỏi chọn lọc):
+- Chặng 1 (Khởi Động): 3 CÂU HỎI nhẹ nhàng, nhận biết cơ bản hoặc Đúng/Sai.
+- Chặng 2 (Khám Phá): 4 CÂU HỎI thông hiểu, nhận diện quy tắc, công thức.
+- Chặng 3 (Luyện Tập): 5 CÂU HỎI rèn luyện kỹ năng tính toán, phân tích số liệu.
+- Chặng 4 (Vận Dụng): 4 CÂU HỎI bài toán thực tế có lời văn (gắn với quê hương, nông sản Thụy Lâm, trường học).
 Mỗi câu hỏi có:
 - "question": Nội dung câu hỏi rõ ràng, sư phạm
 - "options": Mảng 4 lựa chọn [A, B, C, D] (hoặc 2 lựa chọn ["Đúng", "Sai", "", ""] với correctIndex tương ứng)
@@ -3506,7 +3530,7 @@ Mỗi câu hỏi có:
 - "explanation": Lời giải chi tiết, ấm áp mang giọng cô giáo Thụy Lâm.
 Trả về duy nhất định dạng JSON chuẩn.`;
 
-        const userPrompt = `Dưới đây là nội dung giáo án / bài tập của tôi:\n\n${sourceText}\n\nHãy triển khai thành Game 5 chặng gồm Lý thuyết tương tác + 35 câu hỏi (5 câu chặng 1, 10 câu chặng 2, 10 câu chặng 3, 10 câu chặng 4).`;
+        const userPrompt = `Dưới đây là nội dung giáo án / bài tập của tôi:\n\n${sourceText}\n\nHãy triển khai thành Game 5 chặng gồm Lý thuyết tương tác + 16 câu hỏi trọng tâm (Chặng 1: 3 câu, Chặng 2: 4 câu, Chặng 3: 5 câu, Chặng 4: 4 câu).`;
 
         try {
           const generated = await callGeminiAPI(systemInstruction, userPrompt, apiKey);
@@ -3516,14 +3540,14 @@ Trả về duy nhất định dạng JSON chuẩn.`;
           const banner = document.getElementById('ai-result-banner');
           const titleEl = document.getElementById('ai-result-title');
           const sourceBadge = document.getElementById('content-source-badge');
-          if (titleEl) titleEl.textContent = `AI đã tạo xong bài: ${generated.title || 'Bài học 5 chặng'}`;
+          if (titleEl) titleEl.textContent = `AI đã tạo xong bài: ${generated.title || 'Bài học 5 chặng'} (${secondsElapsed}s)`;
           if (banner) banner.classList.remove('hidden');
           if (sourceBadge) {
             sourceBadge.textContent = '🤖 Nội dung do AI Gemini tạo';
             sourceBadge.className = 'text-[11px] font-extrabold bg-indigo-100 text-indigo-800 border border-indigo-200 px-2.5 py-0.5 rounded-full self-start sm:self-auto';
           }
 
-          showToast('🎉 AI đã hoàn thành bài giảng! Đã nạp sẵn vào bảng bên dưới cho cô.');
+          showToast(`🎉 AI đã hoàn thành bài giảng trong ${secondsElapsed} giây! Đã nạp sẵn vào bảng bên dưới cho cô.`);
 
           // Tự động cuộn xuống bảng nội dung để cô xem trước
           setTimeout(() => {
@@ -3533,6 +3557,7 @@ Trả về duy nhất định dạng JSON chuẩn.`;
         } catch (err) {
           showToast('❌ Lỗi AI: ' + err.message);
         } finally {
+          clearInterval(timerId);
           btnAiGenerateGame.disabled = false;
           aiLoadingIndicator.classList.add('hidden');
         }
@@ -3557,7 +3582,12 @@ Trả về duy nhất định dạng JSON chuẩn.`;
 
         syncTheoryDOMToState();
         btnAiRefine.disabled = true;
-        btnAiRefine.textContent = '⏳ AI đang sửa...';
+        let refineSec = 0;
+        btnAiRefine.textContent = '⏳ AI đang sửa... (0s)';
+        const refineTimer = setInterval(() => {
+          refineSec++;
+          btnAiRefine.textContent = `⏳ AI đang sửa... (${refineSec}s)`;
+        }, 1000);
 
         const currentLessonSnapshot = {
           title: studioTitleInput.value.trim(),
@@ -3576,10 +3606,10 @@ Trả về duy nhất định dạng JSON chuẩn.`;
 Giáo viên đã xem trước bản thiết kế bài học hiện tại và đưa ra nhận xét / yêu cầu chỉnh sửa.
 Nhiệm vụ: Cập nhật, chỉnh sửa lại bài học theo đúng ý kiến của cô giáo, đảm bảo giữ vững cấu trúc chuẩn:
 - Lý thuyết tương tác (summary, rules, example steps)
-- Chặng 1: 5 câu hỏi Khởi động
-- Chặng 2: 10 câu hỏi Khám phá
-- Chặng 3: 10 câu hỏi Luyện tập
-- Chặng 4: 10 câu hỏi Vận dụng
+- Chặng 1: 3 câu hỏi Khởi động
+- Chặng 2: 4 câu hỏi Khám phá
+- Chặng 3: 5 câu hỏi Luyện tập
+- Chặng 4: 4 câu hỏi Vận dụng
 Trả về duy nhất định dạng JSON chuẩn.`;
 
         const userPrompt = `Dữ liệu bài học hiện tại:\n${JSON.stringify(currentLessonSnapshot)}\n\nNHẬN XÉT VÀ YÊU CẦU CỦA CÔ GIÁO:\n"${feedback}"\n\nHãy chỉnh sửa và cập nhật lại bài học theo đúng yêu cầu trên!`;
@@ -3592,6 +3622,7 @@ Trả về duy nhất định dạng JSON chuẩn.`;
         } catch (err) {
           showToast('❌ Lỗi AI: ' + err.message);
         } finally {
+          clearInterval(refineTimer);
           btnAiRefine.disabled = false;
           btnAiRefine.textContent = '⚡ AI Chỉnh Sửa Lại';
         }
