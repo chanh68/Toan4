@@ -156,7 +156,7 @@
 
     <!-- ================= VIBRANT SCHOOL BACKGROUND ILLUSTRATIONS ================= -->
   <!-- 1. Top Poinciana Branches (Cành hoa phượng vĩ đỏ rực rỡ góc trên) -->
-  <div class="pointer-events-none absolute top-[52px] right-0 z-30 select-none overflow-visible max-w-full">
+  <div class="pointer-events-none absolute top-[36px] right-0 z-30 select-none overflow-visible max-w-full">
     <svg class="w-64 sm:w-80 lg:w-[410px] h-auto drop-shadow-[0_12px_28px_rgba(220,38,38,0.4)] animate-sway-right origin-top-right select-none" viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="poincianaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -472,14 +472,17 @@
             </div>
           </div>
 
-          <!-- Cute Bubbly Stat Badges -->
-          <div class="grid grid-cols-2 lg:grid-cols-1 gap-2.5 shrink-0 w-full sm:w-auto lg:w-48 lg:mt-8">
-            <div class="bg-white/95 border-2 border-pink-200 rounded-2xl p-2.5 sm:p-3 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
+                    <!-- Cute Bubbly Stat Badges (3 ô gọn gàng) -->
+          <div class="grid grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-2.5 shrink-0 w-full sm:w-auto lg:w-48 lg:mt-3">
+            <div class="bg-white/95 border-2 border-amber-200 rounded-2xl p-2 sm:p-2.5 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-3.5 gap-1">
+              <span class="text-xs sm:text-sm font-black text-amber-600">🏅 Chứng nhận số</span>
+            </div>
+            <div class="bg-white/95 border-2 border-pink-200 rounded-2xl p-2 sm:p-2.5 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-3.5 gap-1">
               <span class="text-xs sm:text-sm font-black text-pink-600">🎯 Thử thách đa dạng</span>
             </div>
-            <div class="bg-white/95 border-2 border-sky-200 rounded-2xl p-2.5 sm:p-3 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
+            <div class="bg-white/95 border-2 border-sky-200 rounded-2xl p-2 sm:p-2.5 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-3.5 gap-1">
               <span class="text-xs font-extrabold text-slate-500">📚 Kho bài học</span>
-              <span id="stat-total-count" class="text-base sm:text-lg font-black text-sky-600">10 bài</span>
+              <span id="stat-total-count" class="text-base sm:text-lg font-black text-sky-600">31 bài</span>
             </div>
           </div>
         </div>
@@ -2230,8 +2233,8 @@
         const sectionDefs = [
           { key: 'Bài học', title: 'BÀI HỌC SGK TOÁN 4', icon: '📘', badgeColor: 'bg-sky-100 text-sky-700' },
           { key: 'Bài tập tuần', title: 'BÀI TẬP TUẦN', icon: '📅', badgeColor: 'bg-purple-100 text-purple-700' },
-          { key: 'Ôn tập', title: 'ÔN TẬP & ĐỀ KIỂM TRA', icon: '🏆', badgeColor: 'bg-amber-100 text-amber-700' },
-          { key: 'Bổ sung', title: 'BỔ SUNG & NGOẠI KHÓA', icon: '🎁', badgeColor: 'bg-emerald-100 text-emerald-700' }
+          { key: 'Ôn tập', title: 'ÔN TẬP', icon: '🏆', badgeColor: 'bg-amber-100 text-amber-700' },
+          { key: 'Kiểm tra', title: 'KIỂM TRA', icon: '📝', badgeColor: 'bg-rose-100 text-rose-700' }
         ];
 
         let globalIdx = 0;
@@ -2415,25 +2418,32 @@
       const idx = allGames.findIndex(x => x.id === id);
       if (idx !== -1) {
         allGames[idx] = updated;
+        // 1. Lưu ngay vào cache local để giao diện cập nhật lập tức và không bị giật lag
+        try {
+          localStorage.setItem('toan4_cached_games', JSON.stringify(allGames));
+        } catch(e) {}
         renderGames();
 
-        if (fbDb) {
-          try {
-            const docRef = doc(fbDb, FIRESTORE_COL, FIRESTORE_DOC);
-            await setDoc(docRef, { games: allGames, updatedAt: Date.now() }, { merge: true });
-            showToast('✨ Đã cập nhật bài học lên Google Firestore!');
-            return;
-          } catch (e) {
-            console.warn("Lỗi cập nhật Firestore:", e);
-          }
-        }
-
+        // 2. Cập nhật vào danh sách localLinks nếu có
         const current = getLocalLinks();
         const localIdx = current.findIndex(x => x.id === id);
         if (localIdx !== -1) {
           current[localIdx] = updated;
           saveLocalLinks(current);
         }
+
+        // 3. Đồng bộ lên Google Firestore
+        if (fbDb) {
+          try {
+            const docRef = doc(fbDb, FIRESTORE_COL, FIRESTORE_DOC);
+            await setDoc(docRef, { games: allGames, updatedAt: Date.now() }, { merge: true });
+            showToast('✨ Đã cập nhật bài học lên Google Firestore thành công!');
+            return;
+          } catch (e) {
+            console.warn("Lỗi cập nhật Firestore:", e);
+          }
+        }
+
         showToast('✨ Đã cập nhật bài học vào trình duyệt!');
       }
     }
@@ -2446,22 +2456,18 @@
     function getDisplayCategory(game) {
       if (!game) return 'Bài học';
       const cat = (game.category || '').trim();
-      const titleOnly = (game.title || '').trim().toLowerCase();
 
-      // Explicit standard categories
-      if (cat === 'Bài học') return 'Bài học';
-      if (cat === 'Bài tập tuần') return 'Bài tập tuần';
+      // 1. Thể loại được giáo viên chọn/chỉnh sửa luôn có độ ưu tiên CAO NHẤT!
+      if (cat === 'Kiểm tra' || cat === 'Đề kiểm tra') return 'Kiểm tra';
       if (cat === 'Ôn tập') return 'Ôn tập';
-      if (cat === 'Bổ sung' && !/ôn tập|đề\s*\d+|giữa k[ìỳ]|cuối k[ìỳ]/i.test(titleOnly)) return 'Bổ sung';
+      if (cat === 'Bài tập tuần') return 'Bài tập tuần';
+      if (cat === 'Bài học' || cat === 'Bài học SGK') return 'Bài học';
 
-      // Detect weekly exercise
+      // 2. Chỉ suy đoán khi thể loại bị trống hoặc lạ
+      const titleOnly = (game.title || '').trim().toLowerCase();
+      if (/đề kiểm tra|bài kiểm tra|đề thi|kiểm tra|khảo sát/i.test(titleOnly)) return 'Kiểm tra';
       if (/tuần\s*\d+|bài tập tuần/i.test(titleOnly)) return 'Bài tập tuần';
-
-      // Detect review tests & exams
-      if (cat === 'Kiểm tra' || /ôn tập|đề\s*\d+|bài kiểm tra|đề kiểm tra|giữa k[ìỳ]|cuối k[ìỳ]/i.test(titleOnly)) return 'Ôn tập';
-
-      // Detect extra / enrichment
-      if (/bổ sung|nâng cao|ngoại khóa|toán vui/i.test(titleOnly)) return 'Bổ sung';
+      if (/ôn tập|luyện tập chung|củng cố/i.test(titleOnly)) return 'Ôn tập';
 
       return 'Bài học';
     }
@@ -3723,7 +3729,27 @@ Trả về duy nhất định dạng JSON chuẩn.`;
       });
     }
 
+    // ==========================================
+    // INSTANT INITIAL RENDER (< 0.05s) - KHÔNG ĐỢI MẠNG!
+    // ==========================================
+    try {
+      const cachedRaw = localStorage.getItem('toan4_cached_games');
+      if (cachedRaw) {
+        const parsed = JSON.parse(cachedRaw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          allGames = parsed;
+        }
+      }
+    } catch(e) {}
+
+    if (!allGames || allGames.length === 0) {
+      allGames = [...getLocalLinks(), ...DEFAULT_GAMES];
+    }
+    // HIỂN THỊ GIAO DIỆN VÀ TẤT CẢ BÀI HỌC NGAY TỨC THÌ TRONG 0.05s!
+    renderGames();
     updateAdminUI();
+
+    // Đồng bộ ngầm với Firebase Firestore (không làm chậm trang web)
     initDataSync();
   </script>
 </body>
