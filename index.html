@@ -985,6 +985,10 @@
               showToast('☁️ Đã gỡ bài học trên GitHub!');
             } catch (err) {
               showToast('❌ ' + err.message);
+              if (confirm('Lỗi kết nối GitHub: ' + err.message + '\n\nBạn có muốn tạm gỡ bài học này khỏi màn hình ngay bây giờ không?')) {
+                allGames = allGames.filter(x => x.id !== id);
+                renderGames();
+              }
             }
           } else {
             allGames = allGames.filter(x => x.id !== id);
@@ -1109,7 +1113,12 @@
         }
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.message || `GitHub API lỗi HTTP ${res.status}`);
+      if (!res.ok) {
+        if (res.status === 401 || (data.message && data.message.includes('Bad credentials'))) {
+          throw new Error('Mã GitHub Token không đúng hoặc đã hết hạn. Hãy bấm vào "Thêm Học Liệu Mới" -> "Kết nối GitHub" để dán Token mới nhé!');
+        }
+        throw new Error(data.message || `GitHub API lỗi HTTP ${res.status}`);
+      }
       return data;
     }
 
