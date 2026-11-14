@@ -1859,36 +1859,6 @@
     "createdAt": "2026-11-12T08:10:06.312Z"
   },
   {
-    "id": "link_1794623978181",
-    "title": "On tap giua ki 1 de 3",
-    "subtitle": "đề 3",
-    "category": "Ôn tập",
-    "grade": "Toán 4",
-    "icon": "🏆",
-    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
-    "createdAt": "2026-11-14T02:39:38.181Z"
-  },
-  {
-    "id": "link_1794622885610",
-    "title": "On tap giua ki 1 de 3",
-    "subtitle": "đề 3",
-    "category": "Ôn tập",
-    "grade": "Toán 4",
-    "icon": "🏆",
-    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
-    "createdAt": "2026-11-14T02:21:25.610Z"
-  },
-  {
-    "id": "link_1794623233889",
-    "title": "Ôn tập giữa kì 1",
-    "subtitle": "Đề 3",
-    "category": "Ôn tập",
-    "grade": "Toán 4",
-    "icon": "🏆",
-    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
-    "createdAt": "2026-11-14T02:27:13.889Z"
-  },
-  {
     "id": "link_1794471200934",
     "title": "Ôn tập giữa kì 1 - Đề 3",
     "subtitle": "đề 3",
@@ -2097,11 +2067,19 @@
               }
             } catch (e) {}
 
-            // Tự động gộp các bài học SGK mới vào danh sách nếu Firestore chưa có
-            const merged = [...firestoreList];
+            // Lấy danh sách các bài học đã xóa để KHÔNG tự động phục hồi lại
+            const deletedIds = new Set(Array.isArray(data.deletedGameIds) ? data.deletedGameIds : []);
+            try {
+              const localDels = JSON.parse(localStorage.getItem('toan4_deleted_game_ids') || '[]');
+              if (Array.isArray(localDels)) localDels.forEach(id => deletedIds.add(id));
+            } catch (e) {}
+
+            // Tự động gộp các bài học SGK mới vào danh sách nếu Firestore chưa có và CHƯA BỊ XÓA
+            const merged = firestoreList.filter(g => !deletedIds.has(g.id));
             let hasNew = false;
             for (let i = staticList.length - 1; i >= 0; i--) {
               const staticGame = staticList[i];
+              if (deletedIds.has(staticGame.id)) continue; // Bỏ qua nếu giáo viên đã bấm xóa
               const exists = merged.some(g => g.id === staticGame.id);
               if (!exists) {
                 merged.unshift(staticGame);
@@ -2109,7 +2087,8 @@
               }
             }
 
-            allGames = merged.length > 0 ? merged : staticList;
+            allGames = merged.filter(g => !deletedIds.has(g.id));
+            if (allGames.length === 0) allGames = staticList.filter(g => !deletedIds.has(g.id));
             renderGames();
 
             // Nếu phát hiện bài học mới chưa có trong Firestore, tự động đồng bộ lên Cloud
@@ -2496,23 +2475,50 @@
     }
 
     async function deleteGameEntry(id) {
+      // 1. Loại bỏ khỏi mảng hiện tại và ghi nhận ID vào danh sách đã xóa
       allGames = allGames.filter(x => x.id !== id);
+
+      let deletedIds = [];
+      try {
+        deletedIds = JSON.parse(localStorage.getItem('toan4_deleted_game_ids') || '[]');
+        if (!Array.isArray(deletedIds)) deletedIds = [];
+      } catch (e) { deletedIds = []; }
+
+      if (!deletedIds.includes(id)) {
+        deletedIds.push(id);
+        localStorage.setItem('toan4_deleted_game_ids', JSON.stringify(deletedIds));
+      }
+
+      // Xóa trong local links nếu có
+      const nextLinks = getLocalLinks().filter(x => x.id !== id);
+      saveLocalLinks(nextLinks);
+
       renderGames();
 
+      // 2. Nếu đang chạy local server, gửi lệnh xóa trên server
+      try {
+        fetch('./api/games/' + encodeURIComponent(id), { method: 'DELETE' }).catch(() => {});
+      } catch (e) {}
+
+      // 3. Đồng bộ vĩnh viễn lên Google Firestore
       if (fbDb) {
         try {
           const docRef = doc(fbDb, FIRESTORE_COL, FIRESTORE_DOC);
-          await setDoc(docRef, { games: allGames, updatedAt: Date.now() }, { merge: true });
-          showToast('🗑️ Đã gỡ bài học trên Google Firestore!');
+          await setDoc(docRef, {
+            games: allGames,
+            deletedGameIds: deletedIds,
+            updatedAt: Date.now()
+          }, { merge: true });
+          showToast('🗑️ Đã xóa bài học thành công khỏi Cloud!');
           return;
         } catch (e) {
           console.warn("Lỗi xóa trên Firestore:", e);
+          showToast('⚠️ Không thể lưu thao tác xóa lên Cloud: ' + e.message);
+          return;
         }
       }
 
-      const next = getLocalLinks().filter(x => x.id !== id);
-      saveLocalLinks(next);
-      showToast('🗑️ Đã gỡ bài học.');
+      showToast('🗑️ Đã xóa bài học thành công!');
     }
 
     async function updateGameEntry(id, updated) {
