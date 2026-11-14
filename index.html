@@ -619,13 +619,13 @@
       <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 text-left space-y-2">
         <label class="block text-xs font-black uppercase text-slate-700">Mã PIN Giáo viên:</label>
         <div class="flex gap-2">
-          <input id="input-teacher-pin" type="password" placeholder="Mã PIN (mặc định: 2026)"
+          <input id="input-teacher-pin" type="password" placeholder="Nhập mã xác thực..."
                  class="flex-1 px-3 py-2 rounded-xl border-2 border-slate-200 focus:border-amber-400 focus:outline-none text-sm font-bold bg-white" />
           <button id="btn-submit-pin" type="button" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold px-4 py-2 rounded-xl shadow-xs text-xs whitespace-nowrap">
             Vào ngay
           </button>
         </div>
-        <p class="text-[11px] text-slate-500 font-medium">💡 Mã PIN mặc định: <strong class="text-amber-700 font-mono">2026</strong> (Cô có thể đổi bất kỳ lúc nào).</p>
+        <p class="text-[11px] text-slate-400 font-medium">Khu vực quản trị dành riêng cho Giáo viên phụ trách.</p>
       </div>
 
       <!-- Google Sign-In (Firebase) Option -->
@@ -1489,7 +1489,7 @@
           setAdminSession('tranhoan1010hn@gmail.com', 'Cô Hoan');
           teacherLoginModal.classList.add('hidden');
         } else {
-          alert('Mã PIN không đúng. Mặc định là 2026.');
+          alert('Mã PIN không chính xác. Vui lòng kiểm tra lại!');
         }
       });
     }
