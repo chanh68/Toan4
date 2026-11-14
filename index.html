@@ -395,10 +395,25 @@
         <span id="game-count-badge" class="bg-amber-100 border-2 border-amber-300 text-amber-900 text-xs sm:text-sm font-extrabold px-3.5 py-2 rounded-2xl whitespace-nowrap shadow-sm">
           🎒 0 bài học
         </span>
+
+        <!-- Nút Thêm Học Liệu: Chỉ hiện khi là Giáo viên (Admin) -->
         <button id="btn-open-upload" type="button"
-                class="bg-gradient-to-r from-pink-500 via-rose-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-extrabold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-2xl shadow-[0_4px_0_0_#be185d] hover:translate-y-[-1px] active:translate-y-[2px] active:shadow-[0_1px_0_0_#be185d] transition-all whitespace-nowrap flex items-center gap-1.5">
+                class="hidden bg-gradient-to-r from-pink-500 via-rose-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-extrabold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-2xl shadow-[0_4px_0_0_#be185d] hover:translate-y-[-1px] active:translate-y-[2px] active:shadow-[0_1px_0_0_#be185d] transition-all whitespace-nowrap items-center gap-1.5">
           <span>➕</span> <span>Thêm Học Liệu Mới</span>
         </button>
+
+        <!-- Nút Đăng nhập Giáo viên (Hiện khi là Guest) -->
+        <button id="btn-open-teacher-login" type="button"
+                class="bg-white hover:bg-slate-50 text-slate-700 border-2 border-amber-200 hover:border-amber-400 font-extrabold text-xs sm:text-sm px-3.5 py-2 rounded-2xl shadow-xs transition-all whitespace-nowrap flex items-center gap-1.5">
+          <span>👑</span> <span>Dành cho GV</span>
+        </button>
+
+        <!-- Profile Badge Giáo viên (Hiện khi đã đăng nhập Admin) -->
+        <div id="teacher-profile-badge" class="hidden items-center gap-1.5 bg-gradient-to-r from-amber-400 to-orange-400 text-slate-900 font-extrabold text-xs sm:text-sm px-3.5 py-1.5 rounded-2xl shadow-xs border-2 border-white">
+          <span>👑</span>
+          <span id="teacher-name-display">Cô Hoan</span>
+          <button id="btn-teacher-logout" type="button" title="Đăng xuất chế độ Giáo viên" class="ml-1 text-[11px] bg-black/20 hover:bg-black/35 text-white rounded-full px-2 py-0.5 transition">Thoát</button>
+        </div>
       </div>
     </div>
   </header>
@@ -585,6 +600,50 @@
   <footer class="relative z-10 bg-white/90 border-t-4 border-pink-100 py-5 px-4 text-center text-xs sm:text-sm text-slate-600 font-bold mt-auto">
     💖 <strong>Trường Tiểu học và THCS Thụy Lâm</strong> (Xã Thư Lâm, TP. Hà Nội) • Giáo viên: <strong class="text-pink-600">Cô Trần Thị Hoan &amp; Cô Trần Thị Hải</strong> 🌟
   </footer>
+
+  <!-- Teacher Login Modal (Google Sign-In + Fast PIN) -->
+  <div id="teacher-login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-[32px] max-w-sm w-full p-6 sm:p-7 shadow-2xl border-4 border-amber-300 space-y-4 relative text-center">
+      <button id="btn-close-teacher-login" type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 font-bold transition">✕</button>
+      
+      <div class="w-16 h-16 rounded-3xl bg-amber-100 text-3xl flex items-center justify-center mx-auto shadow-xs border-2 border-amber-300">
+        👑
+      </div>
+      
+      <div>
+        <h3 class="text-xl font-black text-slate-900">Dành Cho Giáo Viên</h3>
+        <p class="text-xs text-slate-500 font-semibold mt-1">Đăng nhập để thêm/gỡ bài và tự động mở khóa toàn bộ các chặng bài giảng.</p>
+      </div>
+
+      <!-- Quick Fast PIN Access (Hoạt động offline & online tức thì) -->
+      <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 text-left space-y-2">
+        <label class="block text-xs font-black uppercase text-slate-700">Mã PIN Giáo viên:</label>
+        <div class="flex gap-2">
+          <input id="input-teacher-pin" type="password" placeholder="Mã PIN (mặc định: 2026)"
+                 class="flex-1 px-3 py-2 rounded-xl border-2 border-slate-200 focus:border-amber-400 focus:outline-none text-sm font-bold bg-white" />
+          <button id="btn-submit-pin" type="button" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold px-4 py-2 rounded-xl shadow-xs text-xs whitespace-nowrap">
+            Vào ngay
+          </button>
+        </div>
+        <p class="text-[11px] text-slate-500 font-medium">💡 Mã PIN mặc định: <strong class="text-amber-700 font-mono">2026</strong> (Cô có thể đổi bất kỳ lúc nào).</p>
+      </div>
+
+      <!-- Google Sign-In (Firebase) Option -->
+      <div class="pt-1 space-y-2">
+        <div class="relative flex items-center justify-center mb-2">
+          <div class="border-t border-slate-200 w-full"></div>
+          <span class="bg-white px-3 text-[11px] text-slate-400 font-bold uppercase">hoặc</span>
+          <div class="border-t border-slate-200 w-full"></div>
+        </div>
+
+        <button id="btn-google-login" type="button"
+                class="w-full bg-white hover:bg-slate-50 border-2 border-slate-200 hover:border-slate-300 text-slate-700 font-extrabold py-2.5 px-4 rounded-2xl shadow-xs flex items-center justify-center gap-2 text-xs transition">
+          <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+          <span>Đăng nhập với Google (Gmail)</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Simplified Add Link Modal (No HTML file upload!) -->
   <div id="upload-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
@@ -792,6 +851,81 @@
       { grad: 'from-purple-400 via-violet-400 to-fuchsia-400', badgeBg: 'bg-purple-50 text-purple-700 border-purple-200', ctaBg: 'bg-purple-500 group-hover:bg-purple-600 shadow-[0_4px_0_0_#6d28d9]', sticker: '🦄' }
     ];
 
+    // ==========================================
+    // ROLE-BASED ACCESS (GUEST VS TEACHER ADMIN)
+    // ==========================================
+    const ADMIN_SESSION_KEY = 'toan4_admin_session';
+    const TEACHER_PIN_KEY = 'toan4_teacher_pin_code';
+
+    function getTeacherPin() {
+      return localStorage.getItem(TEACHER_PIN_KEY) || '2026';
+    }
+
+    function checkIsAdminSession() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('mode') === 'admin') return true;
+        const raw = localStorage.getItem(ADMIN_SESSION_KEY);
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        return Boolean(data && data.isAdmin);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function setAdminSession(email = 'tranhoan1010hn@gmail.com', name = 'Cô Trần Thị Hoan') {
+      const session = {
+        isAdmin: true,
+        email: email,
+        name: name,
+        ts: Date.now()
+      };
+      localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session));
+      updateAdminUI();
+      renderGames();
+      showToast('👑 Chào mừng ' + name + '! Đã kích hoạt Chế độ Giáo viên.');
+    }
+
+    function clearAdminSession() {
+      localStorage.removeItem(ADMIN_SESSION_KEY);
+      const url = new URL(window.location);
+      if (url.searchParams.get('mode') === 'admin') {
+        url.searchParams.delete('mode');
+        window.history.replaceState({}, '', url.toString());
+      }
+      updateAdminUI();
+      renderGames();
+      showToast('👋 Đã chuyển về chế độ Học sinh (Khách).');
+    }
+
+    function updateAdminUI() {
+      const isAdmin = checkIsAdminSession();
+      const btnUpload = document.getElementById('btn-open-upload');
+      const btnTeacherLogin = document.getElementById('btn-open-teacher-login');
+      const profileBadge = document.getElementById('teacher-profile-badge');
+      const nameDisplay = document.getElementById('teacher-name-display');
+
+      if (isAdmin) {
+        document.body.classList.add('is-admin');
+        if (btnUpload) { btnUpload.classList.remove('hidden'); btnUpload.classList.add('flex'); }
+        if (btnTeacherLogin) { btnTeacherLogin.classList.add('hidden'); }
+        if (profileBadge) {
+          profileBadge.classList.remove('hidden');
+          profileBadge.classList.add('flex');
+          try {
+            const s = JSON.parse(localStorage.getItem(ADMIN_SESSION_KEY) || '{}');
+            nameDisplay.textContent = s.name || 'Cô Hoan';
+          } catch (e) {}
+        }
+      } else {
+        document.body.classList.remove('is-admin');
+        if (btnUpload) { btnUpload.classList.add('hidden'); btnUpload.classList.remove('flex'); }
+        if (btnTeacherLogin) { btnTeacherLogin.classList.remove('hidden'); }
+        if (profileBadge) { profileBadge.classList.add('hidden'); profileBadge.classList.remove('flex'); }
+      }
+    }
+
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -881,8 +1015,13 @@
 
       filtered.forEach((g, idx) => {
         const theme = CUTE_THEMES[idx % CUTE_THEMES.length];
-        const targetUrl = buildDirectUrl(g);
-        const canDelete = isServerMode || hasGithubSync() || Boolean(g.isLocalLink);
+        let targetUrl = buildDirectUrl(g);
+        const isAdmin = checkIsAdminSession();
+
+        // Tự động mở khóa toàn bộ chặng cho Giáo viên
+        if (isAdmin && !g.externalUrl && targetUrl.includes('games/')) {
+          targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'mode=admin';
+        }
 
         const card = document.createElement('a');
         card.href = targetUrl;
@@ -912,10 +1051,12 @@
                 ${theme.sticker}
               </span>
 
-              <button type="button" data-del="${g.id}" title="Gỡ khỏi danh sách"
-                      class="del-btn absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-white/25 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center transition shadow-sm hover:scale-110">
-                🗑️
-              </button>
+              ${isAdmin ? `
+                <button type="button" data-del="${g.id}" title="Gỡ khỏi danh sách"
+                        class="del-btn absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-white/25 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center transition shadow-sm hover:scale-110">
+                  🗑️
+                </button>
+              ` : ''}
             </div>
 
             <!-- Card Body -->
@@ -1305,6 +1446,83 @@
       }
     });
 
+    // ==========================================
+    // TEACHER LOGIN & ROLE MANAGEMENT LISTENERS
+    // ==========================================
+    const teacherLoginModal = document.getElementById('teacher-login-modal');
+    const btnOpenTeacherLogin = document.getElementById('btn-open-teacher-login');
+    const btnCloseTeacherLogin = document.getElementById('btn-close-teacher-login');
+    const btnSubmitPin = document.getElementById('btn-submit-pin');
+    const inputTeacherPin = document.getElementById('input-teacher-pin');
+    const btnGoogleLogin = document.getElementById('btn-google-login');
+    const btnTeacherLogout = document.getElementById('btn-teacher-logout');
+
+    if (btnOpenTeacherLogin) {
+      btnOpenTeacherLogin.addEventListener('click', () => {
+        teacherLoginModal.classList.remove('hidden');
+        if (inputTeacherPin) { inputTeacherPin.value = ''; inputTeacherPin.focus(); }
+      });
+    }
+
+    if (btnCloseTeacherLogin) {
+      btnCloseTeacherLogin.addEventListener('click', () => {
+        teacherLoginModal.classList.add('hidden');
+      });
+    }
+
+    if (teacherLoginModal) {
+      teacherLoginModal.addEventListener('click', (e) => {
+        if (e.target === teacherLoginModal) teacherLoginModal.classList.add('hidden');
+      });
+    }
+
+    if (btnTeacherLogout) {
+      btnTeacherLogout.addEventListener('click', () => {
+        clearAdminSession();
+      });
+    }
+
+    if (btnSubmitPin) {
+      btnSubmitPin.addEventListener('click', () => {
+        const pin = (inputTeacherPin.value || '').trim();
+        if (pin === getTeacherPin()) {
+          setAdminSession('tranhoan1010hn@gmail.com', 'Cô Hoan');
+          teacherLoginModal.classList.add('hidden');
+        } else {
+          alert('Mã PIN không đúng. Mặc định là 2026.');
+        }
+      });
+    }
+
+    if (inputTeacherPin) {
+      inputTeacherPin.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') btnSubmitPin.click();
+      });
+    }
+
+    if (btnGoogleLogin) {
+      btnGoogleLogin.addEventListener('click', async () => {
+        if (window._fbAuth && window._fbProvider) {
+          try {
+            const { signInWithPopup } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+            const res = await signInWithPopup(window._fbAuth, window._fbProvider);
+            const email = res.user.email;
+            setAdminSession(email, res.user.displayName || 'Cô Hoan');
+            teacherLoginModal.classList.add('hidden');
+          } catch (err) {
+            alert('Lỗi đăng nhập Google: ' + err.message);
+          }
+        } else {
+          const email = prompt('Nhập địa chỉ Gmail giáo viên của bạn:', 'tranhoan1010hn@gmail.com');
+          if (email) {
+            setAdminSession(email, 'Cô Hoan');
+            teacherLoginModal.classList.add('hidden');
+          }
+        }
+      });
+    }
+
+    updateAdminUI();
     loadGames();
   </script>
 </body>
