@@ -7,7 +7,7 @@ export const STUDIO_TEMPLATES = {
   giao_hoan_ket_hop_nhan: {
     title: "Bài 40: Tính chất giao hoán và kết hợp của phép nhân",
     subtitle: "Nắm vững quy tắc đổi chỗ, ghép nhóm và tuyệt chiêu tính nhẩm số tròn trăm, tròn nghìn",
-    category: "Luyện tập",
+    category: "Bài học",
     icon: "💎",
     theory: {
       title: "Tính chất giao hoán và kết hợp của phép nhân",
