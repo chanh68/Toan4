@@ -1177,7 +1177,7 @@
     // ==============================================
     // APPLICATION STATE
     // ==============================================
-    const appState = {
+    const appState = window.appState = {
       student: {
         name: 'Học sinh',
         class: 'Lớp 4',
@@ -1914,6 +1914,9 @@
     // ==============================================
     // OPEN STAGE HANDLER
     // ==============================================
+    window.openStage = openStage;
+    window.showScreen = showScreen;
+    window.updateScoreDisplays = updateScoreDisplays;
     function openStage(stageNum) {
       appState.currentStage = stageNum;
       updateScoreDisplays();
@@ -2303,6 +2306,7 @@
     let rhymePlaying = false;
     let rhymeTimer = null;
 
+    window.showStage5 = showStage5;
     function showStage5() {
       showScreen('stage5');
       sound.playVictory();

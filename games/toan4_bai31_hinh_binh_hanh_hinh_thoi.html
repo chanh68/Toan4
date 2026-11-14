@@ -1642,7 +1642,7 @@
     // ==============================================
     // STATE MANAGEMENT
     // ==============================================
-    const appState = {
+    const appState = window.appState = {
       hasRegistered: false,
       student: { name: '', class: '', school: '' },
       currentStage: 1,
@@ -1896,6 +1896,9 @@
       });
     });
 
+    window.openStage = openStage;
+    window.showScreen = showScreen;
+    window.updateScoreDisplays = updateScoreDisplays;
     function openStage(stageNum) {
       appState.currentStage = stageNum;
       updateScoreDisplays();
@@ -2347,6 +2350,7 @@
     // ==============================================
     // STAGE 5: RHYME + WHEEL + CERTIFICATE
     // ==============================================
+    window.showStage5 = showStage5;
     function showStage5() {
       showScreen('stage5');
       let total = 0;
