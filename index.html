@@ -1370,118 +1370,95 @@
       <form id="studio-form" class="space-y-4 overflow-y-auto pr-1 flex-1">
         <input id="studio-id" type="hidden" />
 
-        <!-- 2 CHẾ ĐỘ SOẠN BÀI (AI GEMINI HOẶC TỰ SOẠN THỦ CÔNG) -->
-        <div class="bg-slate-100 p-1.5 rounded-2xl">
-          <div class="grid grid-cols-2 gap-2">
-            <button type="button" id="tab-mode-ai" class="studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-white text-indigo-700 shadow-sm border-2 border-indigo-400">
-              <span class="text-base">🤖</span>
-              <span>Trợ Lý AI Gemini</span>
-              <span class="hidden sm:inline text-[10px] font-extrabold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full">Tự động</span>
-            </button>
-            <button type="button" id="tab-mode-manual" class="studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/60">
-              <span class="text-base">✍️</span>
-              <span>Tự Soạn Câu Hỏi</span>
-              <span class="hidden sm:inline text-[10px] font-extrabold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">Thủ công</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- PANEL 1: TRỢ LÝ AI GEMINI (TỰ ĐỘNG DỰNG BÀI TỪ TEXT / WORD) -->
-        <div id="panel-mode-ai" class="studio-mode-panel space-y-3.5 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-indigo-200 rounded-2xl p-4">
-          <!-- Connection Status & Key Action -->
-          <div class="bg-white/95 p-3 rounded-xl border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-2xs">
-            <div id="gemini-status-display" class="flex items-center gap-2">
-              <span id="gemini-status-dot" class="w-3 h-3 rounded-full bg-amber-400"></span>
-              <span id="gemini-status-text" class="text-xs font-bold text-slate-800">Đang kiểm tra kết nối Gemini API...</span>
+        <!-- AI GEMINI CO-PILOT BOX (TRỢ LÝ TỰ ĐỘNG SOẠN BÀI TỪ GIÁO ÁN) -->
+        <div class="bg-gradient-to-br from-indigo-50/90 via-purple-50/90 to-pink-50/90 border-2 border-indigo-200 rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-xs">
+          <!-- AI Assistant Header with Toggle -->
+          <div class="flex items-center justify-between border-b border-indigo-100 pb-2.5">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🤖</span>
+              <div>
+                <h4 class="text-xs sm:text-sm font-black text-indigo-950 flex items-center gap-1.5">
+                  <span>Trợ Lý AI Gemini</span>
+                  <span class="text-[10px] font-extrabold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full border border-indigo-200">Tự động hóa</span>
+                </h4>
+                <p class="text-[11px] text-indigo-700 font-medium">Dán giáo án hoặc tải file Word để AI tự động thiết kế 5 chặng bài tập.</p>
+              </div>
             </div>
-            <div class="flex items-center gap-2.5">
-              <button type="button" id="btn-toggle-gemini-key" class="text-xs text-indigo-700 hover:text-indigo-900 font-extrabold underline flex items-center gap-1 cursor-pointer">
-                <span>🔑 Cài đặt / Đổi mã Key</span>
+
+            <!-- Key Status & Settings -->
+            <div class="flex items-center gap-2">
+              <div id="gemini-status-display" class="hidden sm:flex items-center gap-1.5 bg-white/90 px-2.5 py-1 rounded-xl border border-indigo-100 text-[11px] font-bold text-slate-700">
+                <span id="gemini-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span id="gemini-status-text">AI sẵn sàng</span>
+              </div>
+              <button type="button" id="btn-toggle-gemini-key" class="text-xs text-indigo-700 hover:text-indigo-900 font-extrabold bg-white hover:bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-xl transition cursor-pointer shadow-2xs">
+                🔑 Đổi Key
               </button>
-              <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="text-xs text-emerald-600 font-extrabold hover:underline">
-                Lấy key miễn phí ↗
-              </a>
             </div>
           </div>
 
           <!-- API Key Input Drawer -->
-          <div id="gemini-key-box" class="hidden bg-white p-3.5 rounded-xl border-2 border-indigo-300 space-y-2.5 shadow-sm">
+          <div id="gemini-key-box" class="hidden bg-white p-3.5 rounded-xl border-2 border-indigo-300 space-y-2 shadow-sm">
             <div class="flex items-center justify-between">
               <label class="text-xs font-black uppercase text-indigo-900">🔑 Nhập Google Gemini API Key của cô:</label>
-              <span class="text-[10px] text-slate-400 font-mono">Bắt đầu bằng AIzaSy...</span>
+              <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="text-xs text-emerald-600 font-extrabold hover:underline">
+                Lấy key miễn phí ↗
+              </a>
             </div>
             <div class="flex gap-2">
               <input id="input-gemini-api-key" type="password" placeholder="Dán mã API Key bắt đầu bằng AIzaSy..."
                      class="flex-1 px-3 py-2 rounded-xl border-2 border-indigo-200 text-xs font-mono bg-slate-50 focus:bg-white focus:outline-none focus:border-indigo-500" />
               <button type="button" id="btn-save-gemini-key"
-                      class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition shadow-sm whitespace-nowrap">
+                      class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition shadow-sm whitespace-nowrap cursor-pointer">
                 Lưu Key
               </button>
             </div>
-            <p class="text-[11px] text-slate-500">
-              ⚡ Kết nối trực tiếp mô hình Google Gemini 2.5 Flash thế hệ mới nhất với tốc độ siêu nhanh và độ chính xác toán học vượt trội.
+            <p class="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
+              <span>☁️</span> <span>Key tự động sao lưu lên Cloud: Chỉ cần lưu 1 lần là tự đồng bộ ở mọi máy tính/điện thoại khi đăng nhập!</span>
             </p>
           </div>
 
           <!-- Upload Word / Paste Lesson Plan -->
-          <div class="space-y-2">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+          <div class="space-y-1.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <label class="text-xs font-extrabold text-slate-700 flex items-center gap-1.5">
-                <span>📄</span> <span>Dán nội dung hoặc tải file giáo án Word / Text:</span>
+                <span>📄</span> <span>Nội dung bài học hoặc giáo án:</span>
               </label>
-              <label for="input-lesson-file" class="cursor-pointer bg-white hover:bg-indigo-50 border-2 border-dashed border-indigo-300 text-indigo-700 font-bold text-xs px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-2xs self-start sm:self-auto">
+              <label for="input-lesson-file" class="cursor-pointer bg-white hover:bg-indigo-50 border border-dashed border-indigo-300 text-indigo-700 font-bold text-xs px-3 py-1 rounded-xl transition flex items-center gap-1.5 shadow-2xs self-start sm:self-auto">
                 <span>📂</span> <span>Tải file Word (.docx) / Text (.txt)</span>
               </label>
               <input id="input-lesson-file" type="file" accept=".docx,.txt,.json,.md" class="hidden" />
             </div>
 
-            <textarea id="ai-source-text" rows="3"
-                      placeholder="Dán nội dung giáo án, đề bài hoặc bài tập vào đây... AI sẽ tự động phân tích và tạo game 5 chặng (Lý thuyết + 35 câu hỏi rèn luyện)!"
-                      class="w-full px-3.5 py-2.5 rounded-xl border-2 border-indigo-200 text-xs sm:text-sm font-medium bg-white focus:outline-none focus:border-indigo-500 shadow-inner"></textarea>
+            <textarea id="ai-source-text" rows="2"
+                      placeholder="Dán nội dung giáo án, đề bài hoặc bài tập vào đây... Bấm 'AI Triển Khai' để AI tự động điền toàn bộ bài học và 35 câu hỏi xuống bảng bên dưới!"
+                      class="w-full px-3 py-2 rounded-xl border-2 border-indigo-200 text-xs sm:text-sm font-medium bg-white focus:outline-none focus:border-indigo-500 shadow-inner"></textarea>
           </div>
 
           <!-- Action Button: AI Generate Game -->
           <div class="flex flex-col sm:flex-row items-center gap-2">
             <button type="button" id="btn-ai-generate-game"
-                    class="w-full sm:w-auto flex-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-black text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                    class="w-full sm:w-auto flex-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-black text-xs sm:text-sm py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
               <span>🪄 AI Triển Khai Game 5 Chặng (Lý Thuyết + 35 Câu)</span>
             </button>
-            <div id="ai-loading-indicator" class="hidden text-xs font-bold text-indigo-700 flex items-center gap-1.5 animate-pulse bg-white/80 px-3 py-1.5 rounded-xl border border-indigo-200">
+            <div id="ai-loading-indicator" class="hidden text-xs font-bold text-indigo-700 flex items-center gap-1.5 animate-pulse bg-white/90 px-3 py-1.5 rounded-xl border border-indigo-200">
               <span>⏳</span> <span>AI đang phân tích và thiết kế trò chơi...</span>
             </div>
           </div>
 
-          <!-- Quick AI Feedback / Refine bar inside AI panel -->
-          <div class="bg-white/80 border border-indigo-200 rounded-xl p-3 space-y-2 mt-2">
-            <span class="text-xs font-black text-indigo-900 flex items-center gap-1.5">
-              <span>💬</span> <span>Góp ý nhanh để AI sửa lại bài theo ý cô:</span>
-            </span>
-            <div class="flex flex-col sm:flex-row gap-2">
-              <input id="ai-feedback-input" type="text"
-                     placeholder="Ví dụ: 'Thêm bài toán đố về Đông Anh', 'Đổi câu 3 chặng 2 dễ hơn'..."
-                     class="flex-1 px-3 py-1.5 rounded-lg border border-indigo-200 text-xs bg-white focus:outline-none focus:border-indigo-400" />
-              <button type="button" id="btn-ai-refine"
-                      class="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs px-3.5 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer">
-                ⚡ Sửa Lại
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 pt-0.5">
-              <button type="button" class="ai-feedback-chip text-[11px] bg-slate-100 hover:bg-indigo-100 text-slate-700 font-bold px-2 py-0.5 rounded-lg transition cursor-pointer" data-text="Làm câu hỏi dễ hiểu hơn cho học sinh lớp 4">🐣 Dễ hiểu hơn</button>
-              <button type="button" class="ai-feedback-chip text-[11px] bg-slate-100 hover:bg-indigo-100 text-slate-700 font-bold px-2 py-0.5 rounded-lg transition cursor-pointer" data-text="Thêm tình huống thực tế gắn liền với Trường Tiểu học Thụy Lâm, Đông Anh">🏫 Gắn thực tế Thụy Lâm</button>
-              <button type="button" class="ai-feedback-chip text-[11px] bg-slate-100 hover:bg-indigo-100 text-slate-700 font-bold px-2 py-0.5 rounded-lg transition cursor-pointer" data-text="Bổ sung thêm giải thích chi tiết cho từng đáp án đúng">💡 Giải thích chi tiết hơn</button>
-            </div>
           </div>
-        </div>
 
-        <!-- PANEL 2: TỰ SOẠN CÂU HỎI THỦ CÔNG -->
-        <div id="panel-mode-manual" class="studio-mode-panel hidden space-y-2 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-3.5">
-          <div class="flex items-center gap-2.5">
-            <span class="text-2xl">✍️</span>
-            <div>
-              <h4 class="text-xs sm:text-sm font-black text-amber-950">Chế Độ Tự Biên Soạn &amp; Chỉnh Sửa Tự Do</h4>
-              <p class="text-xs text-amber-800 font-medium mt-0.5">Cô có thể chỉnh sửa tên bài, chọn thể loại và biên soạn từng câu hỏi ở các trạm bên dưới theo ý muốn.</p>
-            </div>
+        <!-- BẢNG BIÊN SOẠN BÀI HỌC CHÍNH (XEM TRƯỚC, CHỈNH SỬA & LƯU) -->
+        <div class="flex items-center justify-between pt-2 border-t-2 border-dashed border-slate-200">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">📋</span>
+            <h4 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wide">
+              Bảng Biên Soạn Bài Giảng 5 Chặng
+            </h4>
           </div>
+          <button type="button" id="btn-clear-studio-form" class="bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 font-extrabold text-xs px-3 py-1 rounded-xl transition whitespace-nowrap cursor-pointer shadow-2xs flex items-center gap-1">
+            <span>🧹</span> <span>Làm mới bảng</span>
+          </button>
         </div>
 
         <!-- Basic Lesson Info -->
@@ -1967,6 +1944,17 @@
       }
     }
 
+    async function syncGeminiKeyToFirestore(key) {
+      if (!fbDb || !key || typeof key !== 'string') return;
+      try {
+        const docRef = doc(fbDb, FIRESTORE_COL, FIRESTORE_DOC);
+        await setDoc(docRef, { geminiApiKey: key.trim(), keyUpdatedAt: Date.now() }, { merge: true });
+        console.log("☁️ Đã đồng bộ Gemini API Key lên Firestore Cloud!");
+      } catch (e) {
+        console.warn("Lỗi sync key lên Firestore:", e);
+      }
+    }
+
     function setAdminSession(email = 'tranhoan1010hn@gmail.com', name = 'Cô Trần Thị Hoan') {
       const session = {
         isAdmin: true,
@@ -1978,6 +1966,11 @@
       updateAdminUI();
       renderGames();
       showToast('👑 Chào mừng ' + name + '! Đã kích hoạt Chế độ Giáo viên.');
+
+      const currentKey = (localStorage.getItem('gemini_api_key') || '').trim();
+      if (currentKey) {
+        syncGeminiKeyToFirestore(currentKey);
+      }
     }
 
     function clearAdminSession() {
@@ -2073,6 +2066,24 @@
               const data = snap.data();
               if (Array.isArray(data.games) && data.games.length > 0) {
                 firestoreList = data.games;
+              }
+              // Tự động đồng bộ Gemini API Key từ Cloud về trình duyệt
+              if (data.geminiApiKey && typeof data.geminiApiKey === 'string') {
+                const cloudKey = data.geminiApiKey.trim();
+                const currentLocal = (localStorage.getItem('gemini_api_key') || '').trim();
+                if (cloudKey && (!currentLocal || currentLocal !== cloudKey)) {
+                  localStorage.setItem('gemini_api_key', cloudKey);
+                  const keyInput = document.getElementById('input-gemini-api-key');
+                  if (keyInput) keyInput.value = cloudKey;
+                  if (typeof updateGeminiStatusUI === 'function') updateGeminiStatusUI();
+                  console.log("☁️ Đã tự động nạp Gemini API Key từ Google Firestore!");
+                }
+              } else {
+                // Nếu trên Firestore chưa có key mà máy cô đã có key sẵn, tự động sao lưu lên Cloud
+                const localKey = (localStorage.getItem('gemini_api_key') || '').trim();
+                if (localKey && checkIsAdminSession()) {
+                  syncGeminiKeyToFirestore(localKey);
+                }
               }
             }
 
@@ -2786,7 +2797,7 @@
       });
     }
     if (btnSaveGeminiKey) {
-      btnSaveGeminiKey.addEventListener('click', () => {
+      btnSaveGeminiKey.addEventListener('click', async () => {
         const key = inputGeminiApiKey.value.trim();
         if (!key) {
           showToast('⚠️ Vui lòng dán mã Gemini API Key của cô!');
@@ -2794,7 +2805,9 @@
         }
         localStorage.setItem('gemini_api_key', key);
         geminiKeyBox.classList.add('hidden');
-        updateGeminiStatusUI(); showToast('🔑 Đã lưu Gemini API Key thành công!');
+        updateGeminiStatusUI();
+        showToast('🔑 Đã lưu & đồng bộ API Key lên Cloud thành công!');
+        await syncGeminiKeyToFirestore(key);
       });
     }
 
@@ -3156,40 +3169,53 @@
     }
 
     // Studio Main Mode Switcher: AI Gemini vs Tự Soạn
-    function switchStudioMode(mode) {
-      const tabAi = document.getElementById('tab-mode-ai');
-      const tabManual = document.getElementById('tab-mode-manual');
-      const panelAi = document.getElementById('panel-mode-ai');
-      const panelManual = document.getElementById('panel-mode-manual');
+    // Studio form handlers
 
-      if (mode === 'ai') {
-        if (panelAi) panelAi.classList.remove('hidden');
-        if (panelManual) panelManual.classList.add('hidden');
-
-        if (tabAi) {
-          tabAi.className = 'studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-white text-indigo-700 shadow-sm border-2 border-indigo-400 cursor-pointer';
-        }
-        if (tabManual) {
-          tabManual.className = 'studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/60 cursor-pointer';
-        }
-      } else {
-        if (panelAi) panelAi.classList.add('hidden');
-        if (panelManual) panelManual.classList.remove('hidden');
-
-        if (tabManual) {
-          tabManual.className = 'studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-white text-amber-700 shadow-sm border-2 border-amber-400 cursor-pointer';
-        }
-        if (tabAi) {
-          tabAi.className = 'studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/60 cursor-pointer';
-        }
-      }
+    // Cuộn xuống bảng editor khi bấm nút xem kết quả AI
+    const btnScrollToEditor = document.getElementById('btn-scroll-to-editor');
+    if (btnScrollToEditor) {
+      btnScrollToEditor.addEventListener('click', () => {
+        const header = document.getElementById('editor-section-header');
+        if (header) header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     }
 
-    const tabAiBtn = document.getElementById('tab-mode-ai');
-    if (tabAiBtn) tabAiBtn.addEventListener('click', () => switchStudioMode('ai'));
+    // Làm mới input AI
+    const btnResetAiInput = document.getElementById('btn-reset-ai-input');
+    if (btnResetAiInput) {
+      btnResetAiInput.addEventListener('click', () => {
+        const textEl = document.getElementById('ai-source-text');
+        if (textEl) textEl.value = '';
+        const banner = document.getElementById('ai-result-banner');
+        if (banner) banner.classList.add('hidden');
+      });
+    }
 
-    const tabManualBtn = document.getElementById('tab-mode-manual');
-    if (tabManualBtn) tabManualBtn.addEventListener('click', () => switchStudioMode('manual'));
+    // Nút làm mới bảng trắng ở chế độ tự soạn
+    const btnClearStudioForm = document.getElementById('btn-clear-studio-form');
+    if (btnClearStudioForm) {
+      btnClearStudioForm.addEventListener('click', () => {
+        if (!confirm('Làm mới toàn bộ bảng để tự soạn bài mới từ đầu?')) return;
+        populateStudioFields({
+          title: '',
+          subtitle: '',
+          icon: '📘',
+          theory: {
+            title: '',
+            summary: '',
+            rules: ['Quy tắc trọng tâm...'],
+            example: { title: 'Ví dụ minh họa:', steps: [{ step: 1, text: '' }] }
+          },
+          stages: [
+            { stageNum: 1, questions: [createEmptyQuestion()] },
+            { stageNum: 2, questions: [createEmptyQuestion()] },
+            { stageNum: 3, questions: [createEmptyQuestion()] },
+            { stageNum: 4, questions: [createEmptyQuestion()] }
+          ]
+        });
+        showToast('🧹 Đã làm mới bảng soạn bài!');
+      });
+    }
 
     function updateGeminiStatusUI() {
       const dot = document.getElementById('gemini-status-dot');
@@ -3200,11 +3226,11 @@
       if (savedKey.trim()) {
         dot.className = 'w-3 h-3 rounded-full bg-emerald-500 shadow-xs';
         text.className = 'text-xs font-black text-emerald-800';
-        text.textContent = '🟢 Đã kết nối: Gemini 3.8 Flash (Medium) / 4 Argon';
+        text.textContent = 'Đã kết nối: Gemini 3.8 Flash (Medium) / 4 Argon (Đã đồng bộ Cloud)';
       } else {
         dot.className = 'w-3 h-3 rounded-full bg-amber-400 animate-pulse';
         text.className = 'text-xs font-bold text-amber-800';
-        text.textContent = '🟡 Chưa lưu API Key (Bấm vào Cài đặt bên cạnh)';
+        text.textContent = 'Chưa lưu API Key (Bấm Đổi Key bên cạnh)';
       }
     }
 
@@ -3214,7 +3240,7 @@
         document.getElementById('studio-modal-title').textContent = 'Chỉnh Sửa Câu Hỏi Bài Học';
         studioIdInput.value = existingLesson.id;
         populateStudioFields(existingLesson);
-        switchStudioMode('manual');
+        // edit mode
       } else {
         document.getElementById('studio-modal-title').textContent = 'Soạn Bài Giảng 5 Chặng Tương Tác';
         studioIdInput.value = '';
@@ -3241,7 +3267,7 @@
             { stageNum: 4, name: 'Vận Dụng', questions: [createEmptyQuestion()] }
           ]
         });
-        switchStudioMode('ai');
+        // new mode
       }
       studioModal.classList.remove('hidden');
     }
@@ -3485,7 +3511,25 @@ Trả về duy nhất định dạng JSON chuẩn.`;
         try {
           const generated = await callGeminiAPI(systemInstruction, userPrompt, apiKey);
           populateStudioFields(generated);
-          showToast('🎉 AI đã dựng thành công Game 5 Chặng (Lý thuyết + 35 câu)! Cô xem trước và gửi nhận xét bên dưới nhé.');
+
+          // Hiển thị Banner kết quả thành công ngay trong tab AI
+          const banner = document.getElementById('ai-result-banner');
+          const titleEl = document.getElementById('ai-result-title');
+          const sourceBadge = document.getElementById('content-source-badge');
+          if (titleEl) titleEl.textContent = `AI đã tạo xong bài: ${generated.title || 'Bài học 5 chặng'}`;
+          if (banner) banner.classList.remove('hidden');
+          if (sourceBadge) {
+            sourceBadge.textContent = '🤖 Nội dung do AI Gemini tạo';
+            sourceBadge.className = 'text-[11px] font-extrabold bg-indigo-100 text-indigo-800 border border-indigo-200 px-2.5 py-0.5 rounded-full self-start sm:self-auto';
+          }
+
+          showToast('🎉 AI đã hoàn thành bài giảng! Đã nạp sẵn vào bảng bên dưới cho cô.');
+
+          // Tự động cuộn xuống bảng nội dung để cô xem trước
+          setTimeout(() => {
+            const header = document.getElementById('editor-section-header');
+            if (header) header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 400);
         } catch (err) {
           showToast('❌ Lỗi AI: ' + err.message);
         } finally {
