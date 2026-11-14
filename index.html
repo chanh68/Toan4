@@ -154,185 +154,355 @@
 </head>
 <body class="text-slate-800 flex flex-col min-h-screen relative">
 
-  <!-- ================= VIBRANT SCHOOL BACKGROUND ILLUSTRATIONS ================= -->
-  <!-- 1. Top Poinciana Branches (Cành hoa phượng vĩ đỏ rực rỡ góc trên) -->
-  <div class="pointer-events-none absolute top-[72px] right-0 z-20 select-none overflow-hidden max-w-full">
-    <svg class="w-64 sm:w-80 lg:w-[420px] h-auto drop-shadow-md animate-sway-right origin-top-right select-none" viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- ================= VIBRANT SCHOOL BACKGROUND ILLUSTRATIONS ================= -->
+  <!-- 1. Top Floral Garlands (Dàn hoa anh đào & cúc họa mi pastel mềm mại buông tự nhiên) -->
+
+  <!-- Top-Right Floral Garland: Dàn Hoa Anh Đào & Cúc Họa Mi phớt hồng mềm mại buông góc phải -->
+  <div class="pointer-events-none absolute top-[72px] right-0 z-30 select-none overflow-visible max-w-full">
+    <svg class="w-72 sm:w-96 lg:w-[460px] h-auto drop-shadow-[0_8px_16px_rgba(244,114,182,0.18)] animate-sway-right origin-top-right select-none" viewBox="0 0 380 340" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="poincianaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#ff4d4d"/>
-          <stop offset="60%" stop-color="#ef4444"/>
-          <stop offset="100%" stop-color="#b91c1c"/>
+        <!-- Soft Sakura Gradient: Blush Pink to Rose -->
+        <linearGradient id="sakuraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#fff5f5"/>
+          <stop offset="35%" stop-color="#fecdd3"/>
+          <stop offset="75%" stop-color="#fb7185"/>
+          <stop offset="100%" stop-color="#f43f5e"/>
         </linearGradient>
-        <linearGradient id="woodGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#78350f"/>
-          <stop offset="100%" stop-color="#92400e"/>
+
+        <!-- Peach Blossom Gradient: Soft Coral Pink -->
+        <linearGradient id="peachGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="40%" stop-color="#fed7aa"/>
+          <stop offset="75%" stop-color="#fb923c"/>
+          <stop offset="100%" stop-color="#f43f5e"/>
         </linearGradient>
+
+        <!-- Daisy Petal: Pristine Pure Pearl White -->
+        <linearGradient id="daisyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="80%" stop-color="#f8fafc"/>
+          <stop offset="100%" stop-color="#e2e8f0"/>
+        </linearGradient>
+
+        <!-- Fresh Botanical Spring Vine (Soft Olive/Sage Green) -->
+        <linearGradient id="vineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#4d7c0f"/>
+          <stop offset="60%" stop-color="#65a30d"/>
+          <stop offset="100%" stop-color="#84cc16"/>
+        </linearGradient>
+
+        <!-- Fresh Young Leaves Gradient -->
+        <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#bbf7d0"/>
+          <stop offset="50%" stop-color="#4ade80"/>
+          <stop offset="100%" stop-color="#16a34a"/>
+        </linearGradient>
+
+        <linearGradient id="leafDarkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#86efac"/>
+          <stop offset="60%" stop-color="#22c55e"/>
+          <stop offset="100%" stop-color="#15803d"/>
+        </linearGradient>
+
+        <!-- Golden Center Radial -->
+        <radialGradient id="goldCenter" cx="40%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#fef08a"/>
+          <stop offset="60%" stop-color="#facc15"/>
+          <stop offset="100%" stop-color="#eab308"/>
+        </radialGradient>
       </defs>
-      <!-- Main Wood Branches -->
-      <path d="M360 0 C300 45 240 55 175 42 C120 32 65 72 15 95" stroke="url(#woodGrad)" stroke-width="7" stroke-linecap="round"/>
-      <path d="M245 52 C220 95 175 130 130 148" stroke="url(#woodGrad)" stroke-width="4.5" stroke-linecap="round"/>
-      <path d="M155 40 C130 75 85 92 45 98" stroke="url(#woodGrad)" stroke-width="3.5" stroke-linecap="round"/>
-      <path d="M290 28 C280 72 235 105 200 122" stroke="url(#woodGrad)" stroke-width="4" stroke-linecap="round"/>
-      <path d="M90 62 C70 95 35 115 5 125" stroke="url(#woodGrad)" stroke-width="2.5" stroke-linecap="round"/>
 
-      <!-- Feathery Green Foliage (Lá phượng kép lông chim) -->
-      <g fill="#22c55e" opacity="0.95">
-        <ellipse cx="320" cy="18" rx="10" ry="4.5" transform="rotate(-25 320 18)"/>
-        <ellipse cx="335" cy="22" rx="9" ry="4" transform="rotate(-15 335 22)"/>
-        <ellipse cx="295" cy="32" rx="11" ry="4.5" transform="rotate(-30 295 32)"/>
-        <ellipse cx="270" cy="40" rx="12" ry="4.5" transform="rotate(-25 270 40)"/>
-        <ellipse cx="238" cy="42" rx="11" ry="4.5" transform="rotate(-18 238 42)"/>
-        <ellipse cx="210" cy="45" rx="12" ry="4.5" transform="rotate(-12 210 45)"/>
-        <ellipse cx="180" cy="40" rx="11" ry="4.5" transform="rotate(-5 180 40)"/>
-        <ellipse cx="150" cy="44" rx="11" ry="4.5" transform="rotate(5 150 44)"/>
-        <ellipse cx="115" cy="52" rx="10" ry="4.5" transform="rotate(18 115 52)"/>
-        <ellipse cx="80" cy="72" rx="10" ry="4.5" transform="rotate(28 80 72)"/>
-        <ellipse cx="48" cy="86" rx="9" ry="4" transform="rotate(22 48 86)"/>
-        <ellipse cx="22" cy="94" rx="8" ry="3.5" transform="rotate(15 22 94)"/>
-        <!-- Lower leaf clusters in darker green -->
-        <ellipse cx="215" cy="92" rx="9" ry="4" transform="rotate(45 215 92)" fill="#16a34a"/>
-        <ellipse cx="180" cy="120" rx="9" ry="4" transform="rotate(30 180 120)" fill="#16a34a"/>
-        <ellipse cx="150" cy="136" rx="8" ry="3.5" transform="rotate(15 150 136)" fill="#16a34a"/>
-        <ellipse cx="105" cy="80" rx="9" ry="4" transform="rotate(-20 105 80)" fill="#16a34a"/>
-        <ellipse cx="65" cy="95" rx="8" ry="3.5" transform="rotate(10 65 95)" fill="#16a34a"/>
-        <ellipse cx="25" cy="115" rx="7" ry="3" transform="rotate(20 25 115)" fill="#15803d"/>
+      <!-- ================= VINES & CURLING TENDRILS ================= -->
+      <!-- Main cascading curved vine -->
+      <path d="M380 0 C320 18 250 20 180 15 C120 10 65 24 15 32" stroke="url(#vineGrad)" stroke-width="4.5" stroke-linecap="round"/>
+      <path d="M350 15 C375 70 365 135 330 195 C305 240 270 280 225 315 C205 330 185 335 165 332" stroke="url(#vineGrad)" stroke-width="4" stroke-linecap="round"/>
+      <!-- Secondary soft branch wrapping gracefully -->
+      <path d="M270 18 C230 32 185 35 140 32" stroke="url(#vineGrad)" stroke-width="2.8" stroke-linecap="round"/>
+      <path d="M345 115 C365 160 350 210 315 250 C290 280 255 305 220 320" stroke="url(#vineGrad)" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M315 210 C290 245 250 275 205 295" stroke="url(#vineGrad)" stroke-width="2.2" stroke-linecap="round"/>
+
+      <!-- Whimsical Curly Vine Tendrils (Dây leo xoắn ốc) -->
+      <path d="M140 32 C120 40 105 30 110 20 C115 10 130 15 125 25" stroke="#84cc16" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M365 100 C378 115 375 130 362 130 C350 130 352 115 362 118" stroke="#84cc16" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M310 260 C325 275 322 290 308 290 C296 290 298 275 308 278" stroke="#84cc16" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <path d="M165 332 C150 338 140 330 144 320 C148 312 158 316 154 324" stroke="#84cc16" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+      <!-- ================= LUSH LEAF CLUSTERS ================= -->
+      <g opacity="0.95">
+        <!-- Top Horizontal Leaves -->
+        <path d="M320 12 C330 4 345 8 340 18 C332 24 318 20 320 12 Z" fill="url(#leafGrad)"/>
+        <path d="M280 15 C290 6 305 10 300 20 C292 26 278 22 280 15 Z" fill="url(#leafDarkGrad)"/>
+        <path d="M230 16 C240 7 255 11 250 21 C242 27 228 23 230 16 Z" fill="url(#leafGrad)"/>
+        <path d="M180 15 C170 5 155 8 160 19 C168 25 182 22 180 15 Z" fill="url(#leafDarkGrad)"/>
+        <path d="M125 20 C115 10 100 14 105 24 C113 30 127 27 125 20 Z" fill="url(#leafGrad)"/>
+        <path d="M75 25 C65 15 50 18 55 28 C63 35 77 32 75 25 Z" fill="url(#leafDarkGrad)"/>
+        <path d="M30 30 C20 22 8 26 12 35 C20 42 32 38 30 30 Z" fill="url(#leafGrad)"/>
+
+        <!-- Right Cascading Leaves (lấp đầy khoảng trống bên phải) -->
+        <path d="M360 55 C372 58 376 72 368 80 C358 78 352 64 360 55 Z" fill="url(#leafGrad)"/>
+        <path d="M368 90 C380 94 382 108 374 116 C364 114 360 100 368 90 Z" fill="url(#leafDarkGrad)"/>
+        <path d="M358 135 C370 140 372 155 362 162 C352 160 348 146 358 135 Z" fill="url(#leafGrad)"/>
+        <path d="M342 178 C354 184 355 198 344 205 C334 202 332 188 342 178 Z" fill="url(#leafDarkGrad)"/>
+        <path d="M322 220 C334 227 334 242 322 248 C312 244 312 230 322 220 Z" fill="url(#leafGrad)"/>
+        <path d="M295 258 C306 266 304 280 292 285 C282 280 285 266 295 258 Z" fill="url(#leafDarkGrad)"/>
+        <path d="M260 290 C270 299 266 312 254 316 C245 310 250 297 260 290 Z" fill="url(#leafGrad)"/>
+        <path d="M220 320 C228 329 222 340 210 342 C203 335 210 324 220 320 Z" fill="url(#leafDarkGrad)"/>
+
+        <!-- Eucalyptus Sprigs for cute fullness -->
+        <circle cx="348" cy="72" r="7" fill="url(#leafGrad)"/>
+        <circle cx="358" cy="115" r="7.5" fill="url(#leafDarkGrad)"/>
+        <circle cx="338" cy="158" r="7" fill="url(#leafGrad)"/>
+        <circle cx="312" cy="235" r="6.8" fill="url(#leafDarkGrad)"/>
+        <circle cx="280" cy="272" r="6.5" fill="url(#leafGrad)"/>
+        <circle cx="238" cy="305" r="6" fill="url(#leafDarkGrad)"/>
       </g>
 
-      <!-- Flower 1: Glorious Center Bloom (Hoa phượng vĩ đỏ rực) -->
-      <g transform="translate(195, 80)">
-        <path d="M0 0 C-14 -24 -4 -34 0 -25 C4 -34 14 -24 0 0" fill="url(#poincianaGrad)"/>
-        <path d="M0 0 C-26 -10 -34 2 -22 8 C-34 14 -24 24 0 0" fill="#dc2626"/>
-        <path d="M0 0 C-16 22 -4 32 0 24 C8 32 18 22 0 0" fill="url(#poincianaGrad)"/>
-        <path d="M0 0 C20 18 30 10 24 0 C32 -8 24 -18 0 0" fill="#dc2626"/>
-        <!-- Standard upper petal with variegation -->
-        <path d="M0 0 C-7 -26 0 -36 0 -26 C0 -36 7 -26 0 0" fill="#fef08a"/>
-        <circle cx="0" cy="-22" r="2.5" fill="#ef4444"/>
-        <circle cx="0" cy="0" r="5" fill="#f59e0b"/>
-        <!-- Stamens (Nhị hoa uốn cong) -->
-        <path d="M0 0 Q-6 -15 -14 -18 M0 0 Q6 -15 12 -20 M0 0 Q-10 -6 -18 -8 M0 0 Q8 -4 16 -6 M0 0 Q-2 -18 0 -24" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="-14" cy="-18" r="2" fill="#ef4444"/>
-        <circle cx="12" cy="-20" r="2" fill="#ef4444"/>
-        <circle cx="-18" cy="-8" r="2" fill="#ef4444"/>
-        <circle cx="16" cy="-6" r="2" fill="#ef4444"/>
+      <!-- ================= FLOWER BLOOMS ================= -->
+
+      <!-- FLOWER 1: Gorgeous Sakura Blossom at Top (x=215, y=20) -->
+      <g transform="translate(215, 20) scale(1.15)">
+        <path d="M0 0 C-9 -16 -6 -24 0 -20 C6 -24 9 -16 0 0" fill="url(#sakuraGrad)"/>
+        <path d="M0 0 C16 -9 24 -6 20 0 C24 6 16 9 0 0" fill="url(#sakuraGrad)"/>
+        <path d="M0 0 C10 16 6 24 0 20 C-6 24 -10 16 0 0" fill="url(#sakuraGrad)"/>
+        <path d="M0 0 C-16 10 -24 6 -20 0 C-24 -6 -16 -10 0 0" fill="url(#sakuraGrad)"/>
+        <path d="M0 0 C-14 -12 -18 -18 -12 -20 C-6 -20 -4 -14 0 0" fill="url(#sakuraGrad)"/>
+        <circle cx="0" cy="0" r="4.2" fill="url(#goldCenter)"/>
+        <path d="M0 0 L-4 -8 M0 0 L4 -8 M0 0 L-8 -2 M0 0 L8 -2 M0 0 L-5 6 M0 0 L5 6" stroke="#f43f5e" stroke-width="0.9" stroke-linecap="round"/>
+        <circle cx="-4" cy="-8" r="1.1" fill="#facc15"/>
+        <circle cx="4" cy="-8" r="1.1" fill="#facc15"/>
+        <circle cx="-8" cy="-2" r="1.1" fill="#facc15"/>
+        <circle cx="8" cy="-2" r="1.1" fill="#facc15"/>
+        <circle cx="-5" cy="6" r="1.1" fill="#facc15"/>
+        <circle cx="5" cy="6" r="1.1" fill="#facc15"/>
       </g>
 
-      <!-- Flower 2 (Bottom cluster) -->
-      <g transform="translate(135, 125) scale(0.85)">
-        <path d="M0 0 C-14 -24 -4 -34 0 -25 C4 -34 14 -24 0 0" fill="url(#poincianaGrad)"/>
-        <path d="M0 0 C-26 -10 -34 2 -22 8 C-34 14 -24 24 0 0" fill="#dc2626"/>
-        <path d="M0 0 C-16 22 -4 32 0 24 C8 32 18 22 0 0" fill="#f87171"/>
-        <path d="M0 0 C20 18 30 10 24 0 C32 -8 24 -18 0 0" fill="#dc2626"/>
-        <path d="M0 0 C-7 -26 0 -36 0 -26 C0 -36 7 -26 0 0" fill="#fef08a"/>
-        <circle cx="0" cy="0" r="4.5" fill="#f59e0b"/>
-        <path d="M0 0 Q-6 -13 -12 -16 M0 0 Q6 -13 10 -17" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="-12" cy="-16" r="1.8" fill="#ef4444"/>
-        <circle cx="10" cy="-17" r="1.8" fill="#ef4444"/>
+      <!-- FLOWER 2: Pristine White Daisy (Cúc Họa Mi Trắng) at Upper Right (x=345, y=75) -->
+      <g transform="translate(345, 75) scale(1.05)">
+        <ellipse cx="0" cy="-14" rx="4" ry="7.5" fill="url(#daisyGrad)"/>
+        <ellipse cx="9.9" cy="-9.9" rx="4" ry="7.5" transform="rotate(45 9.9 -9.9)" fill="url(#daisyGrad)"/>
+        <ellipse cx="14" cy="0" rx="4" ry="7.5" transform="rotate(90 14 0)" fill="url(#daisyGrad)"/>
+        <ellipse cx="9.9" cy="9.9" rx="4" ry="7.5" transform="rotate(135 9.9 9.9)" fill="url(#daisyGrad)"/>
+        <ellipse cx="0" cy="14" rx="4" ry="7.5" fill="url(#daisyGrad)"/>
+        <ellipse cx="-9.9" cy="9.9" rx="4" ry="7.5" transform="rotate(225 -9.9 9.9)" fill="url(#daisyGrad)"/>
+        <ellipse cx="-14" cy="0" rx="4" ry="7.5" transform="rotate(270 -14 0)" fill="url(#daisyGrad)"/>
+        <ellipse cx="-9.9" cy="-9.9" rx="4" ry="7.5" transform="rotate(315 -9.9 -9.9)" fill="url(#daisyGrad)"/>
+        <circle cx="0" cy="0" r="6.5" fill="#f59e0b"/>
+        <circle cx="-1.2" cy="-1.2" r="4.8" fill="url(#goldCenter)"/>
+        <circle cx="-2.2" cy="-2.2" r="1.8" fill="#ffffff" opacity="0.85"/>
       </g>
 
-      <!-- Flower 3 (Upper right bloom) -->
-      <g transform="translate(275, 52) scale(0.9)">
-        <path d="M0 0 C-14 -24 -4 -34 0 -25 C4 -34 14 -24 0 0" fill="#dc2626"/>
-        <path d="M0 0 C-26 -10 -34 2 -22 8 C-34 14 -24 24 0 0" fill="url(#poincianaGrad)"/>
-        <path d="M0 0 C-16 22 -4 32 0 24 C8 32 18 22 0 0" fill="#ef4444"/>
-        <path d="M0 0 C20 18 30 10 24 0 C32 -8 24 -18 0 0" fill="#f87171"/>
-        <circle cx="0" cy="0" r="4.5" fill="#f59e0b"/>
-        <path d="M0 0 Q-5 -14 -11 -17 M0 0 Q5 -14 9 -18" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- FLOWER 3: Pastel Peach Blossom at Mid Right (x=335, y=165) -->
+      <g transform="translate(335, 165) scale(1.1)">
+        <path d="M0 0 C-9 -16 -6 -24 0 -20 C6 -24 9 -16 0 0" fill="url(#peachGrad)"/>
+        <path d="M0 0 C16 -9 24 -6 20 0 C24 6 16 9 0 0" fill="url(#peachGrad)"/>
+        <path d="M0 0 C10 16 6 24 0 20 C-6 24 -10 16 0 0" fill="url(#peachGrad)"/>
+        <path d="M0 0 C-16 10 -24 6 -20 0 C-24 -6 -16 -10 0 0" fill="url(#peachGrad)"/>
+        <path d="M0 0 C-14 -12 -18 -18 -12 -20 C-6 -20 -4 -14 0 0" fill="url(#peachGrad)"/>
+        <circle cx="0" cy="0" r="4" fill="url(#goldCenter)"/>
+        <circle cx="0" cy="0" r="2" fill="#ea580c"/>
       </g>
 
-      <!-- Flower 4 (Branch Tip Bloom) -->
-      <g transform="translate(62, 85) scale(0.72)">
-        <path d="M0 0 C-14 -22 -4 -30 0 -22 C4 -30 14 -22 0 0" fill="url(#poincianaGrad)"/>
-        <path d="M0 0 C-24 -8 -30 2 -20 6 C-30 12 -20 20 0 0" fill="#dc2626"/>
-        <path d="M0 0 C-14 20 -4 28 0 20 C6 28 16 20 0 0" fill="#f87171"/>
-        <path d="M0 0 C18 16 26 8 20 0 C28 -6 20 -15 0 0" fill="#dc2626"/>
-        <circle cx="0" cy="0" r="4" fill="#f59e0b"/>
+      <!-- FLOWER 4: White Daisy Blossom at Lower Right (x=300, y=245) -->
+      <g transform="translate(300, 245) scale(0.95)">
+        <ellipse cx="0" cy="-13" rx="3.8" ry="7" fill="url(#daisyGrad)"/>
+        <ellipse cx="9.2" cy="-9.2" rx="3.8" ry="7" transform="rotate(45 9.2 -9.2)" fill="url(#daisyGrad)"/>
+        <ellipse cx="13" cy="0" rx="3.8" ry="7" transform="rotate(90 13 0)" fill="url(#daisyGrad)"/>
+        <ellipse cx="9.2" cy="9.2" rx="3.8" ry="7" transform="rotate(135 9.2 9.2)" fill="url(#daisyGrad)"/>
+        <ellipse cx="0" cy="13" rx="3.8" ry="7" fill="url(#daisyGrad)"/>
+        <ellipse cx="-9.2" cy="9.2" rx="3.8" ry="7" transform="rotate(225 -9.2 9.2)" fill="url(#daisyGrad)"/>
+        <ellipse cx="-13" cy="0" rx="3.8" ry="7" transform="rotate(270 -13 0)" fill="url(#daisyGrad)"/>
+        <ellipse cx="-9.2" cy="-9.2" rx="3.8" ry="7" transform="rotate(315 -9.2 -9.2)" fill="url(#daisyGrad)"/>
+        <circle cx="0" cy="0" r="6" fill="#f59e0b"/>
+        <circle cx="-1" cy="-1" r="4.2" fill="url(#goldCenter)"/>
+        <circle cx="-2" cy="-2" r="1.5" fill="#ffffff" opacity="0.85"/>
       </g>
 
-      <!-- Cute Flower Buds (Nụ hoa phượng) -->
-      <circle cx="18" cy="94" r="5" fill="#22c55e" stroke="#16a34a" stroke-width="1.2"/>
-      <circle cx="21" cy="92" r="4" fill="#ef4444"/>
-      <circle cx="95" cy="140" r="5" fill="#22c55e"/>
-      <circle cx="98" cy="138" r="4" fill="#ef4444"/>
-      <circle cx="240" cy="112" r="5" fill="#22c55e"/>
-      <circle cx="242" cy="110" r="4" fill="#ef4444"/>
+      <!-- FLOWER 5: Sweet Little Sakura Bud at Bottom Tip (x=225, y=318) -->
+      <g transform="translate(225, 318) scale(0.85)">
+        <path d="M0 0 C-8 -14 -4 -20 0 -16 C4 -20 8 -14 0 0" fill="url(#sakuraGrad)"/>
+        <path d="M0 0 C12 -6 18 -3 15 2 C18 7 12 10 0 0" fill="url(#sakuraGrad)"/>
+        <path d="M0 0 C6 14 3 18 0 15 C-4 18 -6 14 0 0" fill="url(#sakuraGrad)"/>
+        <path d="M0 0 C-12 6 -16 2 -14 -2 C-16 -7 -12 -8 0 0" fill="url(#sakuraGrad)"/>
+        <circle cx="0" cy="0" r="3" fill="url(#goldCenter)"/>
+      </g>
+
+      <!-- Cute Little Buds and Floating Petals along the garland -->
+      <g transform="translate(365, 40)">
+        <ellipse cx="0" cy="0" rx="4.5" ry="6.5" transform="rotate(25)" fill="url(#sakuraGrad)"/>
+        <path d="M-3 4 C-4 1 -2 -3 0 -5 C2 -3 4 1 3 4 Z" fill="#22c55e"/>
+      </g>
+      <g transform="translate(348, 130)">
+        <ellipse cx="0" cy="0" rx="4" ry="6" transform="rotate(-30)" fill="url(#peachGrad)"/>
+        <path d="M-2 4 C-3 1 -1 -3 0 -4 C1 -3 3 1 2 4 Z" fill="#22c55e"/>
+      </g>
+      <g transform="translate(318, 205)">
+        <ellipse cx="0" cy="0" rx="4" ry="5.5" transform="rotate(40)" fill="url(#sakuraGrad)"/>
+        <path d="M-2 3 C-3 1 -1 -2 0 -4 C1 -2 3 1 2 3 Z" fill="#22c55e"/>
+      </g>
+      <g transform="translate(185, 332)">
+        <ellipse cx="0" cy="0" rx="3.5" ry="5" transform="rotate(-20)" fill="url(#sakuraGrad)"/>
+        <path d="M-2 3 C-3 1 -1 -2 0 -3 C1 -2 3 1 2 3 Z" fill="#22c55e"/>
+      </g>
+
+      <!-- Cute Fluttering Butterfly 🦋 near the flowers -->
+      <g transform="translate(285, 125) rotate(-15) scale(0.85)">
+        <path d="M0 0 C4 -12 16 -16 20 -8 C22 0 12 8 0 0" fill="#fbcfe8" stroke="#f472b6" stroke-width="0.8"/>
+        <path d="M0 0 C-4 -12 -16 -16 -20 -8 C-22 0 -12 8 0 0" fill="#fbcfe8" stroke="#f472b6" stroke-width="0.8"/>
+        <path d="M0 0 C6 3 14 10 10 16 C6 18 1 12 0 0" fill="#fed7aa" stroke="#fb923c" stroke-width="0.8"/>
+        <path d="M0 0 C-6 3 -14 10 -10 16 C-6 18 -1 12 0 0" fill="#fed7aa" stroke="#fb923c" stroke-width="0.8"/>
+        <ellipse cx="0" cy="3" rx="1.5" ry="6" fill="#475569"/>
+        <path d="M-0.5 -2 Q-3 -6 -5 -7 M0.5 -2 Q3 -6 5 -7" stroke="#475569" stroke-width="0.8" fill="none"/>
+      </g>
+
+      <!-- Gentle Floating Sparkles ✨ -->
+      <g fill="#facc15" opacity="0.85">
+        <path d="M360 180 Q360 185 365 185 Q360 185 360 190 Q360 185 355 185 Q360 185 360 180 Z"/>
+        <path d="M260 230 Q260 234 264 234 Q260 234 260 238 Q260 234 256 234 Q260 234 260 230 Z"/>
+        <path d="M250 50 Q250 54 254 54 Q250 54 250 58 Q250 54 246 54 Q250 54 250 50 Z"/>
+      </g>
     </svg>
   </div>
 
-  <!-- Top-Left Poinciana Branch -->
-  <div class="pointer-events-none absolute top-[72px] left-0 z-20 select-none hidden sm:block overflow-hidden max-w-full">
-    <svg class="w-56 sm:w-72 lg:w-[380px] h-auto drop-shadow-md animate-sway-left origin-top-left select-none" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top-Left Floral Garland: Dàn Hoa Anh Đào & Cúc Họa Mi buông nhẹ góc trên card logo -->
+  <div class="pointer-events-none absolute top-[72px] left-0 z-30 select-none hidden sm:block overflow-visible max-w-full">
+    <svg class="w-64 sm:w-80 lg:w-[420px] h-auto drop-shadow-[0_8px_16px_rgba(244,114,182,0.18)] animate-sway-left origin-top-left select-none" viewBox="0 0 350 220" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="poincianaGradL" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#ff4d4d"/>
-          <stop offset="60%" stop-color="#ef4444"/>
-          <stop offset="100%" stop-color="#b91c1c"/>
+        <linearGradient id="sakuraGradL" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#fff5f5"/>
+          <stop offset="35%" stop-color="#fecdd3"/>
+          <stop offset="75%" stop-color="#fb7185"/>
+          <stop offset="100%" stop-color="#f43f5e"/>
         </linearGradient>
-        <linearGradient id="woodGradL" x1="100%" y1="0%" x2="0%" y2="0%">
-          <stop offset="0%" stop-color="#78350f"/>
-          <stop offset="100%" stop-color="#92400e"/>
+        <linearGradient id="daisyGradL" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="80%" stop-color="#f8fafc"/>
+          <stop offset="100%" stop-color="#e2e8f0"/>
         </linearGradient>
+        <linearGradient id="vineGradL" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#4d7c0f"/>
+          <stop offset="60%" stop-color="#65a30d"/>
+          <stop offset="100%" stop-color="#84cc16"/>
+        </linearGradient>
+        <linearGradient id="leafGradL" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#bbf7d0"/>
+          <stop offset="50%" stop-color="#4ade80"/>
+          <stop offset="100%" stop-color="#16a34a"/>
+        </linearGradient>
+        <linearGradient id="leafDarkGradL" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#86efac"/>
+          <stop offset="60%" stop-color="#22c55e"/>
+          <stop offset="100%" stop-color="#15803d"/>
+        </linearGradient>
+        <radialGradient id="goldCenterL" cx="40%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#fef08a"/>
+          <stop offset="60%" stop-color="#facc15"/>
+          <stop offset="100%" stop-color="#eab308"/>
+        </radialGradient>
       </defs>
-      <path d="M-40 0 C20 40 80 50 145 38 C200 28 255 68 305 90" stroke="url(#woodGradL)" stroke-width="7" stroke-linecap="round"/>
-      <path d="M75 48 C100 90 145 125 190 140" stroke="url(#woodGradL)" stroke-width="4" stroke-linecap="round"/>
-      <path d="M165 36 C190 70 235 88 275 92" stroke="url(#woodGradL)" stroke-width="3" stroke-linecap="round"/>
-      
-      <g fill="#22c55e" opacity="0.95">
-        <ellipse cx="40" cy="18" rx="10" ry="4.5" transform="rotate(25 40 18)"/>
-        <ellipse cx="25" cy="22" rx="9" ry="4" transform="rotate(15 25 22)"/>
-        <ellipse cx="65" cy="32" rx="11" ry="4.5" transform="rotate(30 65 32)"/>
-        <ellipse cx="90" cy="40" rx="12" ry="4.5" transform="rotate(25 90 40)"/>
-        <ellipse cx="122" cy="42" rx="11" ry="4.5" transform="rotate(18 122 42)"/>
-        <ellipse cx="150" cy="45" rx="12" ry="4.5" transform="rotate(12 150 45)"/>
-        <ellipse cx="180" cy="40" rx="11" ry="4.5" transform="rotate(5 180 40)"/>
-        <ellipse cx="210" cy="44" rx="11" ry="4.5" transform="rotate(-5 210 44)"/>
-        <ellipse cx="245" cy="52" rx="10" ry="4.5" transform="rotate(-18 245 52)"/>
-        <ellipse cx="280" cy="72" rx="10" ry="4.5" transform="rotate(-28 280 72)"/>
-        <ellipse cx="105" cy="88" rx="9" ry="4" transform="rotate(-45 105 88)" fill="#16a34a"/>
-        <ellipse cx="140" cy="115" rx="9" ry="4" transform="rotate(-30 140 115)" fill="#16a34a"/>
+
+      <!-- Left Soft Spring Vines -->
+      <path d="M-30 0 C30 35 90 48 160 38 C220 28 275 65 325 90" stroke="url(#vineGradL)" stroke-width="4.5" stroke-linecap="round"/>
+      <path d="M85 45 C115 85 160 120 205 135" stroke="url(#vineGradL)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M175 35 C205 68 250 86 290 90" stroke="url(#vineGradL)" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Whimsical Curly Vine Tendrils -->
+      <path d="M190 38 C205 45 210 58 200 64 C190 68 185 55 195 52" stroke="#84cc16" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M205 135 C220 145 215 158 202 155 C192 152 195 140 205 142" stroke="#84cc16" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+      <!-- Lush Leaves -->
+      <g opacity="0.95">
+        <path d="M40 18 C50 10 65 14 60 24 C52 30 38 27 40 18 Z" fill="url(#leafGradL)"/>
+        <path d="M75 28 C85 20 100 24 95 34 C87 40 73 37 75 28 Z" fill="url(#leafDarkGradL)"/>
+        <path d="M110 36 C120 28 135 32 130 42 C122 48 108 45 110 36 Z" fill="url(#leafGradL)"/>
+        <path d="M145 42 C155 35 170 38 165 48 C157 54 143 51 145 42 Z" fill="url(#leafDarkGradL)"/>
+        <path d="M175 38 C185 30 200 34 195 44 C187 50 173 47 175 38 Z" fill="url(#leafGradL)"/>
+        <path d="M210 42 C220 35 235 38 230 48 C222 54 208 51 210 42 Z" fill="url(#leafDarkGradL)"/>
+        <path d="M250 52 C260 45 275 48 270 58 C262 64 248 61 250 52 Z" fill="url(#leafGradL)"/>
+        <path d="M290 74 C300 67 315 70 310 80 C302 86 288 83 290 74 Z" fill="url(#leafDarkGradL)"/>
+        <path d="M115 88 C125 80 138 84 132 94 C124 100 110 97 115 88 Z" fill="url(#leafGradL)"/>
+        <path d="M155 118 C165 110 178 114 172 124 C164 130 150 127 155 118 Z" fill="url(#leafDarkGradL)"/>
+
+        <!-- Eucalyptus Sprigs -->
+        <circle cx="95" cy="55" r="7" fill="url(#leafGradL)"/>
+        <circle cx="130" cy="72" r="7" fill="url(#leafDarkGradL)"/>
+        <circle cx="175" cy="95" r="6.5" fill="url(#leafGradL)"/>
       </g>
 
-      <g transform="translate(125, 75)">
-        <path d="M0 0 C-14 -24 -4 -34 0 -25 C4 -34 14 -24 0 0" fill="url(#poincianaGradL)"/>
-        <path d="M0 0 C-26 -10 -34 2 -22 8 C-34 14 -24 24 0 0" fill="#dc2626"/>
-        <path d="M0 0 C-16 22 -4 32 0 24 C8 32 18 22 0 0" fill="url(#poincianaGradL)"/>
-        <path d="M0 0 C20 18 30 10 24 0 C32 -8 24 -18 0 0" fill="#dc2626"/>
-        <path d="M0 0 C-7 -26 0 -36 0 -26 C0 -36 7 -26 0 0" fill="#fef08a"/>
-        <circle cx="0" cy="0" r="5" fill="#f59e0b"/>
-        <path d="M0 0 Q-6 -15 -14 -18 M0 0 Q6 -15 12 -20" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="-14" cy="-18" r="2" fill="#ef4444"/>
-        <circle cx="12" cy="-20" r="2" fill="#ef4444"/>
+      <!-- FLOWER 1: Big Soft Pink Sakura Bloom (x=135, y=78) -->
+      <g transform="translate(135, 78) scale(1.15)">
+        <path d="M0 0 C-9 -16 -6 -24 0 -20 C6 -24 9 -16 0 0" fill="url(#sakuraGradL)"/>
+        <path d="M0 0 C16 -9 24 -6 20 0 C24 6 16 9 0 0" fill="url(#sakuraGradL)"/>
+        <path d="M0 0 C10 16 6 24 0 20 C-6 24 -10 16 0 0" fill="url(#sakuraGradL)"/>
+        <path d="M0 0 C-16 10 -24 6 -20 0 C-24 -6 -16 -10 0 0" fill="url(#sakuraGradL)"/>
+        <path d="M0 0 C-14 -12 -18 -18 -12 -20 C-6 -20 -4 -14 0 0" fill="url(#sakuraGradL)"/>
+        <circle cx="0" cy="0" r="4.5" fill="url(#goldCenterL)"/>
+        <path d="M0 0 L-4 -8 M0 0 L4 -8 M0 0 L-8 -2 M0 0 L8 -2 M0 0 L-5 6 M0 0 L5 6" stroke="#f43f5e" stroke-width="0.9" stroke-linecap="round"/>
+        <circle cx="-4" cy="-8" r="1.1" fill="#facc15"/>
+        <circle cx="4" cy="-8" r="1.1" fill="#facc15"/>
+        <circle cx="-8" cy="-2" r="1.1" fill="#facc15"/>
+        <circle cx="8" cy="-2" r="1.1" fill="#facc15"/>
+        <circle cx="-5" cy="6" r="1.1" fill="#facc15"/>
+        <circle cx="5" cy="6" r="1.1" fill="#facc15"/>
       </g>
 
-      <g transform="translate(205, 78) scale(0.8)">
-        <path d="M0 0 C-14 -24 -4 -34 0 -25 C4 -34 14 -24 0 0" fill="url(#poincianaGradL)"/>
-        <path d="M0 0 C-26 -10 -34 2 -22 8 C-34 14 -24 24 0 0" fill="#dc2626"/>
-        <path d="M0 0 C-16 22 -4 32 0 24 C8 32 18 22 0 0" fill="#f87171"/>
-        <path d="M0 0 C20 18 30 10 24 0 C32 -8 24 -18 0 0" fill="#dc2626"/>
-        <circle cx="0" cy="0" r="4" fill="#f59e0b"/>
+      <!-- FLOWER 2: Pristine White Daisy (x=225, y=82) -->
+      <g transform="translate(225, 82) scale(1.05)">
+        <ellipse cx="0" cy="-14" rx="4" ry="7.5" fill="url(#daisyGradL)"/>
+        <ellipse cx="9.9" cy="-9.9" rx="4" ry="7.5" transform="rotate(45 9.9 -9.9)" fill="url(#daisyGradL)"/>
+        <ellipse cx="14" cy="0" rx="4" ry="7.5" transform="rotate(90 14 0)" fill="url(#daisyGradL)"/>
+        <ellipse cx="9.9" cy="9.9" rx="4" ry="7.5" transform="rotate(135 9.9 9.9)" fill="url(#daisyGradL)"/>
+        <ellipse cx="0" cy="14" rx="4" ry="7.5" fill="url(#daisyGradL)"/>
+        <ellipse cx="-9.9" cy="9.9" rx="4" ry="7.5" transform="rotate(225 -9.9 9.9)" fill="url(#daisyGradL)"/>
+        <ellipse cx="-14" cy="0" rx="4" ry="7.5" transform="rotate(270 -14 0)" fill="url(#daisyGradL)"/>
+        <ellipse cx="-9.9" cy="-9.9" rx="4" ry="7.5" transform="rotate(315 -9.9 -9.9)" fill="url(#daisyGradL)"/>
+        <circle cx="0" cy="0" r="6.5" fill="#f59e0b"/>
+        <circle cx="-1.2" cy="-1.2" r="4.8" fill="url(#goldCenterL)"/>
+        <circle cx="-2.2" cy="-2.2" r="1.8" fill="#ffffff" opacity="0.85"/>
+      </g>
+
+      <!-- FLOWER 3: Tip Blossom (x=305, y=96) -->
+      <g transform="translate(305, 96) scale(0.85)">
+        <path d="M0 0 C-8 -14 -4 -20 0 -16 C4 -20 8 -14 0 0" fill="url(#sakuraGradL)"/>
+        <path d="M0 0 C12 -6 18 -3 15 2 C18 7 12 10 0 0" fill="url(#sakuraGradL)"/>
+        <path d="M0 0 C6 14 3 18 0 15 C-4 18 -6 14 0 0" fill="url(#sakuraGradL)"/>
+        <path d="M0 0 C-12 6 -16 2 -14 -2 C-16 -7 -12 -8 0 0" fill="url(#sakuraGradL)"/>
+        <circle cx="0" cy="0" r="3.2" fill="url(#goldCenterL)"/>
+      </g>
+
+      <!-- Buds & Sparkles -->
+      <g transform="translate(70, 38)">
+        <ellipse cx="0" cy="0" rx="4" ry="6" transform="rotate(20)" fill="url(#sakuraGradL)"/>
+        <path d="M-2 4 C-3 1 -1 -3 0 -4 C1 -3 3 1 2 4 Z" fill="#22c55e"/>
+      </g>
+      <g transform="translate(180, 52)">
+        <ellipse cx="0" cy="0" rx="3.5" ry="5.5" transform="rotate(-25)" fill="url(#sakuraGradL)"/>
+        <path d="M-2 3 C-3 1 -1 -2 0 -3 C1 -2 3 1 2 3 Z" fill="#22c55e"/>
+      </g>
+      <g fill="#facc15" opacity="0.85">
+        <path d="M165 25 Q165 29 169 29 Q165 29 165 33 Q165 29 161 29 Q165 29 165 25 Z"/>
+        <path d="M260 65 Q260 69 264 69 Q260 69 260 73 Q260 69 256 69 Q260 69 260 65 Z"/>
       </g>
     </svg>
   </div>
-
-  <!-- 2. Falling Poinciana Petals (Cánh hoa phượng rơi lững lờ theo làn gió) -->
+  <!-- 2. Falling Pastel Sakura Petals (Cánh hoa đào phớt hồng rơi lãng mạn nhẹ nhàng) -->
   <div class="pointer-events-none fixed inset-0 z-10 select-none overflow-hidden">
     <div class="absolute -top-6 left-[10%] w-4 h-5 petal-1 opacity-75">
-      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#ef4444"/></svg>
+      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#f472b6"/></svg>
     </div>
     <div class="absolute -top-6 left-[25%] w-3.5 h-4.5 petal-2 opacity-80" style="animation-delay: 3.5s;">
-      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#dc2626"/></svg>
+      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#fb7185"/></svg>
     </div>
     <div class="absolute -top-6 left-[46%] w-4 h-5 petal-3 opacity-75" style="animation-delay: 8s;">
-      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#f87171"/></svg>
+      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#fda4af"/></svg>
     </div>
     <div class="absolute -top-6 left-[68%] w-3.5 h-4.5 petal-1 opacity-80" style="animation-delay: 5s;">
-      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#ef4444"/></svg>
+      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#f472b6"/></svg>
     </div>
     <div class="absolute -top-6 left-[84%] w-4 h-5 petal-2 opacity-85" style="animation-delay: 11s;">
-      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#dc2626"/></svg>
+      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#fb7185"/></svg>
     </div>
     <div class="absolute -top-6 left-[93%] w-3 h-4 petal-3 opacity-70" style="animation-delay: 2s;">
-      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#f87171"/></svg>
+      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#fecdd3"/></svg>
     </div>
   </div>
 
@@ -369,7 +539,7 @@
   </div>
 
   <!-- Top Cute Header -->
-  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-30 border-b-4 border-pink-100 shadow-sm">
+  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b-4 border-pink-100 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-3.5">
         <div class="relative shrink-0">
@@ -421,7 +591,7 @@
     </div>
   </header>
 
-  <main class="relative z-10 flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-7">
+  <main class="relative z-20 flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-7">
 
     <!-- Cute Hero Banner -->
     <section class="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-sky-100 via-rose-50 to-amber-100 p-6 sm:p-8 border-4 border-white shadow-[0_12px_30px_-8px_rgba(244,114,182,0.22)]">
@@ -489,35 +659,50 @@
       </div>
     </section>
 
-    <!-- Search & Cute Category Filters -->
-    <section class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 bg-white/80 backdrop-blur-sm p-3.5 rounded-[26px] border-2 border-pink-100 shadow-sm">
-      <div class="flex flex-wrap items-center gap-2" id="category-pills">
-        <button type="button" data-cat="Tất cả" class="cat-pill cute-pill cute-pill-active bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
-          🌈 Tất cả bài học
+    <!-- Search & Cute Category Filters (Một hàng gọn gàng, không bị rớt dòng) -->
+    <section class="bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 rounded-[22px] border-2 border-pink-100 shadow-sm flex flex-col md:flex-row items-center justify-between gap-2.5">
+      <!-- Category Pills: compact, no-wrap horizontal scrolling on very small mobile -->
+      <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full md:w-auto shrink-0 pb-1 md:pb-0" id="category-pills" style="scrollbar-width: none;">
+        <button type="button" data-cat="Tất cả" class="cat-pill cute-pill cute-pill-active bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap shadow-sm transition-all">
+          🌈 Tất cả
         </button>
-        <button type="button" data-cat="Bài học" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-sky-300 hover:bg-sky-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+        <button type="button" data-cat="Bài học" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-sky-300 hover:bg-sky-50 font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all">
           📘 Bài học
         </button>
-        <button type="button" data-cat="Bài tập tuần" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-purple-300 hover:bg-purple-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+        <button type="button" data-cat="Bài tập tuần" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-purple-300 hover:bg-purple-50 font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all">
           📅 Bài tập tuần
         </button>
-        <button type="button" data-cat="Ôn tập" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-amber-300 hover:bg-amber-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+        <button type="button" data-cat="Ôn tập" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-amber-300 hover:bg-amber-50 font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all">
           🏆 Ôn tập
         </button>
-        <button type="button" data-cat="Bổ sung" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-emerald-300 hover:bg-emerald-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+        <button type="button" data-cat="Bổ sung" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-emerald-300 hover:bg-emerald-50 font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all">
           🎁 Bổ sung
         </button>
       </div>
 
-      <div class="relative w-full md:w-72 shrink-0">
-        <input id="search-input" type="search" placeholder="Tìm bài học yêu thích..."
-               class="w-full bg-slate-50/90 border-2 border-pink-200 focus:border-pink-400 focus:bg-white focus:outline-none rounded-2xl pl-10 pr-4 py-2 text-sm font-bold text-slate-700 placeholder:text-slate-400 transition" />
-        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-base">🔍</span>
+      <!-- Sắp xếp & Tìm kiếm -->
+      <div class="flex items-center gap-2 w-full md:w-auto shrink-0 justify-end">
+        <div class="relative shrink-0">
+          <select id="sort-selector" class="bg-white border-2 border-pink-200 focus:border-pink-400 focus:outline-none rounded-xl px-2.5 py-1.5 text-xs font-black text-slate-700 cursor-pointer transition shadow-2xs hover:border-pink-300">
+            <option value="sgk" selected>🔢 Thứ tự bài</option>
+            <option value="newest">🆕 Mới nhất</option>
+            <option value="az">🔤 Tên A-Z</option>
+          </select>
+        </div>
+
+        <div class="relative w-full sm:w-40 md:w-44 shrink-0">
+          <input id="search-input" type="search" placeholder="Tìm bài học..."
+                 class="w-full bg-slate-50/90 border-2 border-pink-200 focus:border-pink-400 focus:bg-white focus:outline-none rounded-xl pl-7 pr-3 py-1.5 text-xs font-bold text-slate-700 placeholder:text-slate-400 transition" />
+          <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs">🔍</span>
+        </div>
       </div>
     </section>
 
-    <!-- Games Grid -->
-    <section id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></section>
+    <!-- Games Grid Container: Container chứa các section dạng dọc -->
+    <div id="games-grid" class="space-y-8"></div>
+
+    <!-- Empty State -->
+    <section id="games-grid" class="space-y-10"></section>
 
     <!-- Empty State -->
     <div id="empty-state" class="hidden text-center py-16 bg-white/90 rounded-[32px] border-4 border-dashed border-pink-200 shadow-sm">
@@ -1185,125 +1370,135 @@
       <form id="studio-form" class="space-y-4 overflow-y-auto pr-1 flex-1">
         <input id="studio-id" type="hidden" />
 
-        <!-- GEMINI AI ASSISTANT & FILE UPLOAD ZONE -->
-        <div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-indigo-200 rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-xs">
-          <div class="flex items-center justify-between border-b border-indigo-100 pb-2">
-            <span class="text-xs font-black uppercase text-indigo-900 flex items-center gap-1.5">
-              <span>🤖</span> <span>Trợ Lý AI Triển Khai Game Từ Giáo Án (Gemini):</span>
-            </span>
-            <button type="button" id="btn-toggle-gemini-key" class="text-[11px] text-indigo-600 hover:text-indigo-800 font-bold underline flex items-center gap-1">
-              <span>🔑 Cài đặt Gemini API Key</span>
+        <!-- 2 CHẾ ĐỘ SOẠN BÀI (AI GEMINI HOẶC TỰ SOẠN THỦ CÔNG) -->
+        <div class="bg-slate-100 p-1.5 rounded-2xl">
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="tab-mode-ai" class="studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-white text-indigo-700 shadow-sm border-2 border-indigo-400">
+              <span class="text-base">🤖</span>
+              <span>Trợ Lý AI Gemini</span>
+              <span class="hidden sm:inline text-[10px] font-extrabold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full">Tự động</span>
+            </button>
+            <button type="button" id="tab-mode-manual" class="studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/60">
+              <span class="text-base">✍️</span>
+              <span>Tự Soạn Câu Hỏi</span>
+              <span class="hidden sm:inline text-[10px] font-extrabold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">Thủ công</span>
             </button>
           </div>
+        </div>
 
-          <!-- API Key Input (Toggleable / Saved in LocalStorage) -->
-          <div id="gemini-key-box" class="hidden bg-white p-3 rounded-xl border border-indigo-200 space-y-2">
+        <!-- PANEL 1: TRỢ LÝ AI GEMINI (TỰ ĐỘNG DỰNG BÀI TỪ TEXT / WORD) -->
+        <div id="panel-mode-ai" class="studio-mode-panel space-y-3.5 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-indigo-200 rounded-2xl p-4">
+          <!-- Connection Status & Key Action -->
+          <div class="bg-white/95 p-3 rounded-xl border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-2xs">
+            <div id="gemini-status-display" class="flex items-center gap-2">
+              <span id="gemini-status-dot" class="w-3 h-3 rounded-full bg-amber-400"></span>
+              <span id="gemini-status-text" class="text-xs font-bold text-slate-800">Đang kiểm tra kết nối Gemini API...</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <button type="button" id="btn-toggle-gemini-key" class="text-xs text-indigo-700 hover:text-indigo-900 font-extrabold underline flex items-center gap-1 cursor-pointer">
+                <span>🔑 Cài đặt / Đổi mã Key</span>
+              </button>
+              <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="text-xs text-emerald-600 font-extrabold hover:underline">
+                Lấy key miễn phí ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- API Key Input Drawer -->
+          <div id="gemini-key-box" class="hidden bg-white p-3.5 rounded-xl border-2 border-indigo-300 space-y-2.5 shadow-sm">
             <div class="flex items-center justify-between">
-              <label class="text-[11px] font-black uppercase text-slate-600">Khóa Gemini API Key của cô:</label>
-              <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="text-[10px] text-emerald-600 font-extrabold hover:underline">Lấy key miễn phí tại Google AI Studio ↗</a>
+              <label class="text-xs font-black uppercase text-indigo-900">🔑 Nhập Google Gemini API Key của cô:</label>
+              <span class="text-[10px] text-slate-400 font-mono">Bắt đầu bằng AIzaSy...</span>
             </div>
             <div class="flex gap-2">
               <input id="input-gemini-api-key" type="password" placeholder="Dán mã API Key bắt đầu bằng AIzaSy..."
-                     class="flex-1 px-3 py-1.5 rounded-lg border text-xs font-mono bg-slate-50 focus:outline-none focus:border-indigo-400" />
-              <button type="button" id="btn-save-gemini-key" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs px-3 py-1.5 rounded-lg transition whitespace-nowrap">
-                Lưu khóa
+                     class="flex-1 px-3 py-2 rounded-xl border-2 border-indigo-200 text-xs font-mono bg-slate-50 focus:bg-white focus:outline-none focus:border-indigo-500" />
+              <button type="button" id="btn-save-gemini-key"
+                      class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition shadow-sm whitespace-nowrap">
+                Lưu Key
               </button>
             </div>
-            <p class="text-[10px] text-slate-400 font-medium">Khóa được lưu bảo mật trong trình duyệt của cô, không chia sẻ lên máy chủ.</p>
+            <p class="text-[11px] text-slate-500">
+              ⚡ Kết nối trực tiếp mô hình Google Gemini 2.5 Flash thế hệ mới nhất với tốc độ siêu nhanh và độ chính xác toán học vượt trội.
+            </p>
           </div>
 
-          <!-- File Upload or Direct Paste -->
+          <!-- Upload Word / Paste Lesson Plan -->
           <div class="space-y-2">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <label class="text-xs font-extrabold text-slate-700">Tải file hoặc dán nội dung giáo án / bài tập:</label>
-              <div class="flex items-center gap-2">
-                <label for="input-lesson-file" class="cursor-pointer bg-white hover:bg-indigo-50 border-2 border-dashed border-indigo-300 text-indigo-700 font-bold text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-2xs">
-                  <span>📂</span> <span>Tải file Word (.docx) / Text (.txt)</span>
-                </label>
-                <input id="input-lesson-file" type="file" accept=".docx,.txt,.json,.md" class="hidden" />
-              </div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+              <label class="text-xs font-extrabold text-slate-700 flex items-center gap-1.5">
+                <span>📄</span> <span>Dán nội dung hoặc tải file giáo án Word / Text:</span>
+              </label>
+              <label for="input-lesson-file" class="cursor-pointer bg-white hover:bg-indigo-50 border-2 border-dashed border-indigo-300 text-indigo-700 font-bold text-xs px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-2xs self-start sm:self-auto">
+                <span>📂</span> <span>Tải file Word (.docx) / Text (.txt)</span>
+              </label>
+              <input id="input-lesson-file" type="file" accept=".docx,.txt,.json,.md" class="hidden" />
             </div>
 
             <textarea id="ai-source-text" rows="3"
-                      placeholder="Dán nội dung bài học, lý thuyết, công thức hoặc danh sách bài tập vào đây... (Hoặc bấm 'Tải file Word' ở trên). AI sẽ tự động tạo bài học chuẩn: Học lý thuyết tương tác + 35 câu hỏi (5 câu Chặng 1, 10 câu Chặng 2, 10 câu Chặng 3, 10 câu Chặng 4)!"
-                      class="w-full px-3 py-2.5 rounded-xl border-2 border-indigo-200 text-xs sm:text-sm font-medium bg-white focus:outline-none focus:border-indigo-500"></textarea>
+                      placeholder="Dán nội dung giáo án, đề bài hoặc bài tập vào đây... AI sẽ tự động phân tích và tạo game 5 chặng (Lý thuyết + 35 câu hỏi rèn luyện)!"
+                      class="w-full px-3.5 py-2.5 rounded-xl border-2 border-indigo-200 text-xs sm:text-sm font-medium bg-white focus:outline-none focus:border-indigo-500 shadow-inner"></textarea>
           </div>
 
           <!-- Action Button: AI Generate Game -->
           <div class="flex flex-col sm:flex-row items-center gap-2">
             <button type="button" id="btn-ai-generate-game"
-                    class="w-full sm:w-auto flex-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-black text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                    class="w-full sm:w-auto flex-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white font-black text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
               <span>🪄 AI Triển Khai Game 5 Chặng (Lý Thuyết + 35 Câu)</span>
             </button>
-            <div id="ai-loading-indicator" class="hidden text-xs font-bold text-indigo-700 flex items-center gap-1.5 animate-pulse">
+            <div id="ai-loading-indicator" class="hidden text-xs font-bold text-indigo-700 flex items-center gap-1.5 animate-pulse bg-white/80 px-3 py-1.5 rounded-xl border border-indigo-200">
               <span>⏳</span> <span>AI đang phân tích và thiết kế trò chơi...</span>
+            </div>
+          </div>
+
+          <!-- Quick AI Feedback / Refine bar inside AI panel -->
+          <div class="bg-white/80 border border-indigo-200 rounded-xl p-3 space-y-2 mt-2">
+            <span class="text-xs font-black text-indigo-900 flex items-center gap-1.5">
+              <span>💬</span> <span>Góp ý nhanh để AI sửa lại bài theo ý cô:</span>
+            </span>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input id="ai-feedback-input" type="text"
+                     placeholder="Ví dụ: 'Thêm bài toán đố về Đông Anh', 'Đổi câu 3 chặng 2 dễ hơn'..."
+                     class="flex-1 px-3 py-1.5 rounded-lg border border-indigo-200 text-xs bg-white focus:outline-none focus:border-indigo-400" />
+              <button type="button" id="btn-ai-refine"
+                      class="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs px-3.5 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer">
+                ⚡ Sửa Lại
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 pt-0.5">
+              <button type="button" class="ai-feedback-chip text-[11px] bg-slate-100 hover:bg-indigo-100 text-slate-700 font-bold px-2 py-0.5 rounded-lg transition cursor-pointer" data-text="Làm câu hỏi dễ hiểu hơn cho học sinh lớp 4">🐣 Dễ hiểu hơn</button>
+              <button type="button" class="ai-feedback-chip text-[11px] bg-slate-100 hover:bg-indigo-100 text-slate-700 font-bold px-2 py-0.5 rounded-lg transition cursor-pointer" data-text="Thêm tình huống thực tế gắn liền với Trường Tiểu học Thụy Lâm, Đông Anh">🏫 Gắn thực tế Thụy Lâm</button>
+              <button type="button" class="ai-feedback-chip text-[11px] bg-slate-100 hover:bg-indigo-100 text-slate-700 font-bold px-2 py-0.5 rounded-lg transition cursor-pointer" data-text="Bổ sung thêm giải thích chi tiết cho từng đáp án đúng">💡 Giải thích chi tiết hơn</button>
             </div>
           </div>
         </div>
 
-        <!-- AI Assistant / Template Bar -->
-        <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-sky-50 border-2 border-emerald-200 rounded-2xl p-3.5 space-y-2.5">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-            <span class="text-xs font-black uppercase text-emerald-800 flex items-center gap-1.5">
-              <span>🪄</span> <span>Thư viện câu hỏi SGK Toán 4 chuẩn kiến thức:</span>
-            </span>
-            <span class="text-[11px] text-emerald-600 font-bold">16 Chủ đề • Nhiều câu hỏi/chặng</span>
-          </div>
-
-          <!-- Dropdown + Apply Button -->
-          <div class="flex flex-col sm:flex-row gap-2">
-            <select id="studio-template-select" class="flex-1 px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs sm:text-sm font-bold bg-white text-slate-800 focus:outline-none focus:border-emerald-500">
-              <optgroup label="🔢 SỐ VÀ PHÉP TÍNH">
-                <option value="giao_hoan_ket_hop_nhan">💎 Bài 40: Tính chất phép nhân (25 câu hỏi)</option>
-                <option value="trung_binh_cong">📊 Tìm số trung bình cộng (8 câu hỏi mẫu)</option>
-                <option value="tong_hieu">➕ Tìm hai số khi biết Tổng và Hiệu (8 câu hỏi mẫu)</option>
-                <option value="dau_hieu_chia_het">🔢 Dấu hiệu chia hết cho 2, 5, 9, 3 (8 câu hỏi mẫu)</option>
-                <option value="nhan_chia_so">✖️ Nhân & Chia số có hai chữ số (8 câu hỏi mẫu)</option>
-                <option value="bieu_thuc_chua_chu">🔤 Biểu thức có chứa một chữ (8 câu hỏi mẫu)</option>
-              </optgroup>
-              <optgroup label="🍰 PHÂN SỐ TOÁN 4">
-                <option value="phan_so">🍰 Khái niệm phân số & Tử số - Mẫu số (8 câu hỏi mẫu)</option>
-                <option value="rut_gon_phan_so">✂️ Rút gọn phân số & Phân số bằng nhau (8 câu hỏi mẫu)</option>
-                <option value="quy_dong_mau_so">🔄 Quy đồng mẫu số các phân số (8 câu hỏi mẫu)</option>
-                <option value="so_sanh_phan_so">⚖️ So sánh hai phân số (8 câu hỏi mẫu)</option>
-                <option value="phep_cong_tru_phan_so">➕ Phép cộng & Trừ phân số (8 câu hỏi mẫu)</option>
-                <option value="phep_nhan_chia_phan_so">✖️ Phép nhân & Chia phân số (8 câu hỏi mẫu)</option>
-              </optgroup>
-              <optgroup label="⚖️ ĐẠI LƯỢNG & ĐO LƯỜNG">
-                <option value="yen_ta_tan">⚖️ Bảng đơn vị đo khối lượng: Yến, tạ, tấn (8 câu hỏi mẫu)</option>
-                <option value="dien_tich_m2_dm2">🟩 Đơn vị đo diện tích: dm², m², mm², km² (8 câu hỏi mẫu)</option>
-                <option value="thoi_gian_giay_the_ki">⏳ Giây, thế kỉ & Thời gian (8 câu hỏi mẫu)</option>
-              </optgroup>
-              <optgroup label="📐 HÌNH HỌC">
-                <option value="hinh_binh_hanh">📐 Hình bình hành & Công thức diện tích (8 câu hỏi mẫu)</option>
-                <option value="hinh_thoi">🔶 Hình thoi & Công thức diện tích (8 câu hỏi mẫu)</option>
-              </optgroup>
-            </select>
-            <button type="button" id="btn-apply-template" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs px-3.5 py-2 rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs whitespace-nowrap">
-              <span>🪄 Điền mẫu này</span>
-            </button>
-          </div>
-
-          <!-- Quick chips -->
-          <div class="flex flex-wrap gap-1.5 pt-0.5">
-            <span class="text-[11px] font-bold text-slate-500 self-center mr-0.5">Chọn nhanh:</span>
-            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="giao_hoan_ket_hop_nhan">💎 Bài 40: Phép nhân</button>
-            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="trung_binh_cong">📊 Trung bình cộng</button>
-            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="tong_hieu">➕ Tổng & Hiệu</button>
-            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="phan_so">🍰 Khái niệm phân số</button>
-            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="rut_gon_phan_so">✂️ Rút gọn phân số</button>
-            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="hinh_binh_hanh">📐 Hình bình hành</button>
-            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="yen_ta_tan">⚖️ Yến, tạ, tấn</button>
-            <button type="button" class="studio-template-chip bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-[11px] px-2.5 py-1 rounded-lg transition" data-template="dau_hieu_chia_het">🔢 Dấu hiệu chia hết</button>
+        <!-- PANEL 2: TỰ SOẠN CÂU HỎI THỦ CÔNG -->
+        <div id="panel-mode-manual" class="studio-mode-panel hidden space-y-2 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-3.5">
+          <div class="flex items-center gap-2.5">
+            <span class="text-2xl">✍️</span>
+            <div>
+              <h4 class="text-xs sm:text-sm font-black text-amber-950">Chế Độ Tự Biên Soạn &amp; Chỉnh Sửa Tự Do</h4>
+              <p class="text-xs text-amber-800 font-medium mt-0.5">Cô có thể chỉnh sửa tên bài, chọn thể loại và biên soạn từng câu hỏi ở các trạm bên dưới theo ý muốn.</p>
+            </div>
           </div>
         </div>
 
         <!-- Basic Lesson Info -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
           <div class="sm:col-span-2">
             <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">🏷️ Tên bài học:</label>
             <input id="studio-title" type="text" required placeholder="Ví dụ: Bài: Tìm số trung bình cộng"
                    class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-400 focus:outline-none text-sm font-bold bg-white" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">Thể loại:</label>
+            <select id="studio-category" class="w-full px-3 py-2.5 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white">
+              <option value="Bài học" selected>📘 Bài học SGK</option>
+              <option value="Bài tập tuần">📅 Bài tập tuần</option>
+              <option value="Ôn tập">🏆 Ôn tập</option>
+              <option value="Bổ sung">🎁 Bổ sung</option>
+            </select>
           </div>
           <div>
             <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">Biểu tượng (Icon):</label>
@@ -1523,124 +1718,210 @@
     const LOCAL_LINKS_KEY = 'toan4_custom_links_v1';
 
     const DEFAULT_GAMES = [
-      {
-        "id": "toan4_bai42_tinh_chat_phan_phoi",
-        "title": "Bài 42: Tính chất phân phối của phép nhân đối với phép cộng",
-        "subtitle": "Đại hội đồng diễn Thụy Lâm • Rút thừa số chung & Đấu trường 5 chặng săn 100 kim cương",
-        "category": "Bài học",
-        "grade": "Toán 4",
-        "icon": "🤖",
-        "filename": "toan4_bai42_tinh_chat_phan_phoi.html"
-      },
-      {
-        "id": "toan4_bai41_nhan_chia_10_100_1000",
-        "title": "Bài 41: Nhân, chia với 10, 100, 1 000...",
-        "subtitle": "Vương Quốc Số 0 Diệu Kỳ • Cỗ máy số 0 tương tác & Đấu trường 5 miền đất săn 100 kim cương",
-        "category": "Bài học",
-        "grade": "Toán 4",
-        "icon": "🐰",
-        "filename": "toan4_bai41_nhan_chia_10_100_1000.html"
-      },
-      {
-        "id": "toan4_bai40_tinh_chat_phep_nhan",
-        "title": "Bài 40: Tính chất giao hoán và kết hợp của phép nhân",
-        "subtitle": "Khám phá trực quan sinh động (Tab 1) & Đấu trường 5 chặng săn 100 kim cương (Tab 2)",
-        "category": "Bài học",
-        "grade": "Toán 4",
-        "icon": "✨",
-        "filename": "toan4_bai40_tinh_chat_phep_nhan.html"
-      },
-      {
-        "id": "toan4_bai03_so_chan_so_le",
-        "title": "Bài 3: Số chẵn, số lẻ",
-        "subtitle": "Chủ đề Nông trại Toán học • Nhận biết dấu hiệu chia hết cho 2 và phân loại số",
-        "category": "Số và Phép tính",
-        "grade": "Toán 4",
-        "icon": "🌾",
-        "filename": "toan4_bai03_so_chan_so_le.html"
-      },
-      {
-        "id": "toan4_hang_va_lop",
-        "title": "Bài: Hàng và lớp",
-        "subtitle": "Cấu tạo số trong phạm vi lớp nghìn • Bảng 2 lớp và luyện tập đọc viết số",
-        "category": "Số và Phép tính",
-        "grade": "Toán 4",
-        "icon": "🏛️",
-        "filename": "toan4_hang_va_lop.html"
-      },
-      {
-        "id": "toan4_bai12_lop_trieu",
-        "title": "Bài 12: Các số trong phạm vi lớp triệu",
-        "subtitle": "Khám phá lớp triệu qua bảng 3 lớp, 9 hàng và bài tập ghép số tương tác",
-        "category": "Số và Phép tính",
-        "grade": "Toán 4",
-        "icon": "🌟",
-        "filename": "toan4_bai12_lop_trieu.html"
-      },
-      {
-        "id": "toan4_bai17_tan_ta_yen",
-        "title": "Bài 17: Yến, tạ, tấn",
-        "subtitle": "Học liệu tương tác về đơn vị đo khối lượng và quy đổi thực tế",
-        "category": "Đo lường",
-        "grade": "Toán 4",
-        "icon": "⚖️",
-        "filename": "toan4_bai17_tan_ta_yen.html"
-      },
-      {
-        "id": "toan4_don_vi_do_dien_tich",
-        "title": "Bài: Đề-xi-mét vuông, Mét vuông, Mi-li-mét vuông",
-        "subtitle": "Thực hành đo, đếm lưới ô vuông và quy đổi đơn vị diện tích",
-        "category": "Đo lường",
-        "grade": "Toán 4",
-        "icon": "📏",
-        "filename": "toan4_don_vi_do_dien_tich.html"
-      },
-      {
-        "id": "toan4_giay_the_ki",
-        "title": "Bài: Giây, thế kỉ",
-        "subtitle": "Thực hành đọc đồng hồ kim giây, tính thế kỉ và chữ số La Mã",
-        "category": "Đo lường",
-        "grade": "Toán 4",
-        "icon": "⏳",
-        "filename": "toan4_giay_the_ki.html"
-      },
-      {
-        "id": "toan4_bai24_tinh_chat_phep_cong",
-        "title": "Bài 24: Tính chất giao hoán và kết hợp của phép cộng",
-        "subtitle": "Ứng dụng tính chất giao hoán, kết hợp để tính nhẩm và ghép cặp tròn trăm",
-        "category": "Số và Phép tính",
-        "grade": "Toán 4",
-        "icon": "➕",
-        "filename": "toan4_bai24_tinh_chat_phep_cong.html"
-      },
-      {
-        "id": "toan4_bai27_hai_duong_thang_vuong_goc",
-        "title": "Bài 27: Hai đường thẳng vuông góc",
-        "subtitle": "Thực hành đặt thước Ê ke kiểm tra góc vuông và nối điểm trên lưới ô",
-        "category": "Hình học",
-        "grade": "Toán 4",
-        "icon": "📐",
-        "filename": "toan4_bai27_hai_duong_thang_vuong_goc.html"
-      },
-      {
-        "id": "toan4_bai29_hai_duong_thang_song_song",
-        "title": "Bài 29: Hai đường thẳng song song",
-        "subtitle": "Mô phỏng kéo dài đường thẳng, kiểm tra cắt nhau và vẽ đường song song",
-        "category": "Hình học",
-        "grade": "Toán 4",
-        "icon": "🛤️",
-        "filename": "toan4_bai29_hai_duong_thang_song_song.html"
-      },
-      {
-        "id": "toan4_bai31_hinh_binh_hanh_hinh_thoi",
-        "title": "Bài 31: Hình bình hành, Hình thoi",
-        "subtitle": "Nhận diện đặc điểm cạnh, nối đỉnh tứ giác trên lưới và so sánh hình",
-        "category": "Hình học",
-        "grade": "Toán 4",
-        "icon": "🪁",
-        "filename": "toan4_bai31_hinh_binh_hanh_hinh_thoi.html"
-      }
-    ];
+  {
+    "id": "toan4_bai03_so_chan_so_le",
+    "title": "Bài 3: Số chẵn, số lẻ",
+    "subtitle": "Chủ đề Nông trại Toán học • Nhận biết dấu hiệu chia hết cho 2 và phân loại số",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🌾",
+    "color": "from-emerald-500 to-teal-500",
+    "filename": "toan4_bai03_so_chan_so_le.html",
+    "createdAt": "2026-11-11T10:00:00.000Z"
+  },
+  {
+    "id": "toan4_hang_va_lop",
+    "title": "Bài: Hàng và lớp",
+    "subtitle": "Cấu tạo số trong phạm vi lớp nghìn • Bảng 2 lớp và luyện tập đọc viết số",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🏛️",
+    "color": "from-sky-500 to-indigo-500",
+    "filename": "toan4_hang_va_lop.html",
+    "createdAt": "2026-11-11T12:00:00.000Z"
+  },
+  {
+    "id": "toan4_bai12_lop_trieu",
+    "title": "Bài 12: Các số trong phạm vi lớp triệu",
+    "subtitle": "Khám phá lớp triệu qua bảng 3 lớp, 9 hàng và bài tập ghép số tương tác",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🌟",
+    "color": "from-emerald-500 to-cyan-500",
+    "filename": "toan4_bai12_lop_trieu.html",
+    "createdAt": "2026-11-12T01:38:00.000Z"
+  },
+  {
+    "id": "toan4_bai17_tan_ta_yen",
+    "title": "Bài 17: Yến, tạ, tấn",
+    "subtitle": "Học liệu tương tác về đơn vị đo khối lượng và quy đổi thực tế",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "⚖️",
+    "color": "from-amber-500 to-orange-500",
+    "filename": "toan4_bai17_tan_ta_yen.html",
+    "createdAt": "2026-11-10T09:00:00.000Z"
+  },
+  {
+    "id": "toan4_don_vi_do_dien_tich",
+    "title": "Bài: Đề-xi-mét vuông, Mét vuông, Mi-li-mét vuông",
+    "subtitle": "Thực hành đo, đếm lưới ô vuông và quy đổi đơn vị diện tích",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "📏",
+    "color": "from-cyan-500 to-emerald-500",
+    "filename": "toan4_don_vi_do_dien_tich.html",
+    "createdAt": "2026-11-11T15:00:00.000Z"
+  },
+  {
+    "id": "toan4_giay_the_ki",
+    "title": "Bài: Giây, thế kỉ",
+    "subtitle": "Thực hành đọc đồng hồ kim giây, tính thế kỉ và chữ số La Mã",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "⏳",
+    "color": "from-indigo-500 to-purple-500",
+    "filename": "toan4_giay_the_ki.html",
+    "createdAt": "2026-11-11T17:00:00.000Z"
+  },
+  {
+    "id": "toan4_bai24_tinh_chat_phep_cong",
+    "title": "Bài 24: Tính chất giao hoán và kết hợp của phép cộng",
+    "subtitle": "Ứng dụng tính chất giao hoán, kết hợp để tính nhẩm và ghép cặp tròn trăm",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "➕",
+    "color": "from-orange-500 to-rose-500",
+    "filename": "toan4_bai24_tinh_chat_phep_cong.html",
+    "createdAt": "2026-11-11T23:00:00.000Z"
+  },
+  {
+    "id": "toan4_bai27_hai_duong_thang_vuong_goc",
+    "title": "Bài 27: Hai đường thẳng vuông góc",
+    "subtitle": "Thực hành đặt thước Ê ke kiểm tra góc vuông và nối điểm trên lưới ô",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "📐",
+    "color": "from-teal-500 to-cyan-500",
+    "filename": "toan4_bai27_hai_duong_thang_vuong_goc.html",
+    "createdAt": "2026-11-12T01:15:00.000Z"
+  },
+  {
+    "id": "toan4_bai29_hai_duong_thang_song_song",
+    "title": "Bài 29: Hai đường thẳng song song",
+    "subtitle": "Mô phỏng kéo dài đường thẳng, kiểm tra cắt nhau và vẽ đường song song",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🛤️",
+    "color": "from-rose-500 to-pink-500",
+    "filename": "toan4_bai29_hai_duong_thang_song_song.html",
+    "createdAt": "2026-11-12T01:23:00.000Z"
+  },
+  {
+    "id": "toan4_bai31_hinh_binh_hanh_hinh_thoi",
+    "title": "Bài 31: Hình bình hành, Hình thoi",
+    "subtitle": "Nhận diện đặc điểm cạnh, nối đỉnh tứ giác trên lưới và so sánh hình",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🪁",
+    "color": "from-sky-500 to-blue-500",
+    "filename": "toan4_bai31_hinh_binh_hanh_hinh_thoi.html",
+    "createdAt": "2026-11-12T01:28:00.000Z"
+  },
+  {
+    "id": "toan4_bai40_tinh_chat_phep_nhan",
+    "title": "Bài 40: Tính chất giao hoán và kết hợp của phép nhân",
+    "subtitle": "Khám phá trực quan sinh động (Tab 1) & Đấu trường 5 chặng săn 100 kim cương (Tab 2)",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "✨",
+    "color": "from-emerald-500 via-teal-500 to-pink-500",
+    "filename": "toan4_bai40_tinh_chat_phep_nhan.html",
+    "createdAt": "2026-11-14T15:25:00.000Z"
+  },
+  {
+    "id": "toan4_bai41_nhan_chia_10_100_1000",
+    "title": "Bài 41: Nhân, chia với 10, 100, 1 000...",
+    "subtitle": "Vương Quốc Số 0 Diệu Kỳ • Cỗ máy số 0 tương tác & Đấu trường 5 miền đất săn 100 kim cương",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🐰",
+    "color": "from-pink-500 via-rose-500 to-amber-500",
+    "filename": "toan4_bai41_nhan_chia_10_100_1000.html",
+    "createdAt": "2026-11-14T17:50:00.000Z"
+  },
+  {
+    "id": "toan4_bai42_tinh_chat_phan_phoi",
+    "title": "Bài 42: Tính chất phân phối của phép nhân đối với phép cộng",
+    "subtitle": "Đại hội đồng diễn Thụy Lâm • Rút thừa số chung & Đấu trường 5 chặng săn 100 kim cương",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🤖",
+    "color": "from-indigo-600 via-purple-600 to-pink-600",
+    "filename": "toan4_bai42_tinh_chat_phan_phoi.html",
+    "createdAt": "2026-11-14T18:15:00.000Z"
+  },
+  {
+    "id": "link_1794471218228",
+    "title": "Ôn tập giữa kì 1 - Đề 1",
+    "subtitle": "đề 1",
+    "category": "Ôn tập",
+    "grade": "Toán 4",
+    "icon": "🏆",
+    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-1/full-page-embed",
+    "createdAt": "2026-11-12T08:13:38.228Z"
+  },
+  {
+    "id": "link_1794471006312",
+    "title": "Ôn tập giữa kì 1 - Đề 2",
+    "subtitle": "đề 2",
+    "category": "Ôn tập",
+    "grade": "Toán 4",
+    "icon": "🏆",
+    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-2/full-page-embed",
+    "createdAt": "2026-11-12T08:10:06.312Z"
+  },
+  {
+    "id": "link_1794623978181",
+    "title": "On tap giua ki 1 de 3",
+    "subtitle": "đề 3",
+    "category": "Ôn tập",
+    "grade": "Toán 4",
+    "icon": "🏆",
+    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
+    "createdAt": "2026-11-14T02:39:38.181Z"
+  },
+  {
+    "id": "link_1794622885610",
+    "title": "On tap giua ki 1 de 3",
+    "subtitle": "đề 3",
+    "category": "Ôn tập",
+    "grade": "Toán 4",
+    "icon": "🏆",
+    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
+    "createdAt": "2026-11-14T02:21:25.610Z"
+  },
+  {
+    "id": "link_1794623233889",
+    "title": "Ôn tập giữa kì 1",
+    "subtitle": "Đề 3",
+    "category": "Ôn tập",
+    "grade": "Toán 4",
+    "icon": "🏆",
+    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
+    "createdAt": "2026-11-14T02:27:13.889Z"
+  },
+  {
+    "id": "link_1794471200934",
+    "title": "Ôn tập giữa kì 1 - Đề 3",
+    "subtitle": "đề 3",
+    "category": "Ôn tập",
+    "grade": "Toán 4",
+    "icon": "🏆",
+    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
+    "createdAt": "2026-11-12T08:13:20.934Z"
+  }
+];
 
     const CUTE_THEMES = [
       { grad: 'from-emerald-400 via-teal-400 to-cyan-400', badgeBg: 'bg-emerald-50 text-emerald-700 border-emerald-200', ctaBg: 'bg-emerald-500 group-hover:bg-emerald-600 shadow-[0_4px_0_0_#047857]', sticker: '🍀' },
@@ -1888,11 +2169,163 @@
       renderGames();
     }
 
+    // SGK Known mapping for lessons without explicit number in title
+    const KNOWN_SGK = {
+      'toan4_hang_va_lop': 8,
+      'toan4_giay_the_ki': 18,
+      'toan4_don_vi_do_dien_tich': 20
+    };
+
+    function getLessonNumber(g) {
+      if (KNOWN_SGK[g.id]) return KNOWN_SGK[g.id];
+      const title = (g.title || '') + ' ' + (g.subtitle || '');
+      const m = title.match(/bài\s*(\d+)/i);
+      if (m) return parseInt(m[1], 10);
+      return 9999;
+    }
+
+    function getWeeklyNumber(g) {
+      const text = (g.title || '') + ' ' + (g.subtitle || '');
+      const m = text.match(/(?:tuần|tuan)\s*(\d+)/i);
+      if (m) return parseInt(m[1], 10);
+      return 9999;
+    }
+
+    function getReviewOrder(g) {
+      const raw = (g.title || '').toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
+      
+      let periodOrder = 50;
+      if (raw.includes('giua ki 1') || raw.includes('giua ky 1')) periodOrder = 10;
+      else if (raw.includes('cuoi ki 1') || raw.includes('cuoi ky 1') || raw.includes('hoc ki 1')) periodOrder = 20;
+      else if (raw.includes('giua ki 2') || raw.includes('giua ky 2')) periodOrder = 30;
+      else if (raw.includes('cuoi ki 2') || raw.includes('cuoi ky 2') || raw.includes('hoc ki 2')) periodOrder = 40;
+
+      let deNum = 99;
+      const m = raw.match(/(?:de|de so|so)\s*(\d+)/i);
+      if (m) deNum = parseInt(m[1], 10);
+
+      return periodOrder * 100 + deNum;
+    }
+
+    function sortGamesList(list, mode) {
+      const sorted = [...list];
+      if (mode === 'sgk') {
+        sorted.sort((a, b) => {
+          const catA = getDisplayCategory(a);
+          const catB = getDisplayCategory(b);
+          if (catA === 'Bài học' && catB === 'Bài học') {
+            const diff = getLessonNumber(a) - getLessonNumber(b);
+            if (diff !== 0) return diff;
+          }
+          if (catA === 'Bài tập tuần' && catB === 'Bài tập tuần') {
+            const diff = getWeeklyNumber(a) - getWeeklyNumber(b);
+            if (diff !== 0) return diff;
+          }
+          if (catA === 'Ôn tập' && catB === 'Ôn tập') {
+            const diff = getReviewOrder(a) - getReviewOrder(b);
+            if (diff !== 0) return diff;
+          }
+          return (a.title || '').localeCompare(b.title || '', 'vi');
+        });
+      } else if (mode === 'newest') {
+        sorted.sort((a, b) => {
+          const tA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const tB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return tB - tA;
+        });
+      } else if (mode === 'az') {
+        sorted.sort((a, b) => (a.title || '').localeCompare(b.title || '', 'vi'));
+      }
+      return sorted;
+    }
+
+    function createGameCardElement(g, idx) {
+      const theme = CUTE_THEMES[idx % CUTE_THEMES.length];
+      let targetUrl = buildDirectUrl(g);
+      const isAdmin = checkIsAdminSession();
+
+      if (isAdmin && !g.externalUrl && targetUrl.includes('games/')) {
+        targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'mode=admin';
+      }
+
+      const card = document.createElement('a');
+      card.href = targetUrl;
+      card.target = '_blank';
+      card.rel = 'noopener';
+      card.className = 'cute-card group bg-white overflow-hidden flex flex-col justify-between cursor-pointer select-none relative h-full';
+
+      card.innerHTML = `
+        <div>
+          <!-- Cute Colorful Header -->
+          <div class="bg-gradient-to-r ${theme.grad} card-pattern p-5 flex items-center justify-between text-white relative overflow-hidden">
+            <div class="flex items-center gap-3.5 relative z-10 min-w-0">
+              <div class="w-14 h-14 rounded-[20px] bg-white text-3xl flex items-center justify-center shadow-md border-2 border-white/80 shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                ${g.icon || '📘'}
+              </div>
+              <div class="min-w-0">
+                <span class="inline-block text-[11px] font-extrabold uppercase tracking-wide bg-black/20 backdrop-blur-xs px-3 py-1 rounded-full truncate max-w-full">
+                  ${g.grade || 'Toán 4'} • ${getDisplayCategory(g)}
+                </span>
+                <div class="text-xs font-extrabold opacity-95 mt-1 flex items-center gap-1">
+                  <span>${g.externalUrl ? '🔗 Nội dung từ liên kết' : '✨ Thử thách đa dạng'}</span>
+                </div>
+              </div>
+            </div>
+
+            <span class="text-3xl opacity-35 group-hover:opacity-75 group-hover:scale-125 transition duration-300 select-none shrink-0 ml-2">
+              ${theme.sticker}
+            </span>
+
+            ${isAdmin ? `
+              <div class="absolute top-2.5 right-2.5 z-20 flex items-center gap-1.5">
+                <button type="button" data-edit="${g.id}" title="Chỉnh sửa thông tin bài học"
+                        class="edit-btn w-8 h-8 rounded-full bg-white/25 hover:bg-amber-500 text-white text-xs font-bold flex items-center justify-center transition shadow-sm hover:scale-110">
+                  ✏️
+                </button>
+                <button type="button" data-del="${g.id}" title="Gỡ khỏi danh sách"
+                        class="del-btn w-8 h-8 rounded-full bg-white/25 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center transition shadow-sm hover:scale-110">
+                  🗑️
+                </button>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Card Body -->
+          <div class="p-5 pb-3">
+            <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl leading-snug mb-1.5 group-hover:text-pink-600 transition-colors">
+              ${g.title}
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-500 font-semibold leading-relaxed line-clamp-2">
+              ${g.subtitle || 'Khám phá kiến thức và chinh phục bài tập tương tác vui nhộn!'}
+            </p>
+          </div>
+        </div>
+
+        <!-- Cute Footer Action Bar -->
+        <div class="px-5 pb-5 pt-2 flex items-center justify-between gap-2">
+          <span class="inline-flex items-center gap-1 text-xs font-extrabold px-3 py-1.5 rounded-xl border ${theme.badgeBg}">
+            🏅 Có giấy khen
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl transition-all ${theme.ctaBg}">
+            <span>Vào học ngay</span>
+            <span class="group-hover:translate-x-1 transition-transform">🚀</span>
+          </span>
+        </div>
+      `;
+
+      return card;
+    }
+
     function renderGames() {
       const grid = document.getElementById('games-grid');
       const empty = document.getElementById('empty-state');
-      const q = document.getElementById('search-input').value.trim().toLowerCase();
+      const qInput = document.getElementById('search-input');
+      const q = qInput ? qInput.value.trim().toLowerCase() : '';
+      const sortSelector = document.getElementById('sort-selector');
+      const sortMode = sortSelector ? sortSelector.value : 'sgk';
 
+      // 1. Lọc theo từ khóa tìm kiếm và tab danh mục
       const filtered = allGames.filter(g => {
         const category = getDisplayCategory(g);
         const catOk = activeCategory === 'Tất cả' || category === activeCategory;
@@ -1901,95 +2334,76 @@
         return catOk && qOk;
       });
 
-      const countBadge = document.getElementById('game-count-badge');
-      if (countBadge) countBadge.textContent = `🎒 ${allGames.length} bài học`;
-      document.getElementById('stat-total-count').textContent = `${allGames.length} bài`;
+      // Cập nhật số lượng học liệu
+      const statTotalEl = document.getElementById('stat-total-count');
+      if (statTotalEl) statTotalEl.textContent = `${allGames.length} bài`;
+
       grid.innerHTML = '';
 
       if (filtered.length === 0) {
-        empty.classList.remove('hidden');
+        if (empty) empty.classList.remove('hidden');
         return;
       }
-      empty.classList.add('hidden');
+      if (empty) empty.classList.add('hidden');
 
-      filtered.forEach((g, idx) => {
-        const theme = CUTE_THEMES[idx % CUTE_THEMES.length];
-        let targetUrl = buildDirectUrl(g);
-        const isAdmin = checkIsAdminSession();
+      // 2. Sắp xếp danh sách theo chế độ đã chọn
+      const sorted = sortGamesList(filtered, sortMode);
 
-        // Tự động mở khóa toàn bộ chặng cho Giáo viên
-        if (isAdmin && !g.externalUrl && targetUrl.includes('games/')) {
-          targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'mode=admin';
-        }
+      // 3. Hiển thị: Nếu ở Tab "Tất cả" và không có ô tìm kiếm -> chia theo Section dọc rõ ràng
+      if (activeCategory === 'Tất cả' && !q) {
+        const sectionDefs = [
+          { key: 'Bài học', title: 'BÀI HỌC SGK TOÁN 4', icon: '📘', badgeColor: 'bg-sky-100 text-sky-700' },
+          { key: 'Bài tập tuần', title: 'BÀI TẬP TUẦN', icon: '📅', badgeColor: 'bg-purple-100 text-purple-700' },
+          { key: 'Ôn tập', title: 'ÔN TẬP & ĐỀ KIỂM TRA', icon: '🏆', badgeColor: 'bg-amber-100 text-amber-700' },
+          { key: 'Bổ sung', title: 'BỔ SUNG & NGOẠI KHÓA', icon: '🎁', badgeColor: 'bg-emerald-100 text-emerald-700' }
+        ];
 
-        const card = document.createElement('a');
-        card.href = targetUrl;
-        card.target = '_blank';
-        card.rel = 'noopener';
-        card.className = 'cute-card group bg-white overflow-hidden flex flex-col justify-between cursor-pointer select-none relative';
+        let globalIdx = 0;
+        sectionDefs.forEach(sec => {
+          const secGames = sorted.filter(g => getDisplayCategory(g) === sec.key);
+          if (secGames.length === 0) return;
 
-        card.innerHTML = `
-          <div>
-            <!-- Cute Colorful Header -->
-            <div class="bg-gradient-to-r ${theme.grad} card-pattern p-5 flex items-center justify-between text-white relative overflow-hidden">
-              <div class="flex items-center gap-3.5 relative z-10">
-                <div class="w-14 h-14 rounded-[20px] bg-white text-3xl flex items-center justify-center shadow-md border-2 border-white/80 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
-                  ${g.icon || '📘'}
-                </div>
-                <div>
-                  <span class="inline-block text-[11px] font-extrabold uppercase tracking-wide bg-black/20 backdrop-blur-xs px-3 py-1 rounded-full">
-                    ${g.grade || 'Toán 4'} • ${getDisplayCategory(g)}
-                  </span>
-                  <div class="text-xs font-extrabold opacity-95 mt-1 flex items-center gap-1">
-                    <span>${g.externalUrl ? '🔗 Nội dung từ liên kết' : '✨ Thử thách đa dạng'}</span>
-                  </div>
-                </div>
-              </div>
+          const secContainer = document.createElement('div');
+          secContainer.className = 'space-y-4';
 
-              <span class="text-3xl opacity-35 group-hover:opacity-75 group-hover:scale-125 transition duration-300 select-none">
-                ${theme.sticker}
-              </span>
-
-              ${isAdmin ? `
-                <div class="absolute top-2.5 right-2.5 z-20 flex items-center gap-1.5">
-                  <button type="button" data-edit="${g.id}" title="Chỉnh sửa thông tin bài học"
-                          class="edit-btn w-8 h-8 rounded-full bg-white/25 hover:bg-amber-500 text-white text-xs font-bold flex items-center justify-center transition shadow-sm hover:scale-110">
-                    ✏️
-                  </button>
-                  <button type="button" data-del="${g.id}" title="Gỡ khỏi danh sách"
-                          class="del-btn w-8 h-8 rounded-full bg-white/25 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center transition shadow-sm hover:scale-110">
-                    🗑️
-                  </button>
-                </div>
-              ` : ''}
+          // Tiêu đề Section (Section Header Banner)
+          const headerEl = document.createElement('div');
+          headerEl.className = 'flex items-center justify-between pb-2 border-b-2 border-pink-100';
+          headerEl.innerHTML = `
+            <div class="flex items-center gap-2 sm:gap-2.5">
+              <span class="text-xl sm:text-2xl">${sec.icon}</span>
+              <h2 class="text-base sm:text-xl font-black text-slate-800 tracking-wide uppercase font-cute">${sec.title}</h2>
+              <span class="text-[11px] sm:text-xs font-black ${sec.badgeColor} px-2.5 py-0.5 rounded-full">${secGames.length} bài</span>
             </div>
+          `;
+          secContainer.appendChild(headerEl);
 
-            <!-- Card Body -->
-            <div class="p-5 pb-3">
-              <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl leading-snug mb-1.5 group-hover:text-pink-600 transition-colors">
-                ${g.title}
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-500 font-semibold leading-relaxed line-clamp-2">
-                ${g.subtitle || 'Khám phá kiến thức và chinh phục bài tập tương tác vui nhộn!'}
-              </p>
-            </div>
-          </div>
+          // Grid chứa card vuông tỉ lệ chuẩn (3 cột)
+          const subGrid = document.createElement('div');
+          subGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6';
 
-          <!-- Cute Footer Action Bar -->
-          <div class="px-5 pb-5 pt-2 flex items-center justify-between gap-2">
-            <span class="inline-flex items-center gap-1 text-xs font-extrabold px-3 py-1.5 rounded-xl border ${theme.badgeBg}">
-              🏅 Có giấy khen
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl transition-all ${theme.ctaBg}">
-              <span>Vào học ngay</span>
-              <span class="group-hover:translate-x-1 transition-transform">🚀</span>
-            </span>
-          </div>
-        `;
+          secGames.forEach(g => {
+            const card = createGameCardElement(g, globalIdx++);
+            subGrid.appendChild(card);
+          });
 
-        grid.appendChild(card);
-      });
+          secContainer.appendChild(subGrid);
+          grid.appendChild(secContainer);
+        });
+      } else {
+        // Nếu đã chọn 1 danh mục cụ thể hoặc đang gõ tìm kiếm -> Hiển thị grid 3 cột trực tiếp
+        const subGrid = document.createElement('div');
+        subGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6';
 
+        sorted.forEach((g, idx) => {
+          const card = createGameCardElement(g, idx);
+          subGrid.appendChild(card);
+        });
+
+        grid.appendChild(subGrid);
+      }
+
+      // Gắn sự kiện nút sửa & xóa cho Admin
       document.querySelectorAll('.edit-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
@@ -2014,20 +2428,26 @@
       });
     }
 
-    // Category filter pills
+    // Category filter pills: Giữ kích thước nhỏ gọn đồng nhất không bị vỡ dòng
     document.querySelectorAll('.cat-pill').forEach(btn => {
       btn.addEventListener('click', () => {
         activeCategory = btn.dataset.cat;
         document.querySelectorAll('.cat-pill').forEach(b => {
-          b.className = b === btn
-            ? 'cat-pill cute-pill cute-pill-active bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap'
-            : 'cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-pink-300 hover:bg-pink-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap';
+          if (b === btn) {
+            b.className = 'cat-pill cute-pill cute-pill-active bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap shadow-sm transition-all';
+          } else {
+            b.className = 'cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-sky-300 hover:bg-sky-50 font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all';
+          }
         });
         renderGames();
       });
     });
 
-    document.getElementById('search-input').addEventListener('input', renderGames);
+    const searchInputEl = document.getElementById('search-input');
+    if (searchInputEl) searchInputEl.addEventListener('input', renderGames);
+
+    const sortSelectEl = document.getElementById('sort-selector');
+    if (sortSelectEl) sortSelectEl.addEventListener('change', renderGames);
 
     // ==========================================
     // CLOUD FIRESTORE STORAGE ACTIONS
@@ -2117,9 +2537,25 @@
     const categoryInput = document.getElementById('up-category');
 
     function getDisplayCategory(game) {
-      const labels = ['Bài học', 'Bài tập tuần', 'Ôn tập', 'Bổ sung'];
-      if (labels.includes(game.category)) return game.category;
-      if (game.category === 'Kiểm tra') return 'Ôn tập';
+      if (!game) return 'Bài học';
+      const cat = (game.category || '').trim();
+      const titleOnly = (game.title || '').trim().toLowerCase();
+
+      // Explicit standard categories
+      if (cat === 'Bài học') return 'Bài học';
+      if (cat === 'Bài tập tuần') return 'Bài tập tuần';
+      if (cat === 'Ôn tập') return 'Ôn tập';
+      if (cat === 'Bổ sung' && !/ôn tập|đề\s*\d+|giữa k[ìỳ]|cuối k[ìỳ]/i.test(titleOnly)) return 'Bổ sung';
+
+      // Detect weekly exercise
+      if (/tuần\s*\d+|bài tập tuần/i.test(titleOnly)) return 'Bài tập tuần';
+
+      // Detect review tests & exams
+      if (cat === 'Kiểm tra' || /ôn tập|đề\s*\d+|bài kiểm tra|đề kiểm tra|giữa k[ìỳ]|cuối k[ìỳ]/i.test(titleOnly)) return 'Ôn tập';
+
+      // Detect extra / enrichment
+      if (/bổ sung|nâng cao|ngoại khóa|toán vui/i.test(titleOnly)) return 'Bổ sung';
+
       return 'Bài học';
     }
 
@@ -2358,7 +2794,7 @@
         }
         localStorage.setItem('gemini_api_key', key);
         geminiKeyBox.classList.add('hidden');
-        showToast('🔑 Đã lưu Gemini API Key thành công!');
+        updateGeminiStatusUI(); showToast('🔑 Đã lưu Gemini API Key thành công!');
       });
     }
 
@@ -2719,16 +3155,93 @@
       renderAllStudioStages();
     }
 
+    // Studio Main Mode Switcher: AI Gemini vs Tự Soạn
+    function switchStudioMode(mode) {
+      const tabAi = document.getElementById('tab-mode-ai');
+      const tabManual = document.getElementById('tab-mode-manual');
+      const panelAi = document.getElementById('panel-mode-ai');
+      const panelManual = document.getElementById('panel-mode-manual');
+
+      if (mode === 'ai') {
+        if (panelAi) panelAi.classList.remove('hidden');
+        if (panelManual) panelManual.classList.add('hidden');
+
+        if (tabAi) {
+          tabAi.className = 'studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-white text-indigo-700 shadow-sm border-2 border-indigo-400 cursor-pointer';
+        }
+        if (tabManual) {
+          tabManual.className = 'studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/60 cursor-pointer';
+        }
+      } else {
+        if (panelAi) panelAi.classList.add('hidden');
+        if (panelManual) panelManual.classList.remove('hidden');
+
+        if (tabManual) {
+          tabManual.className = 'studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-white text-amber-700 shadow-sm border-2 border-amber-400 cursor-pointer';
+        }
+        if (tabAi) {
+          tabAi.className = 'studio-main-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/60 cursor-pointer';
+        }
+      }
+    }
+
+    const tabAiBtn = document.getElementById('tab-mode-ai');
+    if (tabAiBtn) tabAiBtn.addEventListener('click', () => switchStudioMode('ai'));
+
+    const tabManualBtn = document.getElementById('tab-mode-manual');
+    if (tabManualBtn) tabManualBtn.addEventListener('click', () => switchStudioMode('manual'));
+
+    function updateGeminiStatusUI() {
+      const dot = document.getElementById('gemini-status-dot');
+      const text = document.getElementById('gemini-status-text');
+      const savedKey = localStorage.getItem('gemini_api_key') || '';
+      if (!dot || !text) return;
+
+      if (savedKey.trim()) {
+        dot.className = 'w-3 h-3 rounded-full bg-emerald-500 shadow-xs';
+        text.className = 'text-xs font-black text-emerald-800';
+        text.textContent = '🟢 Đã kết nối: Gemini 3.8 Flash (Medium) / 4 Argon';
+      } else {
+        dot.className = 'w-3 h-3 rounded-full bg-amber-400 animate-pulse';
+        text.className = 'text-xs font-bold text-amber-800';
+        text.textContent = '🟡 Chưa lưu API Key (Bấm vào Cài đặt bên cạnh)';
+      }
+    }
+
     function openStudioModal(existingLesson = null) {
+      updateGeminiStatusUI();
       if (existingLesson) {
         document.getElementById('studio-modal-title').textContent = 'Chỉnh Sửa Câu Hỏi Bài Học';
         studioIdInput.value = existingLesson.id;
         populateStudioFields(existingLesson);
+        switchStudioMode('manual');
       } else {
         document.getElementById('studio-modal-title').textContent = 'Soạn Bài Giảng 5 Chặng Tương Tác';
         studioIdInput.value = '';
-        const defaultTpl = STUDIO_TEMPLATES.trung_binh_cong || Object.values(STUDIO_TEMPLATES)[0];
-        populateStudioFields(defaultTpl);
+        populateStudioFields({
+          title: '',
+          subtitle: '',
+          icon: '📘',
+          theory: {
+            title: '',
+            summary: '',
+            rules: ['Quy tắc trọng tâm chuẩn SGK...'],
+            example: {
+              title: 'Ví dụ minh họa mẫu:',
+              steps: [
+                { step: 1, text: 'Bước 1: Tóm tắt bài toán...' },
+                { step: 2, text: 'Bước 2: Thực hiện phép tính...' }
+              ]
+            }
+          },
+          stages: [
+            { stageNum: 1, name: 'Khởi Động', questions: [createEmptyQuestion()] },
+            { stageNum: 2, name: 'Khám Phá', questions: [createEmptyQuestion()] },
+            { stageNum: 3, name: 'Luyện Tập', questions: [createEmptyQuestion()] },
+            { stageNum: 4, name: 'Vận Dụng', questions: [createEmptyQuestion()] }
+          ]
+        });
+        switchStudioMode('ai');
       }
       studioModal.classList.remove('hidden');
     }
@@ -2744,7 +3257,7 @@
       btnOpenStudio.addEventListener('click', () => openStudioModal(null));
     }
 
-    // Studio Tabs Navigation
+    // Studio Tabs Navigation (Lý thuyết, Chặng 1, 2, 3, 4)
     document.querySelectorAll('.studio-tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const target = btn.dataset.target;
@@ -2754,81 +3267,172 @@
 
         document.querySelectorAll('.studio-tab-btn').forEach(b => {
           b.className = (b === btn)
-            ? 'studio-tab-btn px-3 py-1.5 rounded-xl font-black text-xs bg-emerald-500 text-white whitespace-nowrap'
-            : 'studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap';
+            ? 'studio-tab-btn px-3 py-1.5 rounded-xl font-black text-xs bg-emerald-500 text-white whitespace-nowrap cursor-pointer'
+            : 'studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap cursor-pointer';
         });
-      });
-    });
-
-    // Studio AI Template Selection (Dropdown + Chips)
-    function applyTemplateByKey(key) {
-      const tpl = STUDIO_TEMPLATES[key];
-      if (tpl) {
-        populateStudioFields(tpl);
-        showToast(`🪄 Đã điền 8 câu hỏi mẫu: ${tpl.title}!`);
-      }
-    }
-
-    if (btnApplyTemplate && studioTemplateSelect) {
-      btnApplyTemplate.addEventListener('click', () => {
-        applyTemplateByKey(studioTemplateSelect.value);
-      });
-    }
-
-    document.querySelectorAll('.studio-template-chip').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const key = btn.dataset.template;
-        if (studioTemplateSelect) studioTemplateSelect.value = key;
-        applyTemplateByKey(key);
       });
     });
 
     // ------------------------------------------
     // GEMINI AI INTEGRATION (GENERATE & REFINE)
     // ------------------------------------------
-    async function callGeminiAPI(systemInstruction, userPrompt, apiKey) {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-      const body = {
-        system_instruction: {
-          parts: [{ text: systemInstruction }]
-        },
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: userPrompt }]
+    // Tự động tìm kiếm model tốt nhất được cấp phép cho API Key của cô
+    async function getBestAvailableGeminiModel(cleanKey) {
+      const endpoints = ['v1beta', 'v1'];
+      let debugErrors = [];
+
+      for (const ver of endpoints) {
+        try {
+          const res = await fetch(`https://generativelanguage.googleapis.com/${ver}/models?key=${cleanKey}`, {
+            headers: { "x-goog-api-key": cleanKey }
+          });
+          const data = await res.json().catch(() => ({}));
+
+          if (res.ok && Array.isArray(data.models)) {
+            const models = data.models
+              .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent'))
+              .map(m => m.name.replace(/^models\//, ''));
+
+            console.log(`📋 Danh sách Model khả dụng từ Google AI (${ver}):`, models);
+
+            if (models.length > 0) {
+              const preferred = [
+                'gemini-3.8-flash',
+                'gemini-4-argon',
+                'gemini-4-hydrogen',
+                'gemini-4-carbon',
+                'gemini-2.5-flash',
+                'gemini-2.0-flash',
+                'gemini-2.0-flash-exp',
+                'gemini-1.5-pro',
+                'gemini-1.5-flash'
+              ];
+              for (const pref of preferred) {
+                if (models.includes(pref)) return { model: pref, apiVersion: ver };
+              }
+              return { model: models[0], apiVersion: ver };
+            }
+          } else {
+            const errMsg = data.error?.message || `Mã lỗi ${res.status}`;
+            debugErrors.push(`[${ver}] ${errMsg}`);
+            console.warn(`⚠️ ListModels ${ver} không thành công:`, errMsg);
           }
-        ],
-        generationConfig: {
-          temperature: 0.4,
-          responseMimeType: "application/json"
+        } catch (e) {
+          debugErrors.push(`[${ver}] ${e.message}`);
         }
-      };
-
-      let response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
-
-      if (!response.ok) {
-        // Fallback to gemini-1.5-flash
-        const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-        response = await fetch(fallbackUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        });
       }
 
-      if (!response.ok) {
-        const errJson = await response.json().catch(() => ({}));
-        throw new Error(errJson.error?.message || `Lỗi gọi Gemini API (Mã lỗi ${response.status})`);
+      console.warn("Lỗi kiểm tra ListModels:", debugErrors.join(' | '));
+      return null;
+    }
+
+    async function callGeminiAPI(systemInstruction, userPrompt, apiKey) {
+      const cleanKey = (apiKey || '').trim();
+      if (!cleanKey) throw new Error("Chưa có mã Gemini API Key!");
+
+      // 1. Tự động kiểm tra các model được cấp quyền trong tài khoản Google của cô
+      const discovered = await getBestAvailableGeminiModel(cleanKey);
+
+      let candidates = [];
+      if (discovered) {
+        candidates.push({ model: discovered.model, ver: discovered.apiVersion });
+      }
+      // Ưu tiên Gemini 3.8 Flash (Thinking Medium) & Gemini 4 Argon
+      candidates.push(
+        { model: 'gemini-3.8-flash', ver: 'v1beta' },
+        { model: 'gemini-4-argon', ver: 'v1beta' },
+        { model: 'gemini-4-hydrogen', ver: 'v1beta' },
+        { model: 'gemini-3.8-flash', ver: 'v1' },
+        { model: 'gemini-2.5-flash', ver: 'v1beta' },
+        { model: 'gemini-2.0-flash', ver: 'v1beta' }
+      );
+
+      // Loại bỏ trùng lặp model & ver
+      const uniqueCandidates = [];
+      const seen = new Set();
+      for (const c of candidates) {
+        const k = `${c.ver}_${c.model}`;
+        if (!seen.has(k)) {
+          seen.add(k);
+          uniqueCandidates.push(c);
+        }
       }
 
-      const resData = await response.json();
-      const text = resData.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!text) throw new Error("AI không trả về dữ liệu.");
-      return JSON.parse(text);
+      let lastError = null;
+
+      for (const item of uniqueCandidates) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/${item.ver}/models/${item.model}:generateContent?key=${cleanKey}`;
+          
+          const body = {
+            contents: [
+              {
+                role: "user",
+                parts: [
+                  { text: systemInstruction + "\n\n" + userPrompt }
+                ]
+              }
+            ],
+            generationConfig: {
+              temperature: 0.3
+            }
+          };
+
+          if (item.ver === 'v1beta') {
+            body.system_instruction = { parts: [{ text: systemInstruction }] };
+            body.contents = [{ role: "user", parts: [{ text: userPrompt }] }];
+            body.generationConfig.responseMimeType = "application/json";
+
+            // Bật Thinking Effort: MEDIUM cho Gemini 3.8 Flash & Gemini 4
+            if (item.model.includes('3.8') || item.model.includes('4-')) {
+              body.generationConfig.thinkingConfig = {
+                thinkingEffort: "MEDIUM"
+              };
+            }
+          }
+
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": cleanKey
+            },
+            body: JSON.stringify(body)
+          });
+
+          if (response.ok) {
+            const resData = await response.json();
+            let text = resData.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!text) throw new Error("AI không trả về nội dung.");
+
+            // Xử lý markdown fences
+            let clean = text.trim();
+            if (clean.includes('```')) {
+              const m = clean.match(/```(?:json)?([\s\S]*?)```/i);
+              if (m && m[1]) clean = m[1].trim();
+              else clean = clean.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+            }
+
+            const firstBrace = clean.indexOf('{');
+            const lastBrace = clean.lastIndexOf('}');
+            if (firstBrace !== -1 && lastBrace !== -1) {
+              clean = clean.substring(firstBrace, lastBrace + 1);
+            }
+
+            console.log(`✅ Soạn bài thành công bằng Google Gemini: ${item.model} (${item.ver})!`);
+            return JSON.parse(clean);
+          } else {
+            const errJson = await response.json().catch(() => ({}));
+            const msg = errJson.error?.message || `Mã lỗi ${response.status}`;
+            lastError = new Error(`${item.model}: ${msg}`);
+            console.warn(`⚠️ ${item.model} (${item.ver}) trả về lỗi:`, msg);
+          }
+        } catch (e) {
+          lastError = e;
+        }
+      }
+
+      throw lastError || new Error("Không thể kết nối đến Gemini AI. Vui lòng kiểm tra lại mã API Key!");
     }
 
     // AI Generate Game from uploaded file or pasted text

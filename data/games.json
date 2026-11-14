@@ -1,25 +1,113 @@
 [
   {
-    "id": "toan4_bai42_tinh_chat_phan_phoi",
-    "title": "Bài 42: Tính chất phân phối của phép nhân đối với phép cộng",
-    "subtitle": "Đại hội đồng diễn Thụy Lâm • Rút thừa số chung & Đấu trường 5 chặng săn 100 kim cương",
+    "id": "toan4_bai03_so_chan_so_le",
+    "title": "Bài 3: Số chẵn, số lẻ",
+    "subtitle": "Chủ đề Nông trại Toán học • Nhận biết dấu hiệu chia hết cho 2 và phân loại số",
     "category": "Bài học",
     "grade": "Toán 4",
-    "icon": "🤖",
-    "color": "from-indigo-600 via-purple-600 to-pink-600",
-    "filename": "toan4_bai42_tinh_chat_phan_phoi.html",
-    "createdAt": "2026-11-14T18:15:00.000Z"
+    "icon": "🌾",
+    "color": "from-emerald-500 to-teal-500",
+    "filename": "toan4_bai03_so_chan_so_le.html",
+    "createdAt": "2026-11-11T10:00:00.000Z"
   },
   {
-    "id": "toan4_bai41_nhan_chia_10_100_1000",
-    "title": "Bài 41: Nhân, chia với 10, 100, 1 000...",
-    "subtitle": "Vương Quốc Số 0 Diệu Kỳ • Cỗ máy số 0 tương tác & Đấu trường 5 miền đất săn 100 kim cương",
+    "id": "toan4_hang_va_lop",
+    "title": "Bài: Hàng và lớp",
+    "subtitle": "Cấu tạo số trong phạm vi lớp nghìn • Bảng 2 lớp và luyện tập đọc viết số",
     "category": "Bài học",
     "grade": "Toán 4",
-    "icon": "🐰",
-    "color": "from-pink-500 via-rose-500 to-amber-500",
-    "filename": "toan4_bai41_nhan_chia_10_100_1000.html",
-    "createdAt": "2026-11-14T17:50:00.000Z"
+    "icon": "🏛️",
+    "color": "from-sky-500 to-indigo-500",
+    "filename": "toan4_hang_va_lop.html",
+    "createdAt": "2026-11-11T12:00:00.000Z"
+  },
+  {
+    "id": "toan4_bai12_lop_trieu",
+    "title": "Bài 12: Các số trong phạm vi lớp triệu",
+    "subtitle": "Khám phá lớp triệu qua bảng 3 lớp, 9 hàng và bài tập ghép số tương tác",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🌟",
+    "color": "from-emerald-500 to-cyan-500",
+    "filename": "toan4_bai12_lop_trieu.html",
+    "createdAt": "2026-11-12T01:38:00.000Z"
+  },
+  {
+    "id": "toan4_bai17_tan_ta_yen",
+    "title": "Bài 17: Yến, tạ, tấn",
+    "subtitle": "Học liệu tương tác về đơn vị đo khối lượng và quy đổi thực tế",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "⚖️",
+    "color": "from-amber-500 to-orange-500",
+    "filename": "toan4_bai17_tan_ta_yen.html",
+    "createdAt": "2026-11-10T09:00:00.000Z"
+  },
+  {
+    "id": "toan4_don_vi_do_dien_tich",
+    "title": "Bài: Đề-xi-mét vuông, Mét vuông, Mi-li-mét vuông",
+    "subtitle": "Thực hành đo, đếm lưới ô vuông và quy đổi đơn vị diện tích",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "📏",
+    "color": "from-cyan-500 to-emerald-500",
+    "filename": "toan4_don_vi_do_dien_tich.html",
+    "createdAt": "2026-11-11T15:00:00.000Z"
+  },
+  {
+    "id": "toan4_giay_the_ki",
+    "title": "Bài: Giây, thế kỉ",
+    "subtitle": "Thực hành đọc đồng hồ kim giây, tính thế kỉ và chữ số La Mã",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "⏳",
+    "color": "from-indigo-500 to-purple-500",
+    "filename": "toan4_giay_the_ki.html",
+    "createdAt": "2026-11-11T17:00:00.000Z"
+  },
+  {
+    "id": "toan4_bai24_tinh_chat_phep_cong",
+    "title": "Bài 24: Tính chất giao hoán và kết hợp của phép cộng",
+    "subtitle": "Ứng dụng tính chất giao hoán, kết hợp để tính nhẩm và ghép cặp tròn trăm",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "➕",
+    "color": "from-orange-500 to-rose-500",
+    "filename": "toan4_bai24_tinh_chat_phep_cong.html",
+    "createdAt": "2026-11-11T23:00:00.000Z"
+  },
+  {
+    "id": "toan4_bai27_hai_duong_thang_vuong_goc",
+    "title": "Bài 27: Hai đường thẳng vuông góc",
+    "subtitle": "Thực hành đặt thước Ê ke kiểm tra góc vuông và nối điểm trên lưới ô",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "📐",
+    "color": "from-teal-500 to-cyan-500",
+    "filename": "toan4_bai27_hai_duong_thang_vuong_goc.html",
+    "createdAt": "2026-11-12T01:15:00.000Z"
+  },
+  {
+    "id": "toan4_bai29_hai_duong_thang_song_song",
+    "title": "Bài 29: Hai đường thẳng song song",
+    "subtitle": "Mô phỏng kéo dài đường thẳng, kiểm tra cắt nhau và vẽ đường song song",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🛤️",
+    "color": "from-rose-500 to-pink-500",
+    "filename": "toan4_bai29_hai_duong_thang_song_song.html",
+    "createdAt": "2026-11-12T01:23:00.000Z"
+  },
+  {
+    "id": "toan4_bai31_hinh_binh_hanh_hinh_thoi",
+    "title": "Bài 31: Hình bình hành, Hình thoi",
+    "subtitle": "Nhận diện đặc điểm cạnh, nối đỉnh tứ giác trên lưới và so sánh hình",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🪁",
+    "color": "from-sky-500 to-blue-500",
+    "filename": "toan4_bai31_hinh_binh_hanh_hinh_thoi.html",
+    "createdAt": "2026-11-12T01:28:00.000Z"
   },
   {
     "id": "toan4_bai40_tinh_chat_phep_nhan",
@@ -33,6 +121,48 @@
     "createdAt": "2026-11-14T15:25:00.000Z"
   },
   {
+    "id": "toan4_bai41_nhan_chia_10_100_1000",
+    "title": "Bài 41: Nhân, chia với 10, 100, 1 000...",
+    "subtitle": "Vương Quốc Số 0 Diệu Kỳ • Cỗ máy số 0 tương tác & Đấu trường 5 miền đất săn 100 kim cương",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🐰",
+    "color": "from-pink-500 via-rose-500 to-amber-500",
+    "filename": "toan4_bai41_nhan_chia_10_100_1000.html",
+    "createdAt": "2026-11-14T17:50:00.000Z"
+  },
+  {
+    "id": "toan4_bai42_tinh_chat_phan_phoi",
+    "title": "Bài 42: Tính chất phân phối của phép nhân đối với phép cộng",
+    "subtitle": "Đại hội đồng diễn Thụy Lâm • Rút thừa số chung & Đấu trường 5 chặng săn 100 kim cương",
+    "category": "Bài học",
+    "grade": "Toán 4",
+    "icon": "🤖",
+    "color": "from-indigo-600 via-purple-600 to-pink-600",
+    "filename": "toan4_bai42_tinh_chat_phan_phoi.html",
+    "createdAt": "2026-11-14T18:15:00.000Z"
+  },
+  {
+    "id": "link_1794471218228",
+    "title": "Ôn tập giữa kì 1 - Đề 1",
+    "subtitle": "đề 1",
+    "category": "Ôn tập",
+    "grade": "Toán 4",
+    "icon": "🏆",
+    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-1/full-page-embed",
+    "createdAt": "2026-11-12T08:13:38.228Z"
+  },
+  {
+    "id": "link_1794471006312",
+    "title": "Ôn tập giữa kì 1 - Đề 2",
+    "subtitle": "đề 2",
+    "category": "Ôn tập",
+    "grade": "Toán 4",
+    "icon": "🏆",
+    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-2/full-page-embed",
+    "createdAt": "2026-11-12T08:10:06.312Z"
+  },
+  {
     "id": "link_1794623978181",
     "title": "On tap giua ki 1 de 3",
     "subtitle": "đề 3",
@@ -41,6 +171,16 @@
     "icon": "🏆",
     "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
     "createdAt": "2026-11-14T02:39:38.181Z"
+  },
+  {
+    "id": "link_1794622885610",
+    "title": "On tap giua ki 1 de 3",
+    "subtitle": "đề 3",
+    "category": "Ôn tập",
+    "grade": "Toán 4",
+    "icon": "🏆",
+    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
+    "createdAt": "2026-11-14T02:21:25.610Z"
   },
   {
     "id": "link_1794623233889",
@@ -53,153 +193,13 @@
     "createdAt": "2026-11-14T02:27:13.889Z"
   },
   {
-    "id": "link_1794622885610",
-    "title": "On tap giua ki 1 de 3",
-    "subtitle": "đề 3",
-    "category": "Kiểm tra",
-    "grade": "Toán 4",
-    "icon": "🏆",
-    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
-    "createdAt": "2026-11-14T02:21:25.610Z"
-  },
-  {
-    "id": "link_1794471218228",
-    "title": "Ôn tập giữa kì 1 - Đề 1",
-    "subtitle": "đề 1",
-    "category": "Bổ sung",
-    "grade": "Toán 4",
-    "icon": "🏆",
-    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-1/full-page-embed",
-    "createdAt": "2026-11-12T08:13:38.228Z"
-  },
-  {
     "id": "link_1794471200934",
     "title": "Ôn tập giữa kì 1 - Đề 3",
     "subtitle": "đề 3",
-    "category": "Bổ sung",
+    "category": "Ôn tập",
     "grade": "Toán 4",
     "icon": "🏆",
     "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-3/full-page-embed",
     "createdAt": "2026-11-12T08:13:20.934Z"
-  },
-  {
-    "id": "link_1794471006312",
-    "title": "Ôn tập giữa kì 1 - Đề 2",
-    "subtitle": "đề 2",
-    "category": "Bổ sung",
-    "grade": "Toán 4",
-    "icon": "🏆",
-    "externalUrl": "https://sites.google.com/view/on-tap-giua-ki-1-de-2/full-page-embed",
-    "createdAt": "2026-11-12T08:10:06.312Z"
-  },
-  {
-    "id": "toan4_bai03_so_chan_so_le",
-    "title": "Bài 3: Số chẵn, số lẻ",
-    "subtitle": "Chủ đề Nông trại Toán học • Nhận biết dấu hiệu chia hết cho 2 và phân loại số",
-    "category": "Số và Phép tính",
-    "grade": "Toán 4",
-    "icon": "🌾",
-    "color": "from-emerald-500 to-teal-500",
-    "filename": "toan4_bai03_so_chan_so_le.html",
-    "createdAt": "2026-11-11T10:00:00.000Z"
-  },
-  {
-    "id": "toan4_hang_va_lop",
-    "title": "Bài: Hàng và lớp",
-    "subtitle": "Cấu tạo số trong phạm vi lớp nghìn • Bảng 2 lớp và luyện tập đọc viết số",
-    "category": "Số và Phép tính",
-    "grade": "Toán 4",
-    "icon": "🏛️",
-    "color": "from-sky-500 to-indigo-500",
-    "filename": "toan4_hang_va_lop.html",
-    "createdAt": "2026-11-11T12:00:00.000Z"
-  },
-  {
-    "id": "toan4_bai12_lop_trieu",
-    "title": "Bài 12: Các số trong phạm vi lớp triệu",
-    "subtitle": "Khám phá lớp triệu qua bảng 3 lớp, 9 hàng và bài tập ghép số tương tác",
-    "category": "Số và Phép tính",
-    "grade": "Toán 4",
-    "icon": "🌟",
-    "color": "from-emerald-500 to-cyan-500",
-    "filename": "toan4_bai12_lop_trieu.html",
-    "createdAt": "2026-11-12T01:38:00.000Z"
-  },
-  {
-    "id": "toan4_bai17_tan_ta_yen",
-    "title": "Bài 17: Yến, tạ, tấn",
-    "subtitle": "Học liệu tương tác về đơn vị đo khối lượng và quy đổi thực tế",
-    "category": "Đo lường",
-    "grade": "Toán 4",
-    "icon": "⚖️",
-    "color": "from-amber-500 to-orange-500",
-    "filename": "toan4_bai17_tan_ta_yen.html",
-    "createdAt": "2026-11-10T09:00:00.000Z"
-  },
-  {
-    "id": "toan4_don_vi_do_dien_tich",
-    "title": "Bài: Đề-xi-mét vuông, Mét vuông, Mi-li-mét vuông",
-    "subtitle": "Thực hành đo, đếm lưới ô vuông và quy đổi đơn vị diện tích",
-    "category": "Đo lường",
-    "grade": "Toán 4",
-    "icon": "📏",
-    "color": "from-cyan-500 to-emerald-500",
-    "filename": "toan4_don_vi_do_dien_tich.html",
-    "createdAt": "2026-11-11T15:00:00.000Z"
-  },
-  {
-    "id": "toan4_giay_the_ki",
-    "title": "Bài: Giây, thế kỉ",
-    "subtitle": "Thực hành đọc đồng hồ kim giây, tính thế kỉ và chữ số La Mã",
-    "category": "Đo lường",
-    "grade": "Toán 4",
-    "icon": "⏳",
-    "color": "from-indigo-500 to-purple-500",
-    "filename": "toan4_giay_the_ki.html",
-    "createdAt": "2026-11-11T17:00:00.000Z"
-  },
-  {
-    "id": "toan4_bai24_tinh_chat_phep_cong",
-    "title": "Bài 24: Tính chất giao hoán và kết hợp của phép cộng",
-    "subtitle": "Ứng dụng tính chất giao hoán, kết hợp để tính nhẩm và ghép cặp tròn trăm",
-    "category": "Số và Phép tính",
-    "grade": "Toán 4",
-    "icon": "➕",
-    "color": "from-orange-500 to-rose-500",
-    "filename": "toan4_bai24_tinh_chat_phep_cong.html",
-    "createdAt": "2026-11-11T23:00:00.000Z"
-  },
-  {
-    "id": "toan4_bai27_hai_duong_thang_vuong_goc",
-    "title": "Bài 27: Hai đường thẳng vuông góc",
-    "subtitle": "Thực hành đặt thước Ê ke kiểm tra góc vuông và nối điểm trên lưới ô",
-    "category": "Hình học",
-    "grade": "Toán 4",
-    "icon": "📐",
-    "color": "from-teal-500 to-cyan-500",
-    "filename": "toan4_bai27_hai_duong_thang_vuong_goc.html",
-    "createdAt": "2026-11-12T01:15:00.000Z"
-  },
-  {
-    "id": "toan4_bai29_hai_duong_thang_song_song",
-    "title": "Bài 29: Hai đường thẳng song song",
-    "subtitle": "Mô phỏng kéo dài đường thẳng, kiểm tra cắt nhau và vẽ đường song song",
-    "category": "Hình học",
-    "grade": "Toán 4",
-    "icon": "🛤️",
-    "color": "from-rose-500 to-pink-500",
-    "filename": "toan4_bai29_hai_duong_thang_song_song.html",
-    "createdAt": "2026-11-12T01:23:00.000Z"
-  },
-  {
-    "id": "toan4_bai31_hinh_binh_hanh_hinh_thoi",
-    "title": "Bài 31: Hình bình hành, Hình thoi",
-    "subtitle": "Nhận diện đặc điểm cạnh, nối đỉnh tứ giác trên lưới và so sánh hình",
-    "category": "Hình học",
-    "grade": "Toán 4",
-    "icon": "🪁",
-    "color": "from-sky-500 to-blue-500",
-    "filename": "toan4_bai31_hinh_binh_hanh_hinh_thoi.html",
-    "createdAt": "2026-11-12T01:28:00.000Z"
   }
 ]
