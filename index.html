@@ -715,6 +715,84 @@
     </div>
   </div>
 
+  <!-- Edit Lesson Modal -->
+  <div id="edit-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-[32px] max-w-md w-full p-6 sm:p-7 shadow-2xl border-4 border-amber-200 space-y-4 relative">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">✏️</span>
+          <h3 class="text-xl font-extrabold text-slate-900">Chỉnh Sửa Bài Học</h3>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button id="btn-close-edit" type="button" class="w-9 h-9 rounded-full bg-rose-50 hover:bg-rose-100 font-black text-rose-500 transition">✕</button>
+        </div>
+      </div>
+
+      <form id="edit-form" class="space-y-4">
+        <input id="edit-id" type="hidden" />
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">🏷️ Tên bài học:</label>
+          <input id="edit-title" type="text" required placeholder="Nhập tên bài học"
+                 class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-amber-400 focus:outline-none text-sm font-bold" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">✨ Mô tả bài học:</label>
+          <input id="edit-subtitle" type="text" placeholder="Mô tả nội dung bài học"
+                 class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-amber-400 focus:outline-none text-sm font-semibold" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">🌐 Đường dẫn bài học (URL / File):</label>
+          <input id="edit-url" type="text" placeholder="https://... hoặc tên file HTML"
+                 class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-amber-400 focus:outline-none text-sm font-bold" />
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">Nhãn:</label>
+            <select id="edit-category" class="w-full px-2.5 py-2.5 rounded-2xl border-2 border-slate-200 text-xs sm:text-sm font-bold bg-white">
+              <option value="Bài học">Bài học</option>
+              <option value="Bài tập tuần">Bài tập tuần</option>
+              <option value="Ôn tập">Ôn tập</option>
+              <option value="Kiểm tra">Kiểm tra</option>
+              <option value="Số và Phép tính">Số & Phép tính</option>
+              <option value="Hình học">Hình học</option>
+              <option value="Đo lường">Đo lường</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">Lớp:</label>
+            <input id="edit-grade" type="text" value="Toán 4"
+                   class="w-full px-3 py-2.5 rounded-2xl border-2 border-slate-200 text-xs sm:text-sm font-bold" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">Icon:</label>
+            <select id="edit-icon" class="w-full px-2.5 py-2.5 rounded-2xl border-2 border-slate-200 text-xs sm:text-sm font-bold bg-white">
+              <option value="🌟">🌟 Ngôi sao</option>
+              <option value="📘">📘 Bài học</option>
+              <option value="🌾">🌾 Nông trại</option>
+              <option value="🏛️">🏛️ Đền thờ</option>
+              <option value="📐">📐 Hình học</option>
+              <option value="⚖️">⚖️ Đo lường</option>
+              <option value="➕">➕ Phép tính</option>
+              <option value="🏆">🏆 Ôn tập</option>
+              <option value="🎮">🎮 Trò chơi</option>
+              <option value="🪁">🪁 Con diều</option>
+              <option value="⏳">⏳ Thời gian</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="btn-submit-edit" type="submit"
+                class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold py-3.5 rounded-2xl shadow-[0_5px_0_0_#b45309] active:translate-y-[2px] active:shadow-[0_2px_0_0_#b45309] text-sm transition-all">
+          💾 Cập Nhật Bài Học
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white font-extrabold px-5 py-3 rounded-2xl shadow-xl z-50 transition-all duration-300 opacity-0 pointer-events-none text-sm"></div>
 
@@ -1116,10 +1194,16 @@
               </span>
 
               ${isAdmin ? `
-                <button type="button" data-del="${g.id}" title="Gỡ khỏi danh sách"
-                        class="del-btn absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-white/25 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center transition shadow-sm hover:scale-110">
-                  🗑️
-                </button>
+                <div class="absolute top-2.5 right-2.5 z-20 flex items-center gap-1.5">
+                  <button type="button" data-edit="${g.id}" title="Chỉnh sửa thông tin bài học"
+                          class="edit-btn w-8 h-8 rounded-full bg-white/25 hover:bg-amber-500 text-white text-xs font-bold flex items-center justify-center transition shadow-sm hover:scale-110">
+                    ✏️
+                  </button>
+                  <button type="button" data-del="${g.id}" title="Gỡ khỏi danh sách"
+                          class="del-btn w-8 h-8 rounded-full bg-white/25 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center transition shadow-sm hover:scale-110">
+                    🗑️
+                  </button>
+                </div>
               ` : ''}
             </div>
 
@@ -1147,6 +1231,17 @@
         `;
 
         grid.appendChild(card);
+      });
+
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = btn.dataset.edit;
+          const g = allGames.find(x => x.id === id);
+          if (!g) return;
+          openEditModal(g);
+        });
       });
 
       document.querySelectorAll('.del-btn').forEach(btn => {
@@ -1230,6 +1325,33 @@
       const next = getLocalLinks().filter(x => x.id !== id);
       saveLocalLinks(next);
       showToast('🗑️ Đã gỡ bài học.');
+    }
+
+    async function updateGameEntry(id, updated) {
+      const idx = allGames.findIndex(x => x.id === id);
+      if (idx !== -1) {
+        allGames[idx] = updated;
+        renderGames();
+
+        if (fbDb) {
+          try {
+            const docRef = doc(fbDb, FIRESTORE_COL, FIRESTORE_DOC);
+            await setDoc(docRef, { games: allGames, updatedAt: Date.now() }, { merge: true });
+            showToast('✨ Đã cập nhật bài học lên Google Firestore!');
+            return;
+          } catch (e) {
+            console.warn("Lỗi cập nhật Firestore:", e);
+          }
+        }
+
+        const current = getLocalLinks();
+        const localIdx = current.findIndex(x => x.id === id);
+        if (localIdx !== -1) {
+          current[localIdx] = updated;
+          saveLocalLinks(current);
+        }
+        showToast('✨ Đã cập nhật bài học vào trình duyệt!');
+      }
     }
 
     const uploadModal = document.getElementById('upload-modal');
@@ -1318,6 +1440,76 @@
       } finally {
         btn.disabled = false;
         btn.textContent = '💖 Lưu Vào Danh Sách';
+      }
+    });
+
+    // ==========================================
+    // EDIT LESSON MODAL LISTENERS
+    // ==========================================
+    const editModal = document.getElementById('edit-modal');
+    const editIdInput = document.getElementById('edit-id');
+    const editTitleInput = document.getElementById('edit-title');
+    const editSubtitleInput = document.getElementById('edit-subtitle');
+    const editUrlInput = document.getElementById('edit-url');
+    const editCategoryInput = document.getElementById('edit-category');
+    const editGradeInput = document.getElementById('edit-grade');
+    const editIconInput = document.getElementById('edit-icon');
+
+    function openEditModal(g) {
+      editIdInput.value = g.id || '';
+      editTitleInput.value = g.title || '';
+      editSubtitleInput.value = g.subtitle || '';
+      editUrlInput.value = g.externalUrl || g.filename || '';
+      editCategoryInput.value = getDisplayCategory(g);
+      editGradeInput.value = g.grade || 'Toán 4';
+      editIconInput.value = g.icon || '🌟';
+      editModal.classList.remove('hidden');
+    }
+
+    const closeEdit = () => editModal.classList.add('hidden');
+    document.getElementById('btn-close-edit').addEventListener('click', closeEdit);
+    editModal.addEventListener('click', (e) => {
+      if (e.target === editModal) closeEdit();
+    });
+
+    document.getElementById('edit-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = editIdInput.value;
+      const g = allGames.find(x => x.id === id);
+      if (!g) return;
+
+      const urlVal = editUrlInput.value.trim();
+      const updated = {
+        ...g,
+        title: editTitleInput.value.trim(),
+        subtitle: editSubtitleInput.value.trim() || 'Nội dung học liệu tương tác',
+        category: editCategoryInput.value,
+        grade: editGradeInput.value.trim() || 'Toán 4',
+        icon: editIconInput.value
+      };
+
+      if (urlVal) {
+        if (/^https?:\/\//i.test(urlVal)) {
+          updated.externalUrl = urlVal;
+          delete updated.filename;
+        } else {
+          updated.filename = urlVal;
+          delete updated.externalUrl;
+        }
+      }
+
+      const btn = document.getElementById('btn-submit-edit');
+      btn.disabled = true;
+      btn.textContent = '☁️ Đang cập nhật...';
+
+      try {
+        await updateGameEntry(id, updated);
+        closeEdit();
+      } catch (err) {
+        showToast('❌ ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '💾 Cập Nhật Bài Học';
       }
     });
 
