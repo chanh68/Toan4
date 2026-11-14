@@ -396,10 +396,16 @@
           🎒 0 bài học
         </span>
 
-        <!-- Nút Thêm Học Liệu: Chỉ hiện khi là Giáo viên (Admin) -->
+        <!-- Nút Soạn Bài Giảng 5 Chặng (Studio): Chỉ hiện khi là Giáo viên (Admin) -->
+        <button id="btn-open-studio" type="button"
+                class="hidden bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:to-teal-600 text-white font-extrabold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-2xl shadow-[0_4px_0_0_#0f766e] hover:translate-y-[-1px] active:translate-y-[2px] active:shadow-[0_1px_0_0_#0f766e] transition-all whitespace-nowrap items-center gap-1.5">
+          <span>✨</span> <span>Soạn Bài 5 Chặng</span>
+        </button>
+
+        <!-- Nút Thêm Link Ngoài: Chỉ hiện khi là Giáo viên (Admin) -->
         <button id="btn-open-upload" type="button"
                 class="hidden bg-gradient-to-r from-pink-500 via-rose-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-extrabold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-2xl shadow-[0_4px_0_0_#be185d] hover:translate-y-[-1px] active:translate-y-[2px] active:shadow-[0_1px_0_0_#be185d] transition-all whitespace-nowrap items-center gap-1.5">
-          <span>➕</span> <span>Thêm Học Liệu Mới</span>
+          <span>🔗</span> <span>Thêm Link Ngoài</span>
         </button>
 
         <!-- Nút Đăng nhập Giáo viên (Hiện khi là Guest) -->
@@ -793,6 +799,221 @@
     </div>
   </div>
 
+  <!-- Interactive Lesson Studio Modal (5 Chặng Không Cần Code) -->
+  <div id="studio-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 hidden overflow-y-auto">
+    <div class="bg-white rounded-[32px] max-w-3xl w-full p-5 sm:p-7 shadow-2xl border-4 border-emerald-300 space-y-4 my-auto max-h-[92vh] flex flex-col">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b pb-3 border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-400 to-teal-500 text-white flex items-center justify-center text-xl shadow-md">
+            ✨
+          </div>
+          <div>
+            <h3 id="studio-modal-title" class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">Soạn Bài Giảng 5 Chặng Tương Tác</h3>
+            <p class="text-xs text-slate-500 font-semibold">Tự động dựng 5 chặng thử thách, âm thanh, chibi và cấp giấy khen!</p>
+          </div>
+        </div>
+        <button id="btn-close-studio" type="button" class="w-9 h-9 rounded-full bg-rose-50 hover:bg-rose-100 font-black text-rose-500 transition">✕</button>
+      </div>
+
+      <!-- Scrollable Form Body -->
+      <form id="studio-form" class="space-y-4 overflow-y-auto pr-1 flex-1">
+        <input id="studio-id" type="hidden" />
+
+        <!-- AI Assistant / Template Bar -->
+        <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-sky-50 border-2 border-emerald-200 rounded-2xl p-3.5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black uppercase text-emerald-800 flex items-center gap-1.5">
+              <span>🪄</span> <span>AI Điền Nhanh Câu Hỏi Mẫu Chuẩn SGK:</span>
+            </span>
+            <span class="text-[11px] text-emerald-600 font-bold hidden sm:inline">(Bấm để điền mẫu tức thì)</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" class="studio-template-btn bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs px-2.5 py-1.5 rounded-xl transition" data-template="trung_binh_cong">📊 Trung bình cộng</button>
+            <button type="button" class="studio-template-btn bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs px-2.5 py-1.5 rounded-xl transition" data-template="tong_hieu">➕ Tìm 2 số (Tổng & Hiệu)</button>
+            <button type="button" class="studio-template-btn bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs px-2.5 py-1.5 rounded-xl transition" data-template="phan_so">🍰 Khái niệm phân số</button>
+            <button type="button" class="studio-template-btn bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs px-2.5 py-1.5 rounded-xl transition" data-template="hinh_binh_hanh">📐 Hình bình hành</button>
+          </div>
+        </div>
+
+        <!-- Basic Lesson Info -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">🏷️ Tên bài học:</label>
+            <input id="studio-title" type="text" required placeholder="Ví dụ: Bài: Tìm số trung bình cộng"
+                   class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-400 focus:outline-none text-sm font-bold bg-white" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">Biểu tượng (Icon):</label>
+            <select id="studio-icon" class="w-full px-3 py-2.5 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white">
+              <option value="📊">📊 Biểu đồ / Thống kê</option>
+              <option value="🌟">🌟 Ngôi sao</option>
+              <option value="🌾">🌾 Nông trại</option>
+              <option value="📐">📐 Hình học</option>
+              <option value="⚖️">⚖️ Đo lường</option>
+              <option value="➕">➕ Phép tính</option>
+              <option value="🏛️">🏛️ Hàng và lớp</option>
+              <option value="🏆">🏆 Ôn tập</option>
+              <option value="🍰">🍰 Phân số</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase text-slate-600 mb-1">✨ Mô tả ngắn gọn:</label>
+          <input id="studio-subtitle" type="text" placeholder="Khám phá kiến thức qua 5 chặng thử thách vui nhộn"
+                 class="w-full px-3.5 py-2 rounded-xl border-2 border-slate-200 focus:border-emerald-400 focus:outline-none text-xs sm:text-sm font-semibold bg-white" />
+        </div>
+
+        <!-- 4 Stages Tabs Navigation -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-black uppercase text-slate-700">Nội Dung 4 Chặng Thử Thách:</label>
+            <span class="text-[11px] text-slate-400 font-bold">(Chặng 5 tự động cấp Giấy khen)</span>
+          </div>
+
+          <div class="flex gap-1.5 border-b border-slate-200 pb-2 overflow-x-auto">
+            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-black text-xs bg-emerald-500 text-white whitespace-nowrap" data-target="stage-pane-1">1️⃣ Khởi Động</button>
+            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-2">2️⃣ Khám Phá</button>
+            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-3">3️⃣ Luyện Tập</button>
+            <button type="button" class="studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap" data-target="stage-pane-4">4️⃣ Vận Dụng</button>
+          </div>
+        </div>
+
+        <!-- 4 Stage Panes -->
+        <!-- Pane 1 -->
+        <div id="stage-pane-1" class="studio-pane space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+          <div class="font-black text-xs text-emerald-800 uppercase">🌱 Chặng 1: Khởi Động</div>
+          <div>
+            <label class="block text-xs font-extrabold text-slate-600 mb-1">Câu hỏi / Đề bài:</label>
+            <textarea id="s1-question" rows="2" required placeholder="Nhập câu hỏi khởi động..."
+                      class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:outline-none focus:border-emerald-400"></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+            <div><span class="text-slate-500">A:</span> <input id="s1-opt-0" type="text" required placeholder="Đáp án A" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">B:</span> <input id="s1-opt-1" type="text" required placeholder="Đáp án B" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">C:</span> <input id="s1-opt-2" type="text" required placeholder="Đáp án C" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">D:</span> <input id="s1-opt-3" type="text" required placeholder="Đáp án D" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <div>
+              <label class="block text-xs font-extrabold text-emerald-700 mb-1">Đáp án đúng:</label>
+              <select id="s1-correct" class="w-full px-2.5 py-1.5 rounded-xl border-2 border-emerald-300 font-bold text-xs bg-white text-emerald-900">
+                <option value="0">Đáp án A</option>
+                <option value="1" selected>Đáp án B</option>
+                <option value="2">Đáp án C</option>
+                <option value="3">Đáp án D</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-extrabold text-slate-600 mb-1">Lời giải / Hướng dẫn:</label>
+              <input id="s1-explanation" type="text" placeholder="Lời giải chi tiết..." class="w-full px-2.5 py-1.5 rounded-xl border bg-white text-xs font-medium" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 2 -->
+        <div id="stage-pane-2" class="studio-pane hidden space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+          <div class="font-black text-xs text-sky-800 uppercase">🔍 Chặng 2: Khám Phá</div>
+          <div>
+            <label class="block text-xs font-extrabold text-slate-600 mb-1">Câu hỏi / Đề bài:</label>
+            <textarea id="s2-question" rows="2" placeholder="Nhập câu hỏi khám phá..."
+                      class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:outline-none focus:border-sky-400"></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+            <div><span class="text-slate-500">A:</span> <input id="s2-opt-0" type="text" placeholder="Đáp án A" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">B:</span> <input id="s2-opt-1" type="text" placeholder="Đáp án B" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">C:</span> <input id="s2-opt-2" type="text" placeholder="Đáp án C" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">D:</span> <input id="s2-opt-3" type="text" placeholder="Đáp án D" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <div>
+              <label class="block text-xs font-extrabold text-sky-700 mb-1">Đáp án đúng:</label>
+              <select id="s2-correct" class="w-full px-2.5 py-1.5 rounded-xl border-2 border-sky-300 font-bold text-xs bg-white text-sky-900">
+                <option value="0">Đáp án A</option>
+                <option value="1" selected>Đáp án B</option>
+                <option value="2">Đáp án C</option>
+                <option value="3">Đáp án D</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-extrabold text-slate-600 mb-1">Lời giải / Hướng dẫn:</label>
+              <input id="s2-explanation" type="text" placeholder="Lời giải chi tiết..." class="w-full px-2.5 py-1.5 rounded-xl border bg-white text-xs font-medium" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 3 -->
+        <div id="stage-pane-3" class="studio-pane hidden space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+          <div class="font-black text-xs text-purple-800 uppercase">⚡ Chặng 3: Luyện Tập</div>
+          <div>
+            <label class="block text-xs font-extrabold text-slate-600 mb-1">Câu hỏi / Đề bài:</label>
+            <textarea id="s3-question" rows="2" placeholder="Nhập câu hỏi luyện tập..."
+                      class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:outline-none focus:border-purple-400"></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+            <div><span class="text-slate-500">A:</span> <input id="s3-opt-0" type="text" placeholder="Đáp án A" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">B:</span> <input id="s3-opt-1" type="text" placeholder="Đáp án B" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">C:</span> <input id="s3-opt-2" type="text" placeholder="Đáp án C" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">D:</span> <input id="s3-opt-3" type="text" placeholder="Đáp án D" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <div>
+              <label class="block text-xs font-extrabold text-purple-700 mb-1">Đáp án đúng:</label>
+              <select id="s3-correct" class="w-full px-2.5 py-1.5 rounded-xl border-2 border-purple-300 font-bold text-xs bg-white text-purple-900">
+                <option value="0">Đáp án A</option>
+                <option value="1" selected>Đáp án B</option>
+                <option value="2">Đáp án C</option>
+                <option value="3">Đáp án D</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-extrabold text-slate-600 mb-1">Lời giải / Hướng dẫn:</label>
+              <input id="s3-explanation" type="text" placeholder="Lời giải chi tiết..." class="w-full px-2.5 py-1.5 rounded-xl border bg-white text-xs font-medium" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 4 -->
+        <div id="stage-pane-4" class="studio-pane hidden space-y-3 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+          <div class="font-black text-xs text-rose-800 uppercase">🎯 Chặng 4: Vận Dụng</div>
+          <div>
+            <label class="block text-xs font-extrabold text-slate-600 mb-1">Câu hỏi / Đề bài:</label>
+            <textarea id="s4-question" rows="2" placeholder="Nhập câu hỏi vận dụng thực tế..."
+                      class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:outline-none focus:border-rose-400"></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+            <div><span class="text-slate-500">A:</span> <input id="s4-opt-0" type="text" placeholder="Đáp án A" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">B:</span> <input id="s4-opt-1" type="text" placeholder="Đáp án B" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">C:</span> <input id="s4-opt-2" type="text" placeholder="Đáp án C" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+            <div><span class="text-slate-500">D:</span> <input id="s4-opt-3" type="text" placeholder="Đáp án D" class="w-full px-2.5 py-1.5 rounded-lg border bg-white" /></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <div>
+              <label class="block text-xs font-extrabold text-rose-700 mb-1">Đáp án đúng:</label>
+              <select id="s4-correct" class="w-full px-2.5 py-1.5 rounded-xl border-2 border-rose-300 font-bold text-xs bg-white text-rose-900">
+                <option value="0">Đáp án A</option>
+                <option value="1" selected>Đáp án B</option>
+                <option value="2">Đáp án C</option>
+                <option value="3">Đáp án D</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-extrabold text-slate-600 mb-1">Lời giải / Hướng dẫn:</label>
+              <input id="s4-explanation" type="text" placeholder="Lời giải chi tiết..." class="w-full px-2.5 py-1.5 rounded-xl border bg-white text-xs font-medium" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="btn-submit-studio" type="submit"
+                class="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:to-teal-600 text-white font-black py-3.5 rounded-2xl shadow-[0_5px_0_0_#0f766e] active:translate-y-[2px] active:shadow-[0_2px_0_0_#0f766e] text-sm sm:text-base transition-all flex items-center justify-center gap-2">
+          <span>🚀 Xuất Bản & Lưu Ngay Lên Web (5 Chặng)</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white font-extrabold px-5 py-3 rounded-2xl shadow-xl z-50 transition-all duration-300 opacity-0 pointer-events-none text-sm"></div>
 
@@ -998,6 +1219,7 @@
 
     function updateAdminUI() {
       const isAdmin = checkIsAdminSession();
+      const btnStudio = document.getElementById('btn-open-studio');
       const btnUpload = document.getElementById('btn-open-upload');
       const btnTeacherLogin = document.getElementById('btn-open-teacher-login');
       const profileBadge = document.getElementById('teacher-profile-badge');
@@ -1005,6 +1227,7 @@
 
       if (isAdmin) {
         document.body.classList.add('is-admin');
+        if (btnStudio) { btnStudio.classList.remove('hidden'); btnStudio.classList.add('flex'); }
         if (btnUpload) { btnUpload.classList.remove('hidden'); btnUpload.classList.add('flex'); }
         if (btnTeacherLogin) { btnTeacherLogin.classList.add('hidden'); }
         if (profileBadge) {
@@ -1017,6 +1240,7 @@
         }
       } else {
         document.body.classList.remove('is-admin');
+        if (btnStudio) { btnStudio.classList.add('hidden'); btnStudio.classList.remove('flex'); }
         if (btnUpload) { btnUpload.classList.add('hidden'); btnUpload.classList.remove('flex'); }
         if (btnTeacherLogin) { btnTeacherLogin.classList.remove('hidden'); }
         if (profileBadge) { profileBadge.classList.add('hidden'); profileBadge.classList.remove('flex'); }
@@ -1054,6 +1278,9 @@
     }
 
     function buildDirectUrl(g) {
+      if (g.isStudioLesson || (Array.isArray(g.stages) && g.stages.length > 0)) {
+        return new URL(`games/lesson_player.html?id=${encodeURIComponent(g.id)}`, resolveBaseUrl()).href;
+      }
       if (g.externalUrl) return g.externalUrl;
       if (isServerMode) {
         return new URL(`bai-hoc/${encodeURIComponent(g.id)}`, resolveBaseUrl()).href;
@@ -1456,6 +1683,10 @@
     const editIconInput = document.getElementById('edit-icon');
 
     function openEditModal(g) {
+      if (g.isStudioLesson || (Array.isArray(g.stages) && g.stages.length > 0)) {
+        openStudioModal(g);
+        return;
+      }
       editIdInput.value = g.id || '';
       editTitleInput.value = g.title || '';
       editSubtitleInput.value = g.subtitle || '';
@@ -1510,6 +1741,316 @@
       } finally {
         btn.disabled = false;
         btn.textContent = '💾 Cập Nhật Bài Học';
+      }
+    });
+
+    // ==========================================
+    // INTERACTIVE LESSON STUDIO (5 CHẶNG)
+    // ==========================================
+    const STUDIO_TEMPLATES = {
+      trung_binh_cong: {
+        title: "Bài: Tìm số trung bình cộng",
+        subtitle: "Khám phá quy tắc tính trung bình cộng qua 5 chặng thử thách lý thú",
+        category: "Số và Phép tính",
+        icon: "📊",
+        stages: [
+          {
+            stageNum: 1, name: "Khởi Động",
+            question: "Bình có 10 quả táo, An có 20 quả táo. Nếu chia đều số táo cho cả hai bạn, hỏi mỗi bạn được bao nhiêu quả táo?",
+            options: ["10 quả táo", "15 quả táo", "18 quả táo", "20 quả táo"],
+            correctIndex: 1,
+            explanation: "Tổng số táo là: 10 + 20 = 30. Chia đều cho 2 bạn: 30 : 2 = 15 (quả). Số 15 là số trung bình cộng của 10 và 20!"
+          },
+          {
+            stageNum: 2, name: "Khám Phá",
+            question: "Muốn tìm số trung bình cộng của nhiều số, ta thực hiện như thế nào?",
+            options: [
+              "Lấy số lớn nhất cộng số bé nhất rồi chia 2",
+              "Tính tổng các số đó, rồi chia tổng đó cho số các số hạng",
+              "Lấy số lớn nhất trừ số bé nhất",
+              "Tính tích các số đó rồi chia cho 2"
+            ],
+            correctIndex: 1,
+            explanation: "Quy tắc SGK: Muốn tìm số trung bình cộng của nhiều số, ta tính tổng của các số đó, rồi chia tổng đó cho số các số hạng!"
+          },
+          {
+            stageNum: 3, name: "Luyện Tập",
+            question: "Tìm số trung bình cộng của ba số: 30, 40 và 50.",
+            options: ["35", "40", "45", "50"],
+            correctIndex: 1,
+            explanation: "Tổng ba số là: 30 + 40 + 50 = 120. Có 3 số hạng nên lấy: 120 : 3 = 40."
+          },
+          {
+            stageNum: 4, name: "Vận Dụng",
+            question: "Một cửa hàng ngày thứ nhất bán được 120 kg gạo, ngày thứ hai bán được 140 kg gạo, ngày thứ ba bán được 160 kg gạo. Hỏi trung bình mỗi ngày cửa hàng bán được bao nhiêu kg gạo?",
+            options: ["130 kg", "140 kg", "150 kg", "160 kg"],
+            correctIndex: 1,
+            explanation: "Tổng số gạo là: 120 + 140 + 160 = 420 (kg). Trung bình mỗi ngày bán được: 420 : 3 = 140 (kg)."
+          }
+        ]
+      },
+      tong_hieu: {
+        title: "Bài: Tìm hai số khi biết tổng và hiệu",
+        subtitle: "Nắm vững công thức Số lớn = (Tổng + Hiệu) : 2 và Số bé = (Tổng - Hiệu) : 2",
+        category: "Số và Phép tính",
+        icon: "➕",
+        stages: [
+          {
+            stageNum: 1, name: "Khởi Động",
+            question: "Tổng của hai số là 70, hiệu của hai số là 10. Số lớn là:",
+            options: ["35", "40", "45", "50"],
+            correctIndex: 1,
+            explanation: "Công thức: Số lớn = (Tổng + Hiệu) : 2 = (70 + 10) : 2 = 80 : 2 = 40."
+          },
+          {
+            stageNum: 2, name: "Khám Phá",
+            question: "Tổng của hai số là 70, hiệu của hai số là 10. Số bé là:",
+            options: ["25", "30", "35", "40"],
+            correctIndex: 1,
+            explanation: "Số bé = (Tổng - Hiệu) : 2 = (70 - 10) : 2 = 60 : 2 = 30."
+          },
+          {
+            stageNum: 3, name: "Luyện Tập",
+            question: "Lớp 4A có 32 học sinh, trong đó số bạn nữ nhiều hơn số bạn nam là 4 bạn. Hỏi lớp 4A có bao nhiêu bạn nữ?",
+            options: ["16 bạn", "18 bạn", "20 bạn", "14 bạn"],
+            correctIndex: 1,
+            explanation: "Số bạn nữ (số lớn) = (Tổng + Hiệu) : 2 = (32 + 4) : 2 = 36 : 2 = 18 (bạn)."
+          },
+          {
+            stageNum: 4, name: "Vận Dụng",
+            question: "Hai ngăn sách có tất cả 120 quyển. Nếu chuyển 10 quyển từ ngăn trên xuống ngăn dưới thì hai ngăn bằng nhau. Lúc đầu ngăn trên có:",
+            options: ["60 quyển", "70 quyển", "80 quyển", "50 quyển"],
+            correctIndex: 1,
+            explanation: "Chuyển 10 quyển thì bằng nhau => Ngăn trên hơn ngăn dưới: 10 x 2 = 20. Ngăn trên có: (120 + 20) : 2 = 70 (quyển)."
+          }
+        ]
+      },
+      phan_so: {
+        title: "Bài: Khái niệm phân số",
+        subtitle: "Nhận biết tử số, mẫu số và ý nghĩa thực tế của phân số",
+        category: "Số và Phép tính",
+        icon: "🍰",
+        stages: [
+          {
+            stageNum: 1, name: "Khởi Động",
+            question: "Một chiếc bánh pizza được chia đều thành 8 phần bằng nhau, Nam ăn 3 phần. Phân số chỉ phần bánh Nam đã ăn là:",
+            options: ["8/3", "3/8", "3/5", "5/8"],
+            correctIndex: 1,
+            explanation: "Chiếc bánh chia 8 phần (mẫu số 8), Nam ăn 3 phần (tử số 3) => Phân số là 3/8."
+          },
+          {
+            stageNum: 2, name: "Khám Phá",
+            question: "Trong phân số 5/9, tử số là số nào và mẫu số là số nào?",
+            options: [
+              "Tử số là 9, mẫu số là 5",
+              "Tử số là 5, mẫu số là 9",
+              "Cả 5 và 9 đều là tử số",
+              "Mẫu số bằng 0"
+            ],
+            correctIndex: 1,
+            explanation: "Tử số viết trên gạch ngang (5), mẫu số viết dưới gạch ngang (9)!"
+          },
+          {
+            stageNum: 3, name: "Luyện Tập",
+            question: "Thương của phép chia 7 : 12 được viết dưới dạng phân số là:",
+            options: ["12/7", "7/12", "7/5", "5/12"],
+            correctIndex: 1,
+            explanation: "Thương của phép chia số tự nhiên cho số tự nhiên khác 0 có thể viết thành phân số: 7 : 12 = 7/12."
+          },
+          {
+            stageNum: 4, name: "Vận Dụng",
+            question: "Đội văn nghệ có 15 bạn, trong đó có 7 bạn nam. Phân số chỉ số bạn nữ trong đội văn nghệ là:",
+            options: ["7/15", "8/15", "8/7", "15/8"],
+            correctIndex: 1,
+            explanation: "Số bạn nữ là: 15 - 7 = 8 (bạn). Phân số chỉ số bạn nữ là 8/15."
+          }
+        ]
+      },
+      hinh_binh_hanh: {
+        title: "Bài: Hình bình hành và diện tích",
+        subtitle: "Nhận biết đặc điểm và công thức tính diện tích hình bình hành S = a x h",
+        category: "Hình học",
+        icon: "📐",
+        stages: [
+          {
+            stageNum: 1, name: "Khởi Động",
+            question: "Hình bình hành là hình có:",
+            options: [
+              "4 góc vuông bằng nhau",
+              "Hai cặp cạnh đối diện song song và bằng nhau",
+              "4 cạnh đều bằng nhau",
+              "Chỉ có một cặp cạnh song song"
+            ],
+            correctIndex: 1,
+            explanation: "Hình bình hành có hai cặp cạnh đối diện song song và bằng nhau!"
+          },
+          {
+            stageNum: 2, name: "Khám Phá",
+            question: "Muốn tính diện tích hình bình hành có độ dài đáy a và chiều cao h (cùng đơn vị đo), ta làm thế nào?",
+            options: [
+              "S = (a + h) x 2",
+              "S = a x h",
+              "S = a x h : 2",
+              "S = a x 4"
+            ],
+            correctIndex: 1,
+            explanation: "Diện tích hình bình hành bằng độ dài đáy nhân với chiều cao: S = a x h!"
+          },
+          {
+            stageNum: 3, name: "Luyện Tập",
+            question: "Một hình bình hành có độ dài đáy là 12 cm, chiều cao là 8 cm. Diện tích của hình bình hành đó là:",
+            options: ["40 cm²", "96 cm²", "48 cm²", "20 cm²"],
+            correctIndex: 1,
+            explanation: "Diện tích = 12 x 8 = 96 (cm²)."
+          },
+          {
+            stageNum: 4, name: "Vận Dụng",
+            question: "Một mảnh đất hình bình hành có độ dài đáy là 25 m, chiều cao kém đáy 5 m. Diện tích mảnh đất đó là:",
+            options: ["450 m²", "500 m²", "600 m²", "250 m²"],
+            correctIndex: 1,
+            explanation: "Chiều cao là: 25 - 5 = 20 (m). Diện tích mảnh đất là: 25 x 20 = 500 (m²)."
+          }
+        ]
+      }
+    };
+
+    const studioModal = document.getElementById('studio-modal');
+    const studioIdInput = document.getElementById('studio-id');
+    const studioTitleInput = document.getElementById('studio-title');
+    const studioSubtitleInput = document.getElementById('studio-subtitle');
+    const studioIconInput = document.getElementById('studio-icon');
+
+    function populateStudioFields(data) {
+      studioTitleInput.value = data.title || '';
+      studioSubtitleInput.value = data.subtitle || '';
+      if (data.icon) studioIconInput.value = data.icon;
+
+      const stages = Array.isArray(data.stages) ? data.stages : [];
+      for (let i = 1; i <= 4; i++) {
+        const s = stages.find(x => x.stageNum === i) || (stages[i - 1] || {});
+        const qEl = document.getElementById(`s${i}-question`);
+        if (qEl) qEl.value = s.question || '';
+
+        const opts = Array.isArray(s.options) ? s.options : ['', '', '', ''];
+        for (let j = 0; j < 4; j++) {
+          const optEl = document.getElementById(`s${i}-opt-${j}`);
+          if (optEl) optEl.value = opts[j] || '';
+        }
+
+        const corrEl = document.getElementById(`s${i}-correct`);
+        if (corrEl) corrEl.value = String(s.correctIndex !== undefined ? s.correctIndex : 1);
+
+        const expEl = document.getElementById(`s${i}-explanation`);
+        if (expEl) expEl.value = s.explanation || '';
+      }
+    }
+
+    function openStudioModal(existingLesson = null) {
+      if (existingLesson) {
+        document.getElementById('studio-modal-title').textContent = 'Chỉnh Sửa Câu Hỏi Bài Học';
+        studioIdInput.value = existingLesson.id;
+        populateStudioFields(existingLesson);
+      } else {
+        document.getElementById('studio-modal-title').textContent = 'Soạn Bài Giảng 5 Chặng Tương Tác';
+        studioIdInput.value = '';
+        populateStudioFields(STUDIO_TEMPLATES.trung_binh_cong);
+      }
+      studioModal.classList.remove('hidden');
+    }
+
+    const closeStudio = () => studioModal.classList.add('hidden');
+    document.getElementById('btn-close-studio').addEventListener('click', closeStudio);
+    studioModal.addEventListener('click', (e) => {
+      if (e.target === studioModal) closeStudio();
+    });
+
+    const btnOpenStudio = document.getElementById('btn-open-studio');
+    if (btnOpenStudio) {
+      btnOpenStudio.addEventListener('click', () => openStudioModal(null));
+    }
+
+    // Studio Tabs Navigation
+    document.querySelectorAll('.studio-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.target;
+        document.querySelectorAll('.studio-pane').forEach(p => p.classList.add('hidden'));
+        const pane = document.getElementById(target);
+        if (pane) pane.classList.remove('hidden');
+
+        document.querySelectorAll('.studio-tab-btn').forEach(b => {
+          b.className = (b === btn)
+            ? 'studio-tab-btn px-3 py-1.5 rounded-xl font-black text-xs bg-emerald-500 text-white whitespace-nowrap'
+            : 'studio-tab-btn px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap';
+        });
+      });
+    });
+
+    // Studio AI Template Buttons
+    document.querySelectorAll('.studio-template-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.template;
+        const tpl = STUDIO_TEMPLATES[key];
+        if (tpl) {
+          populateStudioFields(tpl);
+          showToast(`🪄 Đã điền câu hỏi mẫu: ${tpl.title}!`);
+        }
+      });
+    });
+
+    // Studio Form Submit
+    document.getElementById('studio-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const existingId = studioIdInput.value;
+      const lessonId = existingId || ('lesson_' + Date.now());
+
+      const stages = [];
+      const stageNames = ['Khởi Động', 'Khám Phá', 'Luyện Tập', 'Vận Dụng'];
+      for (let i = 1; i <= 4; i++) {
+        stages.push({
+          stageNum: i,
+          name: stageNames[i - 1],
+          question: document.getElementById(`s${i}-question`).value.trim(),
+          options: [
+            document.getElementById(`s${i}-opt-0`).value.trim(),
+            document.getElementById(`s${i}-opt-1`).value.trim(),
+            document.getElementById(`s${i}-opt-2`).value.trim(),
+            document.getElementById(`s${i}-opt-3`).value.trim()
+          ],
+          correctIndex: parseInt(document.getElementById(`s${i}-correct`).value, 10),
+          explanation: document.getElementById(`s${i}-explanation`).value.trim()
+        });
+      }
+
+      const lessonEntry = {
+        id: lessonId,
+        title: studioTitleInput.value.trim(),
+        subtitle: studioSubtitleInput.value.trim() || 'Hành trình 5 chặng thử thách lý thú',
+        category: 'Số và Phép tính',
+        grade: 'Toán 4',
+        icon: studioIconInput.value,
+        isStudioLesson: true,
+        stages: stages,
+        createdAt: new Date().toISOString()
+      };
+
+      const btn = document.getElementById('btn-submit-studio');
+      btn.disabled = true;
+      btn.textContent = '☁️ Đang lưu lên Cloud...';
+
+      try {
+        if (existingId) {
+          await updateGameEntry(existingId, lessonEntry);
+          showToast('✨ Đã cập nhật câu hỏi bài học thành công!');
+        } else {
+          await saveGameEntry(lessonEntry);
+          showToast('🚀 Đã xuất bản bài giảng 5 chặng lên trang web!');
+        }
+        closeStudio();
+      } catch (err) {
+        showToast('❌ ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🚀 Xuất Bản & Lưu Ngay Lên Web (5 Chặng)';
       }
     });
 
