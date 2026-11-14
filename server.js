@@ -60,7 +60,7 @@ function readCatalog() {
         id,
         title: id.replace(/[_-]+/g, ' '),
         subtitle: 'Trò chơi HTML tự động nhận diện từ thư mục games/',
-        category: 'Khác',
+        category: 'Bài học',
         grade: 'Toán 4',
         icon: '🎮',
         color: COLOR_PRESETS[synced.length % COLOR_PRESETS.length],
@@ -212,7 +212,7 @@ const server = http.createServer(async (req, res) => {
           id: finalSlug,
           title: rawTitle || 'Học liệu trực tuyến',
           subtitle: (body.subtitle || 'Liên kết bài học trên Google Sites / Web').trim(),
-          category: (body.category || 'Bổ sung').trim(),
+          category: (body.category || 'Bài học').trim(),
           grade: (body.grade || 'Toán 4').trim(),
           icon: (body.icon || '🔗').trim(),
           color: body.color || COLOR_PRESETS[list.length % COLOR_PRESETS.length],
@@ -246,7 +246,7 @@ const server = http.createServer(async (req, res) => {
         id: finalSlug,
         title: rawTitle || finalSlug.replace(/_/g, ' '),
         subtitle: (body.subtitle || 'Học liệu HTML mới đăng tải').trim(),
-        category: (body.category || 'Bổ sung').trim(),
+        category: (body.category || 'Bài học').trim(),
         grade: (body.grade || 'Toán 4').trim(),
         icon: (body.icon || '📘').trim(),
         color: body.color || COLOR_PRESETS[list.length % COLOR_PRESETS.length],
@@ -338,11 +338,20 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, readCatalog());
     }
 
-    if (req.method === 'GET' && pathname === '/logo.jpg') {
-      const logoPath = path.join(ROOT_DIR, 'logo.jpg');
-      if (fs.existsSync(logoPath)) {
-        res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-        return fs.createReadStream(logoPath).pipe(res);
+    if (req.method === 'GET' && /\.(png|jpe?g|ico|webp)$/i.test(pathname)) {
+      const safeFile = path.basename(pathname);
+      const imgPath = path.join(ROOT_DIR, safeFile);
+      if (fs.existsSync(imgPath)) {
+        const ext = path.extname(safeFile).toLowerCase();
+        const mimeMap = {
+          '.png': 'image/png',
+          '.jpg': 'image/jpeg',
+          '.jpeg': 'image/jpeg',
+          '.ico': 'image/x-icon',
+          '.webp': 'image/webp'
+        };
+        res.writeHead(200, { 'Content-Type': mimeMap[ext] || 'application/octet-stream' });
+        return fs.createReadStream(imgPath).pipe(res);
       }
     }
 
