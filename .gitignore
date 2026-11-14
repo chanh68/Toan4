@@ -6,3 +6,8 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Ho so du thi noi bo (luu tai may, khong day len web cong khai)
+Ho_So_Du_Thi_AI_Thu_Lam/
+*.docx
+
