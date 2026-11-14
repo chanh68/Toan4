@@ -856,15 +856,28 @@
     // ==========================================
     const ADMIN_SESSION_KEY = 'toan4_admin_session';
     const TEACHER_PIN_KEY = 'toan4_teacher_pin_code';
+    const TEACHER_WHITELIST_EMAILS = [
+      'tranhoan1010hn@gmail.com'
+    ];
 
     function getTeacherPin() {
       return localStorage.getItem(TEACHER_PIN_KEY) || '2026';
     }
 
+    function isAuthorizedTeacherEmail(email) {
+      if (!email || typeof email !== 'string') return false;
+      const clean = email.trim().toLowerCase();
+      let customList = [];
+      try {
+        const raw = localStorage.getItem('toan4_teacher_emails');
+        if (raw) customList = JSON.parse(raw);
+      } catch (e) {}
+      const allowed = [...TEACHER_WHITELIST_EMAILS, ...(Array.isArray(customList) ? customList : [])];
+      return allowed.some(e => e.trim().toLowerCase() === clean);
+    }
+
     function checkIsAdminSession() {
       try {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('mode') === 'admin') return true;
         const raw = localStorage.getItem(ADMIN_SESSION_KEY);
         if (!raw) return false;
         const data = JSON.parse(raw);
@@ -1506,17 +1519,26 @@
           try {
             const { signInWithPopup } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
             const res = await signInWithPopup(window._fbAuth, window._fbProvider);
-            const email = res.user.email;
-            setAdminSession(email, res.user.displayName || 'Cô Hoan');
-            teacherLoginModal.classList.add('hidden');
+            const email = (res.user.email || '').trim().toLowerCase();
+            if (isAuthorizedTeacherEmail(email)) {
+              setAdminSession(email, res.user.displayName || 'Cô Hoan');
+              teacherLoginModal.classList.add('hidden');
+            } else {
+              alert('⛔ Truy cập bị từ chối!\nEmail (' + email + ') không có quyền Quản trị Giáo viên.');
+            }
           } catch (err) {
             alert('Lỗi đăng nhập Google: ' + err.message);
           }
         } else {
-          const email = prompt('Nhập địa chỉ Gmail giáo viên của bạn:', 'tranhoan1010hn@gmail.com');
-          if (email) {
-            setAdminSession(email, 'Cô Hoan');
-            teacherLoginModal.classList.add('hidden');
+          const input = prompt('Nhập địa chỉ Gmail giáo viên đã được cấp quyền:');
+          if (input !== null) {
+            const email = input.trim().toLowerCase();
+            if (email && isAuthorizedTeacherEmail(email)) {
+              setAdminSession(email, 'Cô Hoan');
+              teacherLoginModal.classList.add('hidden');
+            } else {
+              alert('⛔ Truy cập bị từ chối!\nEmail không nằm trong danh sách Giáo viên phụ trách được phân quyền.');
+            }
           }
         }
       });
