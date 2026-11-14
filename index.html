@@ -14,14 +14,13 @@
     }
     body {
       font-family: var(--font-body);
-      background-color: #fff9f5;
+      background-color: #fafaf8;
       background-image:
-        radial-gradient(at 12% 15%, rgba(254, 215, 226, 0.55) 0px, transparent 45%),
-        radial-gradient(at 88% 12%, rgba(186, 230, 253, 0.65) 0px, transparent 45%),
-        radial-gradient(at 82% 85%, rgba(254, 240, 138, 0.5) 0px, transparent 45%),
-        radial-gradient(at 15% 85%, rgba(167, 243, 208, 0.5) 0px, transparent 45%),
-        radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
-      background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 26px 26px;
+        radial-gradient(at 15% 10%, rgba(224, 242, 254, 0.45) 0px, transparent 40%),
+        radial-gradient(at 85% 12%, rgba(254, 243, 199, 0.4) 0px, transparent 40%),
+        radial-gradient(at 80% 82%, rgba(252, 231, 243, 0.4) 0px, transparent 40%),
+        radial-gradient(at 20% 85%, rgba(209, 250, 229, 0.4) 0px, transparent 40%);
+      background-size: 100% 100%;
       min-height: 100vh;
       overflow-x: hidden;
     }
@@ -31,15 +30,15 @@
 
     @keyframes floatSlow {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-8px) rotate(4deg); }
+      50% { transform: translateY(-6px) rotate(3deg); }
     }
     @keyframes floatReverse {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(7px) rotate(-4deg); }
+      50% { transform: translateY(5px) rotate(-3deg); }
     }
     @keyframes wiggle {
-      0%, 100% { transform: rotate(-3deg) scale(1); }
-      50% { transform: rotate(3deg) scale(1.06); }
+      0%, 100% { transform: rotate(-2deg) scale(1); }
+      50% { transform: rotate(2deg) scale(1.04); }
     }
     .animate-float {
       animation: floatSlow 4s ease-in-out infinite;
@@ -51,26 +50,27 @@
       animation: wiggle 2.8s ease-in-out infinite;
     }
 
-    /* Cute 3D Toy Card Style */
+    /* Cute Pastel Soft Card Style */
     .cute-card {
-      border-radius: 28px;
-      border: 3px solid #ffffff;
-      box-shadow: 0 10px 25px -5px rgba(148, 163, 184, 0.22), 0 6px 0 0 #e2e8f0;
+      border-radius: 26px;
+      border: 2px solid #ffffff;
+      background: #ffffff;
+      box-shadow: 0 6px 20px -3px rgba(100, 116, 139, 0.08), 0 3px 0 0 #f1f5f9;
       transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .cute-card:hover {
-      transform: translateY(-7px) scale(1.015);
-      box-shadow: 0 20px 30px -8px rgba(56, 189, 248, 0.28), 0 9px 0 0 #bae6fd;
-      border-color: #e0f2fe;
+      transform: translateY(-5px);
+      box-shadow: 0 16px 28px -6px rgba(148, 163, 184, 0.16), 0 5px 0 0 #e2e8f0;
+      border-color: #ffffff;
     }
     .cute-card:active {
-      transform: translateY(-2px) scale(0.99);
+      transform: translateY(-1px);
     }
 
     /* Cute 3D Pill Buttons */
     .cute-pill {
       transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 4px 0 0 #e2e8f0;
+      box-shadow: 0 3px 0 0 #e2e8f0;
     }
     .cute-pill:hover {
       transform: translateY(-2px);
@@ -80,7 +80,7 @@
       box-shadow: 0 1px 0 0 #e2e8f0;
     }
     .cute-pill-active {
-      box-shadow: 0 4px 0 0 #db2777 !important;
+      box-shadow: 0 3px 0 0 #0284c7 !important;
     }
 
     /* Card Header Pattern */
@@ -315,23 +315,23 @@
 
   <!-- 2. Falling Poinciana Petals (Cánh hoa phượng rơi lững lờ theo làn gió) -->
   <div class="pointer-events-none fixed inset-0 z-10 overflow-hidden select-none">
-    <div class="absolute -top-6 left-[10%] w-4 h-5 petal-1 opacity-75">
-      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#ef4444"/></svg>
-    </div>
-    <div class="absolute -top-6 left-[25%] w-3.5 h-4.5 petal-2 opacity-80" style="animation-delay: 3.5s;">
-      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#dc2626"/></svg>
-    </div>
-    <div class="absolute -top-6 left-[46%] w-4 h-5 petal-3 opacity-75" style="animation-delay: 8s;">
+    <div class="absolute -top-6 left-[10%] w-3.5 h-4.5 petal-1 opacity-50">
       <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#f87171"/></svg>
     </div>
-    <div class="absolute -top-6 left-[68%] w-3.5 h-4.5 petal-1 opacity-80" style="animation-delay: 5s;">
+    <div class="absolute -top-6 left-[25%] w-3 h-4 petal-2 opacity-50" style="animation-delay: 3.5s;">
       <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#ef4444"/></svg>
     </div>
-    <div class="absolute -top-6 left-[84%] w-4 h-5 petal-2 opacity-85" style="animation-delay: 11s;">
-      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#dc2626"/></svg>
+    <div class="absolute -top-6 left-[46%] w-3.5 h-4.5 petal-3 opacity-45" style="animation-delay: 8s;">
+      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#fca5a5"/></svg>
     </div>
-    <div class="absolute -top-6 left-[93%] w-3 h-4 petal-3 opacity-70" style="animation-delay: 2s;">
+    <div class="absolute -top-6 left-[68%] w-3 h-4 petal-1 opacity-50" style="animation-delay: 5s;">
       <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#f87171"/></svg>
+    </div>
+    <div class="absolute -top-6 left-[84%] w-3.5 h-4.5 petal-2 opacity-55" style="animation-delay: 11s;">
+      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#ef4444"/></svg>
+    </div>
+    <div class="absolute -top-6 left-[93%] w-2.5 h-3.5 petal-3 opacity-40" style="animation-delay: 2s;">
+      <svg viewBox="0 0 20 26" fill="none"><path d="M10 0 C18 6 20 18 10 26 C0 18 2 6 10 0 Z" fill="#fca5a5"/></svg>
     </div>
   </div>
 
@@ -339,8 +339,8 @@
   <div class="pointer-events-none fixed bottom-3 left-3 2xl:left-8 z-20 hidden lg:flex flex-col items-center select-none transition-all duration-300">
     <div class="relative group animate-bob flex flex-col items-center">
       <div class="w-36 xl:w-44 2xl:w-52 flex flex-col items-center">
-        <img src="./chibi_co_giao.png?v=2" alt="Cô giáo Thụy Lâm Chibi" class="w-full h-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.22)]" />
-        <div class="text-center -mt-2 py-1 px-3 bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 rounded-full text-white font-extrabold text-[11px] shadow-md flex items-center justify-center gap-1 border-2 border-white">
+        <img src="./chibi_co_giao.png?v=2" alt="Cô giáo Thụy Lâm Chibi" class="w-full h-auto object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.12)]" />
+        <div class="text-center -mt-2 py-0.5 px-3 bg-gradient-to-r from-rose-400 to-amber-300 rounded-full text-white font-extrabold text-[11px] shadow-sm flex items-center justify-center gap-1 border-2 border-white">
           <span>🌸</span> <span>Cô giáo Thụy Lâm</span>
         </div>
       </div>
@@ -351,8 +351,8 @@
   <div class="pointer-events-none fixed bottom-3 right-3 2xl:right-8 z-20 hidden lg:flex flex-col items-center select-none transition-all duration-300">
     <div class="relative group animate-bob-delay flex flex-col items-center">
       <div class="w-40 xl:w-48 2xl:w-56 flex flex-col items-center">
-        <img src="./chibi_hoc_sinh.png?v=2" alt="Học sinh Chibi chăm ngoan" class="w-full h-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.22)]" />
-        <div class="text-center -mt-2 py-1 px-3 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 rounded-full text-white font-extrabold text-[11px] shadow-md flex items-center justify-center gap-1 border-2 border-white">
+        <img src="./chibi_hoc_sinh.png?v=2" alt="Học sinh Chibi chăm ngoan" class="w-full h-auto object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.12)]" />
+        <div class="text-center -mt-2 py-0.5 px-3 bg-gradient-to-r from-sky-400 to-teal-400 rounded-full text-white font-extrabold text-[11px] shadow-sm flex items-center justify-center gap-1 border-2 border-white">
           <span>🎒</span> <span>Học sinh chăm ngoan</span>
         </div>
       </div>
@@ -368,35 +368,35 @@
   </div>
 
   <!-- Top Cute Header -->
-  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-30 border-b-4 border-pink-100 shadow-sm">
+  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200/60 shadow-xs">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-3.5">
         <div class="relative shrink-0">
           <img src="./logo.jpg" alt="Logo Trường Tiểu học và THCS Thụy Lâm"
-               class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl object-cover border-3 border-amber-300 shadow-md bg-white p-0.5" />
+               class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl object-cover border-2 border-amber-200 shadow-xs bg-white p-0.5" />
           <span class="absolute -bottom-1 -right-1 text-base animate-wiggle">🌟</span>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-lg sm:text-2xl font-extrabold bg-gradient-to-r from-sky-600 via-pink-500 to-amber-500 bg-clip-text text-transparent leading-tight">
+            <h1 class="text-lg sm:text-2xl font-black text-sky-800 tracking-tight leading-tight">
               VƯƠNG QUỐC TOÁN HỌC
             </h1>
-            <span class="hidden sm:inline-block text-xs font-extrabold bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full">
+            <span class="hidden sm:inline-block text-xs font-extrabold bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-0.5 rounded-full">
               Toán 4 ✨
             </span>
           </div>
-          <p class="text-xs sm:text-sm text-slate-600 font-bold">
-            🏫 Trường TH &amp; THCS Thụy Lâm • <span class="text-pink-600">Cô Trần Thị Hoan &amp; Cô Trần Thị Hải</span>
+          <p class="text-xs sm:text-sm text-slate-500 font-bold">
+            🏫 Trường TH &amp; THCS Thụy Lâm • <span class="text-rose-500">Cô Trần Thị Hoan &amp; Cô Trần Thị Hải</span>
           </p>
         </div>
       </div>
 
       <div class="flex items-center flex-wrap gap-2.5">
-        <span id="game-count-badge" class="bg-amber-100 border-2 border-amber-300 text-amber-900 text-xs sm:text-sm font-extrabold px-3.5 py-2 rounded-2xl whitespace-nowrap shadow-sm">
+        <span id="game-count-badge" class="bg-sky-50 border border-sky-200 text-sky-800 text-xs sm:text-sm font-extrabold px-3.5 py-2 rounded-2xl whitespace-nowrap shadow-xs">
           🎒 0 bài học
         </span>
         <button id="btn-open-upload" type="button"
-                class="bg-gradient-to-r from-pink-500 via-rose-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-extrabold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-2xl shadow-[0_4px_0_0_#be185d] hover:translate-y-[-1px] active:translate-y-[2px] active:shadow-[0_1px_0_0_#be185d] transition-all whitespace-nowrap flex items-center gap-1.5">
+                class="bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-600 hover:to-teal-600 text-white font-extrabold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-2xl shadow-[0_3px_0_0_#0284c7] hover:translate-y-[-1px] active:translate-y-[2px] transition-all whitespace-nowrap flex items-center gap-1.5">
           <span>➕</span> <span>Thêm Học Liệu Mới</span>
         </button>
       </div>
@@ -406,24 +406,24 @@
   <main class="relative z-10 flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-7">
 
     <!-- Cute Hero Banner -->
-    <section class="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-sky-100 via-rose-50 to-amber-100 p-6 sm:p-8 border-4 border-white shadow-[0_12px_30px_-8px_rgba(244,114,182,0.22)]">
+    <section class="relative overflow-hidden rounded-[30px] bg-gradient-to-br from-sky-50/70 via-white to-amber-50/60 p-6 sm:p-8 border-2 border-white shadow-[0_8px_25px_-5px_rgba(148,163,184,0.12)]">
       <!-- Decorative soft circles -->
-      <div class="pointer-events-none absolute -top-12 -right-12 w-44 h-44 rounded-full bg-pink-200/40 blur-xl"></div>
-      <div class="pointer-events-none absolute -bottom-14 -left-12 w-48 h-48 rounded-full bg-sky-200/50 blur-xl"></div>
+      <div class="pointer-events-none absolute -top-12 -right-12 w-44 h-44 rounded-full bg-pink-100/35 blur-xl"></div>
+      <div class="pointer-events-none absolute -bottom-14 -left-12 w-48 h-48 rounded-full bg-sky-100/40 blur-xl"></div>
 
       <div class="relative flex flex-col lg:flex-row items-center justify-between gap-6">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 max-w-3xl">
           <div class="relative shrink-0">
-            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-[28px] bg-white p-1.5 shadow-lg border-4 border-pink-200 rotate-[-3deg] hover:rotate-0 transition">
+            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-[24px] bg-white p-1.5 shadow-sm border-2 border-pink-100 rotate-[-2deg] hover:rotate-0 transition">
               <img src="./logo.jpg" alt="Trường Tiểu học và THCS Thụy Lâm"
-                   class="w-full h-full rounded-[20px] object-cover" />
+                   class="w-full h-full rounded-[18px] object-cover" />
             </div>
             <span class="absolute -top-3 -left-3 text-2xl animate-float">👑</span>
             <span class="absolute -bottom-2 -right-2 text-2xl animate-float-rev">🐣</span>
           </div>
 
           <div class="space-y-2.5">
-            <div class="inline-flex items-center gap-1.5 bg-white/90 border-2 border-rose-200 text-rose-600 text-xs font-extrabold px-3.5 py-1 rounded-full shadow-sm">
+            <div class="inline-flex items-center gap-1.5 bg-white/95 border border-rose-200/80 text-rose-700 text-xs font-extrabold px-3.5 py-1 rounded-full shadow-xs">
               <span>🌺</span> <span>Mái trường Thụy Lâm – Rực rỡ hoa phượng, cô trò vui học Toán 4!</span>
             </div>
             <h2 class="text-xl sm:text-3xl font-extrabold text-slate-800 leading-snug">
@@ -433,10 +433,10 @@
               Chào mừng các em đến với Vương Quốc Toán Học lớp 4! Khám phá <strong>bài học trực quan</strong>, hoàn thành <strong>bài tập tuần</strong>, cùng ôn tập và sẵn sàng cho các bài kiểm tra nhé! 🏆
             </p>
             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
-              <span class="inline-flex items-center gap-1.5 bg-white/90 border-2 border-sky-200 text-sky-800 text-xs font-extrabold px-3.5 py-1.5 rounded-2xl shadow-sm">
+              <span class="inline-flex items-center gap-1.5 bg-white/95 border border-sky-200 text-sky-800 text-xs font-extrabold px-3.5 py-1.5 rounded-2xl shadow-xs">
                 🏫 Trường TH &amp; THCS Thụy Lâm (Xã Thư Lâm, TP. Hà Nội)
               </span>
-              <span class="inline-flex items-center gap-1.5 bg-white/90 border-2 border-emerald-200 text-emerald-800 text-xs font-extrabold px-3.5 py-1.5 rounded-2xl shadow-sm">
+              <span class="inline-flex items-center gap-1.5 bg-white/95 border border-emerald-200 text-emerald-800 text-xs font-extrabold px-3.5 py-1.5 rounded-2xl shadow-xs">
                 👩‍🏫 GV: Cô Trần Thị Hoan &amp; Cô Trần Thị Hải
               </span>
             </div>
@@ -447,8 +447,8 @@
         <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0 w-full lg:w-auto justify-center">
           <div class="relative group hidden sm:flex flex-col items-center">
             <div class="w-36 lg:w-44 flex flex-col items-center">
-              <img src="./co_va_tro.png?v=2" alt="Cô trò Trường TH &amp; THCS Thụy Lâm" class="w-full h-auto object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.18)] hover:scale-105 transition-transform" />
-              <div class="text-center -mt-2 py-0.5 px-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full text-white font-extrabold text-[10px] shadow-md border-2 border-white">
+              <img src="./co_va_tro.png?v=2" alt="Cô trò Trường TH &amp; THCS Thụy Lâm" class="w-full h-auto object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.12)] hover:scale-105 transition-transform" />
+              <div class="text-center -mt-2 py-0.5 px-3 bg-gradient-to-r from-rose-400 to-amber-300 rounded-full text-white font-extrabold text-[10px] shadow-sm border-2 border-white">
                 🌸 Mái trường Thụy Lâm
               </div>
             </div>
@@ -456,14 +456,14 @@
 
           <!-- Cute Bubbly Stat Badges -->
           <div class="grid grid-cols-3 lg:grid-cols-1 gap-2.5 shrink-0 w-full sm:w-auto lg:w-48">
-            <div class="bg-white/95 border-2 border-sky-200 rounded-2xl p-2.5 sm:p-3 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
+            <div class="bg-white/95 border border-sky-100 rounded-2xl p-2.5 sm:p-3 text-center shadow-xs flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
               <span class="text-xs font-extrabold text-slate-500">📚 Kho bài học</span>
               <span id="stat-total-count" class="text-base sm:text-lg font-black text-sky-600">10 bài</span>
             </div>
-            <div class="bg-white/95 border-2 border-pink-200 rounded-2xl p-2.5 sm:p-3 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
-              <span class="text-xs sm:text-sm font-black text-pink-600">🎯 Thử thách đa dạng</span>
+            <div class="bg-white/95 border border-rose-100 rounded-2xl p-2.5 sm:p-3 text-center shadow-xs flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
+              <span class="text-xs sm:text-sm font-black text-rose-500">🎯 Thử thách đa dạng</span>
             </div>
-            <div class="bg-white/95 border-2 border-amber-200 rounded-2xl p-2.5 sm:p-3 text-center shadow-sm flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
+            <div class="bg-white/95 border border-amber-100 rounded-2xl p-2.5 sm:p-3 text-center shadow-xs flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-4 gap-1">
               <span class="text-xs sm:text-sm font-black text-amber-600">🏅 Giấy khen số</span>
             </div>
           </div>
@@ -472,28 +472,28 @@
     </section>
 
     <!-- Search & Cute Category Filters -->
-    <section class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 bg-white/80 backdrop-blur-sm p-3.5 rounded-[26px] border-2 border-pink-100 shadow-sm">
+    <section class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 bg-white/90 backdrop-blur-sm p-3.5 rounded-[24px] border border-slate-200/70 shadow-xs">
       <div class="flex flex-wrap items-center gap-2" id="category-pills">
-        <button type="button" data-cat="Tất cả" class="cat-pill cute-pill cute-pill-active bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+        <button type="button" data-cat="Tất cả" class="cat-pill cute-pill cute-pill-active bg-gradient-to-r from-sky-500 to-teal-500 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
           🌈 Tất cả bài học
         </button>
-        <button type="button" data-cat="Bài học" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-sky-300 hover:bg-sky-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+        <button type="button" data-cat="Bài học" class="cat-pill cute-pill bg-white border border-slate-200/80 text-slate-700 hover:border-sky-300 hover:bg-sky-50/50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
           📘 Bài học
         </button>
-        <button type="button" data-cat="Bài tập tuần" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-purple-300 hover:bg-purple-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+        <button type="button" data-cat="Bài tập tuần" class="cat-pill cute-pill bg-white border border-slate-200/80 text-slate-700 hover:border-purple-300 hover:bg-purple-50/50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
           📅 Bài tập tuần
         </button>
-        <button type="button" data-cat="Ôn tập" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-amber-300 hover:bg-amber-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+        <button type="button" data-cat="Ôn tập" class="cat-pill cute-pill bg-white border border-slate-200/80 text-slate-700 hover:border-amber-300 hover:bg-amber-50/50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
           🏆 Ôn tập
         </button>
-        <button type="button" data-cat="Kiểm tra" class="cat-pill cute-pill bg-white border-2 border-slate-200 text-slate-700 hover:border-orange-300 hover:bg-orange-50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
+        <button type="button" data-cat="Kiểm tra" class="cat-pill cute-pill bg-white border border-slate-200/80 text-slate-700 hover:border-orange-300 hover:bg-orange-50/50 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl whitespace-nowrap">
           📝 Kiểm tra
         </button>
       </div>
 
       <div class="relative w-full md:w-72 shrink-0">
         <input id="search-input" type="search" placeholder="Tìm bài học yêu thích..."
-               class="w-full bg-slate-50/90 border-2 border-pink-200 focus:border-pink-400 focus:bg-white focus:outline-none rounded-2xl pl-10 pr-4 py-2 text-sm font-bold text-slate-700 placeholder:text-slate-400 transition" />
+               class="w-full bg-slate-50/80 border border-slate-200 focus:border-sky-400 focus:bg-white focus:outline-none rounded-2xl pl-10 pr-4 py-2 text-sm font-bold text-slate-700 placeholder:text-slate-400 transition" />
         <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-base">🔍</span>
       </div>
     </section>
@@ -785,11 +785,46 @@
     ];
 
     const CUTE_THEMES = [
-      { grad: 'from-emerald-400 via-teal-400 to-cyan-400', badgeBg: 'bg-emerald-50 text-emerald-700 border-emerald-200', ctaBg: 'bg-emerald-500 group-hover:bg-emerald-600 shadow-[0_4px_0_0_#047857]', sticker: '🍀' },
-      { grad: 'from-sky-400 via-blue-400 to-indigo-400', badgeBg: 'bg-sky-50 text-sky-700 border-sky-200', ctaBg: 'bg-sky-500 group-hover:bg-sky-600 shadow-[0_4px_0_0_#0369a1]', sticker: '🐳' },
-      { grad: 'from-pink-400 via-rose-400 to-orange-300', badgeBg: 'bg-pink-50 text-pink-700 border-pink-200', ctaBg: 'bg-pink-500 group-hover:bg-pink-600 shadow-[0_4px_0_0_#be185d]', sticker: '🌸' },
-      { grad: 'from-amber-400 via-orange-400 to-rose-400', badgeBg: 'bg-amber-50 text-amber-800 border-amber-200', ctaBg: 'bg-amber-500 group-hover:bg-amber-600 shadow-[0_4px_0_0_#b45309]', sticker: '🦊' },
-      { grad: 'from-purple-400 via-violet-400 to-fuchsia-400', badgeBg: 'bg-purple-50 text-purple-700 border-purple-200', ctaBg: 'bg-purple-500 group-hover:bg-purple-600 shadow-[0_4px_0_0_#6d28d9]', sticker: '🦄' }
+      {
+        grad: 'from-emerald-100/90 via-teal-50 to-emerald-50',
+        tagColor: 'text-emerald-700',
+        pillBg: 'bg-white/90 text-emerald-800 border-emerald-200/80',
+        badgeBg: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
+        ctaBg: 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-[0_3px_0_0_#059669]',
+        sticker: '🍀'
+      },
+      {
+        grad: 'from-sky-100/90 via-blue-50 to-sky-50',
+        tagColor: 'text-sky-700',
+        pillBg: 'bg-white/90 text-sky-800 border-sky-200/80',
+        badgeBg: 'bg-sky-50 text-sky-700 border-sky-200/80',
+        ctaBg: 'bg-sky-500 hover:bg-sky-600 text-white shadow-[0_3px_0_0_#0284c7]',
+        sticker: '🐳'
+      },
+      {
+        grad: 'from-rose-100/90 via-pink-50 to-rose-50',
+        tagColor: 'text-rose-700',
+        pillBg: 'bg-white/90 text-rose-800 border-rose-200/80',
+        badgeBg: 'bg-rose-50 text-rose-700 border-rose-200/80',
+        ctaBg: 'bg-rose-400 hover:bg-rose-500 text-white shadow-[0_3px_0_0_#e11d48]',
+        sticker: '🌸'
+      },
+      {
+        grad: 'from-amber-100/90 via-orange-50 to-amber-50',
+        tagColor: 'text-amber-800',
+        pillBg: 'bg-white/90 text-amber-900 border-amber-200/80',
+        badgeBg: 'bg-amber-50 text-amber-800 border-amber-200/80',
+        ctaBg: 'bg-amber-400 hover:bg-amber-500 text-amber-950 shadow-[0_3px_0_0_#d97706]',
+        sticker: '🦊'
+      },
+      {
+        grad: 'from-purple-100/90 via-violet-50 to-purple-50',
+        tagColor: 'text-purple-700',
+        pillBg: 'bg-white/90 text-purple-800 border-purple-200/80',
+        badgeBg: 'bg-purple-50 text-purple-700 border-purple-200/80',
+        ctaBg: 'bg-purple-400 hover:bg-purple-500 text-white shadow-[0_3px_0_0_#7c3aed]',
+        sticker: '🦄'
+      }
     ];
 
     function showToast(msg) {
@@ -892,29 +927,29 @@
 
         card.innerHTML = `
           <div>
-            <!-- Cute Colorful Header -->
-            <div class="bg-gradient-to-r ${theme.grad} card-pattern p-5 flex items-center justify-between text-white relative overflow-hidden">
+            <!-- Cute Pastel Header -->
+            <div class="bg-gradient-to-r ${theme.grad} p-5 flex items-center justify-between relative overflow-hidden border-b border-slate-100">
               <div class="flex items-center gap-3.5 relative z-10">
-                <div class="w-14 h-14 rounded-[20px] bg-white text-3xl flex items-center justify-center shadow-md border-2 border-white/80 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white text-3xl flex items-center justify-center shadow-xs border border-white group-hover:scale-105 group-hover:rotate-3 transition-transform duration-300">
                   ${g.icon || '📘'}
                 </div>
                 <div>
-                  <span class="inline-block text-[11px] font-extrabold uppercase tracking-wide bg-black/20 backdrop-blur-xs px-3 py-1 rounded-full">
+                  <span class="inline-block text-[11px] font-extrabold uppercase tracking-wide ${theme.pillBg} border px-2.5 py-0.5 rounded-full shadow-xs">
                     ${g.grade || 'Toán 4'} • ${getDisplayCategory(g)}
                   </span>
-                  <div class="text-xs font-extrabold opacity-95 mt-1 flex items-center gap-1">
-                    <span>${g.externalUrl ? '🔗 Nội dung từ liên kết' : '✨ Thử thách đa dạng'}</span>
+                  <div class="text-xs font-bold ${theme.tagColor} mt-1 flex items-center gap-1">
+                    <span>${g.externalUrl ? '🔗 Nội dung liên kết' : '✨ Thử thách bài tập'}</span>
                   </div>
                 </div>
               </div>
 
-              <span class="text-3xl opacity-35 group-hover:opacity-75 group-hover:scale-125 transition duration-300 select-none">
+              <span class="text-3xl opacity-40 group-hover:opacity-80 group-hover:scale-115 transition duration-300 select-none">
                 ${theme.sticker}
               </span>
 
               ${canDelete ? `
                 <button type="button" data-del="${g.id}" title="Gỡ khỏi danh sách"
-                        class="del-btn absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-white/25 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center transition">
+                        class="del-btn absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-white/70 hover:bg-rose-500 hover:text-white text-slate-500 text-xs font-bold flex items-center justify-center shadow-xs transition">
                   🗑️
                 </button>
               ` : ''}
@@ -922,10 +957,10 @@
 
             <!-- Card Body -->
             <div class="p-5 pb-3">
-              <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl leading-snug mb-1.5 group-hover:text-pink-600 transition-colors">
+              <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl leading-snug mb-1.5 group-hover:text-sky-600 transition-colors">
                 ${g.title}
               </h3>
-              <p class="text-xs sm:text-sm text-slate-500 font-semibold leading-relaxed line-clamp-2">
+              <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed line-clamp-2">
                 ${g.subtitle || 'Khám phá kiến thức và chinh phục bài tập tương tác vui nhộn!'}
               </p>
             </div>
@@ -936,7 +971,7 @@
             <span class="inline-flex items-center gap-1 text-xs font-extrabold px-3 py-1.5 rounded-xl border ${theme.badgeBg}">
               🏅 Có giấy khen
             </span>
-            <span class="inline-flex items-center gap-1.5 text-white font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl transition-all ${theme.ctaBg}">
+            <span class="inline-flex items-center gap-1.5 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-2xl transition-all ${theme.ctaBg}">
               <span>Vào học ngay</span>
               <span class="group-hover:translate-x-1 transition-transform">🚀</span>
             </span>
