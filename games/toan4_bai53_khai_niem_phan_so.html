@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 53: Khái Niệm Phân Số - Toán Lớp 4 Thụy Lâm</title>
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Lexend', 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 40%, #fef2f2 75%, #eff6ff 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .text-balance { text-wrap: balance; }
+    .cute-card {
+      border-radius: 28px;
+      box-shadow: 0 16px 36px -8px rgba(192, 38, 211, 0.08);
+      border: 3px solid rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+    }
+    .journey-road {
+      position: relative; height: 440px; margin: 18px 0 14px; border-radius: 28px;
+      background: linear-gradient(155deg, #fae8ff 0% 25%, #fbcfe8 26% 50%, #fed7aa 51% 75%, #bbf7d0 76% 100%);
+      overflow: hidden; border: 4px solid #c026d3; box-shadow: inset 0 0 24px rgba(0,0,0,0.05);
+    }
+    @media (max-width: 760px) { .journey-road { height: 500px; } }
+    .road-curve {
+      position: absolute; top: 47%; left: -6%; right: -5%; height: 76px;
+      border-top: 6px dashed #ffffff; border-bottom: 6px dashed #ffffff;
+      border-radius: 50%; background: #a21caf; transform: rotate(-3deg); z-index: 1;
+    }
+    .road-truck {
+      position: absolute; top: 42%; font-size: 52px;
+      filter: drop-shadow(0 8px 4px rgba(15, 23, 42, 0.25));
+      transform: translate(-50%) scaleX(-1); transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5; pointer-events: none;
+    }
+    .road-stop {
+      position: absolute; width: 126px; border: 0; background: transparent;
+      color: #0f172a; text-align: center; transform: translate(-50%);
+      cursor: pointer; z-index: 4; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .road-stop:hover:not([disabled]) { transform: translate(-50%) scale(1.1); z-index: 6; }
+    .road-stop span.icon-wrap {
+      display: grid; place-items: center; width: 66px; height: 66px; margin: auto;
+      border-radius: 50%; border: 4px solid #c026d3; background: #ffffff;
+      font-size: 32px; box-shadow: 0 8px 16px rgba(192, 38, 211, 0.25);
+    }
+    .road-stop.active span.icon-wrap {
+      border-color: #86198f; background: #fdf4ff;
+      box-shadow: 0 0 0 8px rgba(192, 38, 211, 0.35);
+    }
+    .road-stop.locked { opacity: 0.55; cursor: not-allowed; }
+    .pizza-slice { transition: all 0.2s; cursor: pointer; }
+    .pizza-slice:hover { filter: brightness(1.1); }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-fuchsia-100 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="flex items-center gap-2 bg-fuchsia-50 hover:bg-fuchsia-100 text-fuchsia-800 px-3 py-1.5 rounded-2xl border border-fuchsia-200 text-xs font-bold transition">
+          <span>🏠</span> <span>Về Trang Chủ</span>
+        </a>
+        <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+        <div>
+          <h1 class="text-sm sm:text-base font-extrabold text-slate-800 leading-tight">Bài 53: Khái Niệm Phân Số</h1>
+          <p class="text-[11px] text-fuchsia-700 font-semibold hidden sm:block">Xưởng Cắt Bánh Pizza &amp; Bánh Chưng • Trường TH &amp; THCS Thụy Lâm</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="bg-fuchsia-50 border border-fuchsia-200 px-3 py-1 rounded-2xl flex items-center gap-1.5 shadow-2xs">
+          <span class="text-lg">💎</span>
+          <span id="header-gem-count" class="text-sm font-black text-fuchsia-800">0</span>
+          <span class="text-[10px] font-bold text-fuchsia-600 uppercase">Kim Cương</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-4 pt-4">
+    <div class="bg-white/80 p-1.5 rounded-2xl border border-fuchsia-100 shadow-xs flex gap-2">
+      <button type="button" id="tab-btn-explore" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-fuchsia-600 text-white shadow-md">
+        <span>🍕</span> <span>Khám Phá Xưởng Cắt Bánh Phân Số</span>
+      </button>
+      <button type="button" id="tab-btn-arena" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-fuchsia-50">
+        <span>🏆</span> <span>Đấu Trường 5 Chặng (Săn 100 Kim Cương)</span>
+      </button>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 py-4 flex-1 w-full">
+
+    <!-- PANE 1: EXPLORE -->
+    <div id="pane-explore" class="space-y-6">
+      
+      <div class="bg-white rounded-3xl p-6 border-2 border-fuchsia-200 shadow-sm space-y-4">
+        <div class="flex items-center gap-3 border-b pb-3 border-fuchsia-100">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-fuchsia-600 to-pink-500 text-white flex items-center justify-center text-2xl shadow-md">
+            🍕
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-black text-slate-900">Khái Niệm &amp; Cấu Tạo Của Phân Số</h2>
+            <p class="text-xs text-slate-500 font-medium">Kiến thức nền tảng trọng tâm bậc nhất của Toán Lớp 4</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 bg-fuchsia-50 rounded-2xl border-2 border-fuchsia-200 space-y-2">
+            <span class="text-xs font-black bg-fuchsia-600 text-white px-2.5 py-0.5 rounded-full uppercase">1. Tử Số (Viết Trên Dấu Gạch Ngang)</span>
+            <p class="text-xs sm:text-sm font-bold text-fuchsia-950">
+              Là số tự nhiên viết trên gạch ngang, chỉ <b>số phần bằng nhau đã được lấy đi hoặc tô màu</b>.
+            </p>
+          </div>
+
+          <div class="p-4 bg-pink-50 rounded-2xl border-2 border-pink-200 space-y-2">
+            <span class="text-xs font-black bg-pink-600 text-white px-2.5 py-0.5 rounded-full uppercase">2. Mẫu Số (Viết Dưới Dấu Gạch Ngang)</span>
+            <p class="text-xs sm:text-sm font-bold text-pink-950">
+              Là số tự nhiên <b>khác 0</b> viết dưới gạch ngang, chỉ <b>tổng số phần bằng nhau</b> mà hình được chia ra.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Pizza Fraction Slicer -->
+      <div class="bg-gradient-to-br from-fuchsia-600 via-pink-600 to-rose-500 rounded-3xl p-6 text-white shadow-xl space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🍰</span>
+            <h3 class="text-lg font-black uppercase tracking-wide">Xưởng Tô Màu Bánh Pizza Tương Tác</h3>
+          </div>
+          <span class="text-xs bg-white/20 px-3 py-1 rounded-full font-bold">Bấm Vào Từng Miếng Để Tô Màu</span>
+        </div>
+
+        <!-- Slices selector -->
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-xs font-bold text-fuchsia-100">Chia chiếc bánh thành:</span>
+          <button type="button" class="btn-slice-opt px-3 py-1 bg-white/20 hover:bg-white text-white hover:text-fuchsia-900 rounded-xl text-xs font-black transition cursor-pointer" data-slices="2">2 Phần</button>
+          <button type="button" class="btn-slice-opt px-3 py-1 bg-white/20 hover:bg-white text-white hover:text-fuchsia-900 rounded-xl text-xs font-black transition cursor-pointer" data-slices="4">4 Phần</button>
+          <button type="button" class="btn-slice-opt px-3 py-1 bg-white text-fuchsia-900 rounded-xl text-xs font-black transition cursor-pointer shadow-sm" data-slices="6">6 Phần</button>
+          <button type="button" class="btn-slice-opt px-3 py-1 bg-white/20 hover:bg-white text-white hover:text-fuchsia-900 rounded-xl text-xs font-black transition cursor-pointer" data-slices="8">8 Phần</button>
+        </div>
+
+        <!-- Visual Pizza Display & Fraction Box -->
+        <div class="bg-white rounded-2xl p-5 text-slate-800 shadow-inner grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          
+          <!-- SVG Pie -->
+          <div class="flex flex-col items-center">
+            <svg id="pizza-svg" width="220" height="220" viewBox="-110 -110 220 220" class="drop-shadow-md">
+              <!-- Slices generated dynamically -->
+            </svg>
+            <p class="text-xs text-slate-500 font-bold mt-2">👉 Bấm vào các miếng bánh để chọn / bỏ chọn</p>
+          </div>
+
+          <!-- Fraction Formula Representation -->
+          <div class="bg-fuchsia-50 p-5 rounded-2xl border-2 border-fuchsia-200 space-y-3 text-center">
+            <p class="text-xs font-extrabold uppercase text-fuchsia-900">PHÂN SỐ TƯƠNG ỨNG:</p>
+            
+            <div class="inline-flex flex-col items-center font-black text-3xl font-mono text-fuchsia-950 py-2">
+              <span id="frac-num" class="text-fuchsia-700">3</span>
+              <span class="w-14 h-1 bg-slate-800 rounded-full my-0.5"></span>
+              <span id="frac-den" class="text-slate-800">6</span>
+            </div>
+
+            <p class="text-xs font-bold text-slate-700">
+              Đọc là: <b id="frac-read" class="text-fuchsia-800 text-sm">Ba phần sáu</b>
+            </p>
+
+            <div class="p-2 bg-white rounded-xl border border-fuchsia-200 text-xs font-bold text-slate-600 text-left space-y-0.5">
+              <p>• <b>Tử số:</b> <span id="explain-num" class="text-fuchsia-700">3</span> (Số miếng đã tô màu)</p>
+              <p>• <b>Mẫu số:</b> <span id="explain-den" class="text-slate-800">6</span> (Tổng số miếng bánh chia đều)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANE 2: ARENA -->
+    <div id="pane-arena" class="hidden space-y-6">
+
+      <div class="journey-road">
+        <div class="road-curve"></div>
+        <div id="truck-indicator" class="road-truck" style="left: 10%;">🍕</div>
+
+        <button type="button" class="road-stop active" style="top: 18%; left: 10%;" data-stage="1">
+          <span class="icon-wrap">🌱</span>
+          <p class="font-extrabold text-xs mt-1 text-fuchsia-900">1. Khởi Động</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 68%; left: 30%;" data-stage="2">
+          <span class="icon-wrap">🧭</span>
+          <p class="font-extrabold text-xs mt-1 text-pink-900">2. Khám Phá</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 18%; left: 50%;" data-stage="3">
+          <span class="icon-wrap">⚔️</span>
+          <p class="font-extrabold text-xs mt-1 text-purple-900">3. Luyện Tập</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 68%; left: 70%;" data-stage="4">
+          <span class="icon-wrap">🌾</span>
+          <p class="font-extrabold text-xs mt-1 text-rose-900">4. Thụy Lâm</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 18%; left: 90%;" data-stage="5">
+          <span class="icon-wrap">👑</span>
+          <p class="font-extrabold text-xs mt-1 text-emerald-900">5. Vinh Danh</p>
+        </button>
+      </div>
+
+      <div id="quiz-card" class="bg-white rounded-3xl p-6 border-2 border-fuchsia-200 shadow-lg space-y-5">
+        <div class="flex items-center justify-between border-b pb-3 border-fuchsia-100">
+          <div class="flex items-center gap-2">
+            <span id="stage-badge" class="bg-fuchsia-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase">Chặng 1: Khởi Động</span>
+            <span id="question-progress" class="text-xs font-bold text-slate-500">Câu 1 / 3</span>
+          </div>
+          <span class="text-xs font-extrabold text-fuchsia-700 bg-fuchsia-50 px-2.5 py-1 rounded-xl">+20 💎 mỗi câu đúng</span>
+        </div>
+
+        <h3 id="question-text" class="text-base sm:text-lg font-black text-slate-900 leading-snug">
+          Đang nạp câu hỏi...
+        </h3>
+
+        <div id="options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"></div>
+
+        <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-bold transition-all">
+          <p id="feedback-title" class="text-base font-black mb-1"></p>
+          <p id="feedback-detail" class="text-slate-700"></p>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button id="btn-next-question" type="button" class="hidden bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-black text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer">
+            Tiếp Tục ➜
+          </button>
+        </div>
+      </div>
+
+      <div id="stage5-cert" class="hidden bg-white rounded-3xl p-6 sm:p-8 border-4 border-amber-300 shadow-2xl space-y-6 text-center">
+        <div class="text-5xl animate-bounce">🏆</div>
+        <h2 class="text-2xl font-black text-fuchsia-700 uppercase">CHÚC MỪNG EM ĐÃ HOÀN THÀNH XUẤT SẮC!</h2>
+        <p class="text-sm text-slate-600 font-bold">Em đã đạt danh hiệu: <b>Bậc Thầy Phân Số Thụy Lâm</b> và săn trọn 100 Kim Cương! 💎</p>
+
+        <div class="p-6 bg-gradient-to-br from-fuchsia-50 to-pink-50 border-4 border-dashed border-fuchsia-300 rounded-3xl max-w-lg mx-auto space-y-3">
+          <p class="text-xs uppercase font-extrabold text-fuchsia-800">GIẤY KHEN DANH DỰ</p>
+          <h3 class="text-2xl font-black text-fuchsia-800">Em Học Sinh Thông Thái Lớp 4</h3>
+          <p class="text-xs text-slate-600">Đã làm chủ kiến thức bài học: <b>Khái Niệm Phân Số</b></p>
+          <p class="text-[11px] text-slate-400 font-bold">Trường TH &amp; THCS Thụy Lâm - Đông Anh, Hà Nội</p>
+        </div>
+
+        <div class="flex justify-center gap-3">
+          <button type="button" onclick="window.print()" class="bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md cursor-pointer">
+            🖨️ In Giấy Khen
+          </button>
+          <a href="../index.html" class="bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md">
+            🏠 Trở Về Vương Quốc
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    class SoundEngine {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playPop() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.06);
+        gain.gain.setValueAtTime(0.18, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(now); osc.stop(now + 0.08);
+      }
+      playRight() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523, 659, 783, 1046].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.2);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.22);
+        });
+      }
+      playWrong() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [280, 220].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.14, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.18);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.12); osc.stop(now + idx * 0.12 + 0.2);
+        });
+      }
+    }
+    const sound = new SoundEngine();
+
+    const tabBtnExplore = document.getElementById('tab-btn-explore');
+    const tabBtnArena = document.getElementById('tab-btn-arena');
+    const paneExplore = document.getElementById('pane-explore');
+    const paneArena = document.getElementById('pane-arena');
+
+    tabBtnExplore.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-fuchsia-600 text-white shadow-md';
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-fuchsia-50';
+      paneExplore.classList.remove('hidden');
+      paneArena.classList.add('hidden');
+    });
+
+    tabBtnArena.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-fuchsia-600 text-white shadow-md';
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-fuchsia-50';
+      paneArena.classList.remove('hidden');
+      paneExplore.classList.add('hidden');
+    });
+
+    // ==========================================
+    // PIZZA SVG GENERATOR & INTERACTION
+    // ==========================================
+    let totalSlices = 6;
+    let selectedSlices = new Set([0, 1, 2]);
+
+    const WORDS = {
+      1: 'một', 2: 'hai', 3: 'ba', 4: 'bốn', 5: 'năm', 6: 'sáu', 7: 'bảy', 8: 'tám'
+    };
+    const DENOM_WORDS = {
+      2: 'phần hai', 4: 'phần tư', 6: 'phần sáu', 8: 'phần tám'
+    };
+
+    function renderPizza() {
+      const svg = document.getElementById('pizza-svg');
+      svg.innerHTML = '';
+      const R = 95;
+
+      for (let i = 0; i < totalSlices; i++) {
+        const startAngle = (i * 360 / totalSlices) * Math.PI / 180;
+        const endAngle = ((i + 1) * 360 / totalSlices) * Math.PI / 180;
+
+        const x1 = R * Math.cos(startAngle);
+        const y1 = R * Math.sin(startAngle);
+        const x2 = R * Math.cos(endAngle);
+        const y2 = R * Math.sin(endAngle);
+
+        const largeArc = (360 / totalSlices) > 180 ? 1 : 0;
+        const d = `M 0 0 L ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', d);
+        path.setAttribute('class', 'pizza-slice');
+        path.setAttribute('stroke', '#ffffff');
+        path.setAttribute('stroke-width', '3');
+
+        const isSelected = selectedSlices.has(i);
+        path.setAttribute('fill', isSelected ? '#d946ef' : '#fed7aa');
+
+        path.addEventListener('click', () => {
+          sound.playPop();
+          if (selectedSlices.has(i)) {
+            selectedSlices.delete(i);
+          } else {
+            selectedSlices.add(i);
+          }
+          renderPizza();
+        });
+
+        svg.appendChild(path);
+      }
+
+      // Update Fraction display
+      const num = selectedSlices.size;
+      document.getElementById('frac-num').textContent = num;
+      document.getElementById('frac-den').textContent = totalSlices;
+      document.getElementById('explain-num').textContent = num;
+      document.getElementById('explain-den').textContent = totalSlices;
+
+      const numWord = WORDS[num] || num;
+      const denWord = DENOM_WORDS[totalSlices] || `phần ${totalSlices}`;
+      document.getElementById('frac-read').textContent = `${numWord.charAt(0).toUpperCase() + numWord.slice(1)} ${denWord}`;
+    }
+
+    document.querySelectorAll('.btn-slice-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        sound.playPop();
+        document.querySelectorAll('.btn-slice-opt').forEach(b => {
+          b.className = 'btn-slice-opt px-3 py-1 bg-white/20 hover:bg-white text-white hover:text-fuchsia-900 rounded-xl text-xs font-black transition cursor-pointer';
+        });
+        btn.className = 'btn-slice-opt px-3 py-1 bg-white text-fuchsia-900 rounded-xl text-xs font-black transition cursor-pointer shadow-sm';
+        totalSlices = parseInt(btn.dataset.slices, 10);
+        selectedSlices = new Set(Array.from({ length: Math.floor(totalSlices / 2) }, (_, i) => i));
+        renderPizza();
+      });
+    });
+
+    // ==========================================
+    // QUESTIONS
+    // ==========================================
+    const STAGE_QUESTIONS = {
+      1: [
+        {
+          q: "Trong một phân số, mẫu số có đặc điểm gì bắt buộc?",
+          options: [
+            "Mẫu số phải bằng 0",
+            "Mẫu số là số tự nhiên khác 0",
+            "Mẫu số luôn nhỏ hơn tử số",
+            "Mẫu số viết ở trên dấu gạch ngang"
+          ],
+          correct: 1,
+          explain: "Chính xác! Mẫu số chỉ số phần bằng nhau được chia ra, và mẫu số luôn phải KHÁC 0."
+        },
+        {
+          q: "Trong phân số 3/5, tử số là số nào và viết ở đâu?",
+          options: [
+            "Tử số là 3, viết trên gạch ngang",
+            "Tử số là 5, viết dưới gạch ngang",
+            "Tử số là 5, viết trên gạch ngang",
+            "Tử số là 3, viết dưới gạch ngang"
+          ],
+          correct: 0,
+          explain: "Tử số là 3, viết trên dấu gạch ngang."
+        },
+        {
+          q: "Phân số 'bốn phần bảy' được viết là:",
+          options: ["7/4", "4/7", "4.7", "7.4"],
+          correct: 1,
+          explain: "Bốn phần bảy viết là 4/7."
+        }
+      ],
+      2: [
+        {
+          q: "Một hình tròn được chia thành 8 phần bằng nhau, người ta tô màu 5 phần. Phân số chỉ phần đã tô màu là:",
+          options: ["8/5", "3/8", "5/8", "5/3"],
+          correct: 2,
+          explain: "Đã tô màu 5 phần trong tổng số 8 phần = 5/8 hình tròn."
+        },
+        {
+          q: "Một chiếc bánh Chưng Thụy Lâm chia đều cho 4 bạn, mỗi bạn được 1 miếng. Phân số chỉ phần bánh mỗi bạn nhận được là:",
+          options: ["1/4 chiếc bánh", "4/1 chiếc bánh", "1/2 chiếc bánh", "3/4 chiếc bánh"],
+          correct: 0,
+          explain: "Mỗi bạn nhận được 1 miếng trong 4 miếng = 1/4 chiếc bánh."
+        },
+        {
+          q: "Thương của phép chia 3 : 5 được viết dưới dạng phân số là:",
+          options: ["5/3", "3/5", "3/8", "8/3"],
+          correct: 1,
+          explain: "Thương của phép chia số tự nhiên cho số tự nhiên (khác 0) viết thành phân số: 3 : 5 = 3/5."
+        }
+      ],
+      3: [
+        {
+          q: "Phân số nào dưới đây có tử số bé hơn mẫu số (phân số bé hơn 1)?",
+          options: ["5/3", "4/4", "2/7", "9/8"],
+          correct: 2,
+          explain: "Phân số 2/7 có tử số (2) bé hơn mẫu số (7) nên 2/7 < 1."
+        },
+        {
+          q: "Phân số nào dưới đây bằng 1?",
+          options: ["6/6", "5/6", "6/5", "1/6"],
+          correct: 0,
+          explain: "Khi tử số bằng mẫu số (khác 0) thì phân số đó bằng 1 (6/6 = 1)."
+        },
+        {
+          q: "Một hộp có 10 quả bóng, trong đó có 7 quả bóng đỏ. Phân số chỉ số bóng đỏ là:",
+          options: ["3/10", "7/10", "10/7", "7/3"],
+          correct: 1,
+          explain: "Có 7 quả bóng đỏ trên tổng số 10 quả = 7/10 hộp bóng."
+        }
+      ],
+      4: [
+        {
+          q: "Ruộng dưa lê Thụy Lâm chia thành 6 luống bằng nhau. Bác nông dân đã thu hoạch được 5 luống. Phân số chỉ phần ruộng dưa đã thu hoạch là:",
+          options: ["1/6 ruộng dưa", "5/6 ruộng dưa", "6/5 ruộng dưa", "5/1 ruộng dưa"],
+          correct: 1,
+          explain: "Thu hoạch 5 trong 6 luống = 5/6 diện tích ruộng dưa."
+        },
+        {
+          q: "Lớp 4A trường TH & THCS Thụy Lâm có 32 học sinh, trong đó có 17 bạn nữ. Phân số chỉ số học sinh nữ của lớp là:",
+          options: ["15/32", "17/32", "32/17", "17/15"],
+          correct: 1,
+          explain: "Số bạn nữ là 17 trên tổng số 32 bạn = 17/32 số học sinh của lớp."
+        },
+        {
+          q: "Mẹ mua 1 chục trứng gà, mẹ đã dùng 4 quả để làm bánh. Phân số chỉ số trứng mẹ đã dùng là:",
+          options: ["4/10 (hay 2/5)", "6/10", "4/6", "10/4"],
+          correct: 0,
+          explain: "1 chục = 10 quả trứng. Đã dùng 4 quả = 4/10 quả trứng."
+        }
+      ]
+    };
+
+    let currentStage = 1;
+    let currentQIdx = 0;
+    let gemCount = 0;
+    let unlockedStages = [1];
+
+    function renderQuestion() {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+
+      document.getElementById('stage-badge').textContent = `Chặng ${currentStage}: ${getStageName(currentStage)}`;
+      document.getElementById('question-progress').textContent = `Câu ${currentQIdx + 1} / ${qList.length}`;
+      document.getElementById('question-text').textContent = q.q;
+
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-btn p-3.5 bg-slate-50 hover:bg-fuchsia-50 border-2 border-slate-200 hover:border-fuchsia-400 rounded-2xl font-bold text-xs sm:text-sm text-left transition flex items-center justify-between cursor-pointer';
+        btn.innerHTML = `<span>${String.fromCharCode(65 + idx)}. ${opt}</span><span class="icon-indicator"></span>`;
+        btn.addEventListener('click', () => handleAnswer(idx, btn));
+        grid.appendChild(btn);
+      });
+
+      document.getElementById('quiz-feedback').classList.add('hidden');
+      document.getElementById('btn-next-question').classList.add('hidden');
+    }
+
+    function getStageName(stg) {
+      const names = { 1: 'Khởi Động', 2: 'Khám Phá', 3: 'Luyện Tập', 4: 'Thực Tế Thụy Lâm', 5: 'Vinh Danh' };
+      return names[stg] || '';
+    }
+
+    function handleAnswer(choiceIdx, btnEl) {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+      const allBtns = document.querySelectorAll('.opt-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      const feedback = document.getElementById('quiz-feedback');
+      const title = document.getElementById('feedback-title');
+      const detail = document.getElementById('feedback-detail');
+
+      if (choiceIdx === q.correct) {
+        sound.playRight();
+        try { confetti({ particleCount: 30, spread: 60, origin: { y: 0.7 } }); } catch (e) {}
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-fuchsia-100', 'border-fuchsia-500', 'text-fuchsia-900');
+        btnEl.querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-fuchsia-50 border-2 border-fuchsia-300 text-fuchsia-900';
+        title.textContent = '🎉 CHÍNH XÁC!';
+        detail.textContent = q.explain;
+
+        gemCount += 20;
+        document.getElementById('header-gem-count').textContent = gemCount;
+      } else {
+        sound.playWrong();
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-900');
+        btnEl.querySelector('.icon-indicator').textContent = '❌';
+
+        allBtns[q.correct].classList.add('bg-fuchsia-50', 'border-fuchsia-400');
+        allBtns[q.correct].querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-rose-50 border-2 border-rose-300 text-rose-900';
+        title.textContent = '💡 CỐ GẮNG LÊN EM NHÉ!';
+        detail.textContent = q.explain;
+      }
+
+      feedback.classList.remove('hidden');
+      document.getElementById('btn-next-question').classList.remove('hidden');
+    }
+
+    document.getElementById('btn-next-question').addEventListener('click', () => {
+      sound.playPop();
+      const qList = STAGE_QUESTIONS[currentStage];
+      if (currentQIdx < qList.length - 1) {
+        currentQIdx++;
+        renderQuestion();
+      } else {
+        sound.playRight();
+        try { confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } }); } catch (e) {}
+        if (currentStage < 4) {
+          currentStage++;
+          currentQIdx = 0;
+          unlockedStages.push(currentStage);
+          updateRoadmap();
+          renderQuestion();
+        } else {
+          currentStage = 5;
+          updateRoadmap();
+          document.getElementById('quiz-card').classList.add('hidden');
+          document.getElementById('stage5-cert').classList.remove('hidden');
+          try { confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } }); } catch (e) {}
+        }
+      }
+    });
+
+    function updateRoadmap() {
+      const truck = document.getElementById('truck-indicator');
+      const positions = { 1: '10%', 2: '30%', 3: '50%', 4: '70%', 5: '90%' };
+      if (truck) truck.style.left = positions[currentStage] || '10%';
+
+      document.querySelectorAll('.road-stop').forEach(btn => {
+        const stg = parseInt(btn.dataset.stage, 10);
+        btn.classList.remove('active', 'locked');
+        if (stg === currentStage) btn.classList.add('active');
+        else if (unlockedStages.includes(stg)) {}
+        else btn.classList.add('locked');
+      });
+    }
+
+    // Init
+    renderQuestion();
+    renderPizza();
+  </script>
+</body>
+</html>

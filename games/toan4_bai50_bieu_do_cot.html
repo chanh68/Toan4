@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 50: Biểu Đồ Cột - Toán Lớp 4 Thụy Lâm</title>
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Lexend', 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 40%, #fae8ff 75%, #f0fdf4 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .text-balance { text-wrap: balance; }
+    .cute-card {
+      border-radius: 28px;
+      box-shadow: 0 16px 36px -8px rgba(124, 58, 237, 0.08);
+      border: 3px solid rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+    }
+    .journey-road {
+      position: relative; height: 440px; margin: 18px 0 14px; border-radius: 28px;
+      background: linear-gradient(155deg, #ede9fe 0% 25%, #fae8ff 26% 50%, #fbcfe8 51% 75%, #fed7aa 76% 100%);
+      overflow: hidden; border: 4px solid #8b5cf6; box-shadow: inset 0 0 24px rgba(0,0,0,0.05);
+    }
+    @media (max-width: 760px) { .journey-road { height: 500px; } }
+    .road-curve {
+      position: absolute; top: 47%; left: -6%; right: -5%; height: 76px;
+      border-top: 6px dashed #ffffff; border-bottom: 6px dashed #ffffff;
+      border-radius: 50%; background: #7c3aed; transform: rotate(-3deg); z-index: 1;
+    }
+    .road-truck {
+      position: absolute; top: 42%; font-size: 52px;
+      filter: drop-shadow(0 8px 4px rgba(15, 23, 42, 0.25));
+      transform: translate(-50%) scaleX(-1); transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5; pointer-events: none;
+    }
+    .road-stop {
+      position: absolute; width: 126px; border: 0; background: transparent;
+      color: #0f172a; text-align: center; transform: translate(-50%);
+      cursor: pointer; z-index: 4; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .road-stop:hover:not([disabled]) { transform: translate(-50%) scale(1.1); z-index: 6; }
+    .road-stop span.icon-wrap {
+      display: grid; place-items: center; width: 66px; height: 66px; margin: auto;
+      border-radius: 50%; border: 4px solid #8b5cf6; background: #ffffff;
+      font-size: 32px; box-shadow: 0 8px 16px rgba(139, 92, 246, 0.25);
+    }
+    .road-stop.active span.icon-wrap {
+      border-color: #6d28d9; background: #f5f3ff;
+      box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.35);
+    }
+    .road-stop.locked { opacity: 0.55; cursor: not-allowed; }
+    .chart-bar { transition: height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-purple-100 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="flex items-center gap-2 bg-purple-50 hover:bg-purple-100 text-purple-800 px-3 py-1.5 rounded-2xl border border-purple-200 text-xs font-bold transition">
+          <span>🏠</span> <span>Về Trang Chủ</span>
+        </a>
+        <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+        <div>
+          <h1 class="text-sm sm:text-base font-extrabold text-slate-800 leading-tight">Bài 50: Biểu Đồ Cột</h1>
+          <p class="text-[11px] text-purple-700 font-semibold hidden sm:block">Kéo Thả Biểu Đồ Cột Sống Động • Trường TH &amp; THCS Thụy Lâm</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="bg-purple-50 border border-purple-200 px-3 py-1 rounded-2xl flex items-center gap-1.5 shadow-2xs">
+          <span class="text-lg">💎</span>
+          <span id="header-gem-count" class="text-sm font-black text-purple-800">0</span>
+          <span class="text-[10px] font-bold text-purple-600 uppercase">Kim Cương</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-4 pt-4">
+    <div class="bg-white/80 p-1.5 rounded-2xl border border-purple-100 shadow-xs flex gap-2">
+      <button type="button" id="tab-btn-explore" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-purple-600 text-white shadow-md">
+        <span>📊</span> <span>Khám Phá &amp; Tự Vẽ Biểu Đồ Cột</span>
+      </button>
+      <button type="button" id="tab-btn-arena" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-purple-50">
+        <span>🏆</span> <span>Đấu Trường 5 Chặng (Săn 100 Kim Cương)</span>
+      </button>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 py-4 flex-1 w-full">
+
+    <!-- PANE 1: EXPLORE -->
+    <div id="pane-explore" class="space-y-6">
+      
+      <div class="bg-white rounded-3xl p-6 border-2 border-purple-200 shadow-sm space-y-4">
+        <div class="flex items-center gap-3 border-b pb-3 border-purple-100">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-500 text-white flex items-center justify-center text-2xl shadow-md">
+            📊
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-black text-slate-900">Cách Đọc &amp; Nhận Biết Biểu Đồ Cột</h2>
+            <p class="text-xs text-slate-500 font-medium">Cấu tạo chuẩn của một biểu đồ cột trong SGK Toán 4</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs sm:text-sm font-bold">
+          <div class="p-3.5 bg-indigo-50 rounded-2xl border border-indigo-200 space-y-1">
+            <span class="text-indigo-800 font-black">1. Hàng Dưới (Trục Ngang):</span>
+            <p class="text-slate-600">Ghi tên các đối tượng (các tổ, các ngày, tên học sinh, các loại cây...).</p>
+          </div>
+          <div class="p-3.5 bg-purple-50 rounded-2xl border border-purple-200 space-y-1">
+            <span class="text-purple-800 font-black">2. Cột Dọc (Trục Đứng):</span>
+            <p class="text-slate-600">Ghi các vạch số chỉ số lượng (điểm 10, số cây, số ki-lô-gam...).</p>
+          </div>
+          <div class="p-3.5 bg-pink-50 rounded-2xl border border-pink-200 space-y-1">
+            <span class="text-pink-800 font-black">3. Đỉnh Mỗi Cột:</span>
+            <p class="text-slate-600">Chiều cao của cột biểu thị số lượng của đối tượng đó. Số ở đỉnh cột cho biết số lượng chính xác.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Chart Builder -->
+      <div class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-3xl p-6 text-white shadow-xl space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">📈</span>
+            <h3 class="text-lg font-black uppercase tracking-wide">Xưởng Biểu Đồ Cột Tương Tác: Thi Đua Hoa Điểm 10 Lớp 4</h3>
+          </div>
+          <span class="text-xs bg-white/20 px-3 py-1 rounded-full font-bold">Kéo Thanh Trượt</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-bold">
+          <div class="bg-white/10 p-2.5 rounded-xl space-y-1">
+            <div class="flex justify-between"><span>Tổ 1 (Hoa Sen):</span><b id="lbl-val-1">15</b></div>
+            <input id="slider-1" type="range" min="5" max="35" value="15" class="w-full cursor-pointer" />
+          </div>
+          <div class="bg-white/10 p-2.5 rounded-xl space-y-1">
+            <div class="flex justify-between"><span>Tổ 2 (Hoa Cúc):</span><b id="lbl-val-2">25</b></div>
+            <input id="slider-2" type="range" min="5" max="35" value="25" class="w-full cursor-pointer" />
+          </div>
+          <div class="bg-white/10 p-2.5 rounded-xl space-y-1">
+            <div class="flex justify-between"><span>Tổ 3 (Hoa Lan):</span><b id="lbl-val-3">20</b></div>
+            <input id="slider-3" type="range" min="5" max="35" value="20" class="w-full cursor-pointer" />
+          </div>
+          <div class="bg-white/10 p-2.5 rounded-xl space-y-1">
+            <div class="flex justify-between"><span>Tổ 4 (Hướng Dương):</span><b id="lbl-val-4">30</b></div>
+            <input id="slider-4" type="range" min="5" max="35" value="30" class="w-full cursor-pointer" />
+          </div>
+        </div>
+
+        <!-- Rendered Chart Canvas -->
+        <div class="bg-white rounded-2xl p-5 text-slate-800 shadow-inner space-y-4">
+          <h4 class="text-xs font-black uppercase text-purple-900 border-b pb-2 border-purple-100 text-center">
+            BIỂU ĐỒ HOA ĐIỂM 10 CÁC TỔ THI ĐUA LỚP 4A
+          </h4>
+
+          <div class="h-56 flex items-end justify-around border-b-4 border-l-4 border-slate-700 pt-6 px-4 relative">
+            <!-- Grid lines background -->
+            <div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-15">
+              <div class="border-b border-dashed border-slate-900 w-full"></div>
+              <div class="border-b border-dashed border-slate-900 w-full"></div>
+              <div class="border-b border-dashed border-slate-900 w-full"></div>
+            </div>
+
+            <!-- Bar 1 -->
+            <div class="flex flex-col items-center gap-1 z-10 w-16">
+              <span id="badge-1" class="text-xs font-black text-indigo-700">15</span>
+              <div id="col-1" class="chart-bar w-12 rounded-t-xl bg-gradient-to-t from-indigo-600 to-indigo-400 shadow-sm" style="height: 45%;"></div>
+              <span class="text-[11px] font-black text-slate-600 mt-1 whitespace-nowrap">Tổ 1</span>
+            </div>
+
+            <!-- Bar 2 -->
+            <div class="flex flex-col items-center gap-1 z-10 w-16">
+              <span id="badge-2" class="text-xs font-black text-purple-700">25</span>
+              <div id="col-2" class="chart-bar w-12 rounded-t-xl bg-gradient-to-t from-purple-600 to-purple-400 shadow-sm" style="height: 75%;"></div>
+              <span class="text-[11px] font-black text-slate-600 mt-1 whitespace-nowrap">Tổ 2</span>
+            </div>
+
+            <!-- Bar 3 -->
+            <div class="flex flex-col items-center gap-1 z-10 w-16">
+              <span id="badge-3" class="text-xs font-black text-pink-700">20</span>
+              <div id="col-3" class="chart-bar w-12 rounded-t-xl bg-gradient-to-t from-pink-600 to-pink-400 shadow-sm" style="height: 60%;"></div>
+              <span class="text-[11px] font-black text-slate-600 mt-1 whitespace-nowrap">Tổ 3</span>
+            </div>
+
+            <!-- Bar 4 -->
+            <div class="flex flex-col items-center gap-1 z-10 w-16">
+              <span id="badge-4" class="text-xs font-black text-amber-700">30</span>
+              <div id="col-4" class="chart-bar w-12 rounded-t-xl bg-gradient-to-t from-amber-500 to-amber-400 shadow-sm" style="height: 90%;"></div>
+              <span class="text-[11px] font-black text-slate-600 mt-1 whitespace-nowrap">Tổ 4</span>
+            </div>
+          </div>
+
+          <div class="bg-purple-50 p-3 rounded-xl border border-purple-200 text-xs sm:text-sm font-bold text-slate-700 flex flex-wrap items-center justify-between gap-2">
+            <p>🏆 <b>Nhiều hoa nhất:</b> <span id="stat-max" class="text-purple-700 font-black">Tổ 4 (30 hoa)</span></p>
+            <p>🌱 <b>Ít hoa nhất:</b> <span id="stat-min" class="text-rose-600 font-black">Tổ 1 (15 hoa)</span></p>
+            <p>📊 <b>Tổng cả 4 tổ:</b> <span id="stat-total" class="text-emerald-700 font-black">90 bông hoa</span></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANE 2: ARENA -->
+    <div id="pane-arena" class="hidden space-y-6">
+
+      <div class="journey-road">
+        <div class="road-curve"></div>
+        <div id="truck-indicator" class="road-truck" style="left: 10%;">📊</div>
+
+        <button type="button" class="road-stop active" style="top: 18%; left: 10%;" data-stage="1">
+          <span class="icon-wrap">🌱</span>
+          <p class="font-extrabold text-xs mt-1 text-purple-900">1. Khởi Động</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 68%; left: 30%;" data-stage="2">
+          <span class="icon-wrap">🧭</span>
+          <p class="font-extrabold text-xs mt-1 text-indigo-900">2. Khám Phá</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 18%; left: 50%;" data-stage="3">
+          <span class="icon-wrap">⚔️</span>
+          <p class="font-extrabold text-xs mt-1 text-fuchsia-900">3. Luyện Tập</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 68%; left: 70%;" data-stage="4">
+          <span class="icon-wrap">🌾</span>
+          <p class="font-extrabold text-xs mt-1 text-pink-900">4. Thụy Lâm</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 18%; left: 90%;" data-stage="5">
+          <span class="icon-wrap">👑</span>
+          <p class="font-extrabold text-xs mt-1 text-emerald-900">5. Vinh Danh</p>
+        </button>
+      </div>
+
+      <div id="quiz-card" class="bg-white rounded-3xl p-6 border-2 border-purple-200 shadow-lg space-y-5">
+        <div class="flex items-center justify-between border-b pb-3 border-purple-100">
+          <div class="flex items-center gap-2">
+            <span id="stage-badge" class="bg-purple-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase">Chặng 1: Khởi Động</span>
+            <span id="question-progress" class="text-xs font-bold text-slate-500">Câu 1 / 3</span>
+          </div>
+          <span class="text-xs font-extrabold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-xl">+20 💎 mỗi câu đúng</span>
+        </div>
+
+        <h3 id="question-text" class="text-base sm:text-lg font-black text-slate-900 leading-snug">
+          Đang nạp câu hỏi...
+        </h3>
+
+        <div id="options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"></div>
+
+        <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-bold transition-all">
+          <p id="feedback-title" class="text-base font-black mb-1"></p>
+          <p id="feedback-detail" class="text-slate-700"></p>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button id="btn-next-question" type="button" class="hidden bg-purple-600 hover:bg-purple-700 text-white font-black text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer">
+            Tiếp Tục ➜
+          </button>
+        </div>
+      </div>
+
+      <div id="stage5-cert" class="hidden bg-white rounded-3xl p-6 sm:p-8 border-4 border-amber-300 shadow-2xl space-y-6 text-center">
+        <div class="text-5xl animate-bounce">🏆</div>
+        <h2 class="text-2xl font-black text-purple-700 uppercase">CHÚC MỪNG EM ĐÃ HOÀN THÀNH XUẤT SẮC!</h2>
+        <p class="text-sm text-slate-600 font-bold">Em đã đạt danh hiệu: <b>Chuyên Gia Đọc Biểu Đồ Thụy Lâm</b> và săn trọn 100 Kim Cương! 💎</p>
+
+        <div class="p-6 bg-gradient-to-br from-purple-50 to-pink-50 border-4 border-dashed border-purple-300 rounded-3xl max-w-lg mx-auto space-y-3">
+          <p class="text-xs uppercase font-extrabold text-purple-800">GIẤY KHEN DANH DỰ</p>
+          <h3 class="text-2xl font-black text-purple-800">Em Học Sinh Thông Thái Lớp 4</h3>
+          <p class="text-xs text-slate-600">Đã làm chủ kiến thức bài học: <b>Biểu Đồ Cột</b></p>
+          <p class="text-[11px] text-slate-400 font-bold">Trường TH &amp; THCS Thụy Lâm - Đông Anh, Hà Nội</p>
+        </div>
+
+        <div class="flex justify-center gap-3">
+          <button type="button" onclick="window.print()" class="bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md cursor-pointer">
+            🖨️ In Giấy Khen
+          </button>
+          <a href="../index.html" class="bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md">
+            🏠 Trở Về Vương Quốc
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    class SoundEngine {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playPop() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.06);
+        gain.gain.setValueAtTime(0.18, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(now); osc.stop(now + 0.08);
+      }
+      playRight() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523, 659, 783, 1046].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.2);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.22);
+        });
+      }
+      playWrong() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [280, 220].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.14, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.18);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.12); osc.stop(now + idx * 0.12 + 0.2);
+        });
+      }
+    }
+    const sound = new SoundEngine();
+
+    const tabBtnExplore = document.getElementById('tab-btn-explore');
+    const tabBtnArena = document.getElementById('tab-btn-arena');
+    const paneExplore = document.getElementById('pane-explore');
+    const paneArena = document.getElementById('pane-arena');
+
+    tabBtnExplore.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-purple-600 text-white shadow-md';
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-purple-50';
+      paneExplore.classList.remove('hidden');
+      paneArena.classList.add('hidden');
+    });
+
+    tabBtnArena.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-purple-600 text-white shadow-md';
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-purple-50';
+      paneArena.classList.remove('hidden');
+      paneExplore.classList.add('hidden');
+    });
+
+    // Chart Sliders
+    function updateChart() {
+      const v1 = parseInt(document.getElementById('slider-1').value, 10);
+      const v2 = parseInt(document.getElementById('slider-2').value, 10);
+      const v3 = parseInt(document.getElementById('slider-3').value, 10);
+      const v4 = parseInt(document.getElementById('slider-4').value, 10);
+
+      document.getElementById('lbl-val-1').textContent = v1;
+      document.getElementById('lbl-val-2').textContent = v2;
+      document.getElementById('lbl-val-3').textContent = v3;
+      document.getElementById('lbl-val-4').textContent = v4;
+
+      document.getElementById('badge-1').textContent = v1;
+      document.getElementById('badge-2').textContent = v2;
+      document.getElementById('badge-3').textContent = v3;
+      document.getElementById('badge-4').textContent = v4;
+
+      const maxVal = Math.max(v1, v2, v3, v4, 35);
+      document.getElementById('col-1').style.height = (v1 / maxVal * 90) + '%';
+      document.getElementById('col-2').style.height = (v2 / maxVal * 90) + '%';
+      document.getElementById('col-3').style.height = (v3 / maxVal * 90) + '%';
+      document.getElementById('col-4').style.height = (v4 / maxVal * 90) + '%';
+
+      const vals = [{ name: 'Tổ 1', val: v1 }, { name: 'Tổ 2', val: v2 }, { name: 'Tổ 3', val: v3 }, { name: 'Tổ 4', val: v4 }];
+      vals.sort((a, b) => b.val - a.val);
+
+      document.getElementById('stat-max').textContent = `${vals[0].name} (${vals[0].val} hoa)`;
+      document.getElementById('stat-min').textContent = `${vals[3].name} (${vals[3].val} hoa)`;
+      document.getElementById('stat-total').textContent = `${v1 + v2 + v3 + v4} bông hoa`;
+    }
+
+    [1, 2, 3, 4].forEach(i => {
+      document.getElementById(`slider-${i}`).addEventListener('input', () => {
+        sound.playPop();
+        updateChart();
+      });
+    });
+
+    // ==========================================
+    // QUESTIONS
+    // ==========================================
+    const STAGE_QUESTIONS = {
+      1: [
+        {
+          q: "Trên biểu đồ cột hình chữ nhật, các vạch số trên trục đứng dùng để chỉ:",
+          options: [
+            "Tên các đối tượng thống kê",
+            "Số lượng của các đối tượng thống kê",
+            "Tên trường học",
+            "Ngày tháng năm"
+          ],
+          correct: 1,
+          explain: "Chính xác! Trục đứng dùng để ghi các số chỉ số lượng tương ứng."
+        },
+        {
+          q: "Cột nào cao hơn trên biểu đồ cột thì biểu thị:",
+          options: [
+            "Số lượng ít hơn",
+            "Số lượng nhiều hơn",
+            "Hai số lượng bằng nhau",
+            "Không so sánh được"
+          ],
+          correct: 1,
+          explain: "Đúng rồi! Cột càng cao thì số lượng biểu thị càng nhiều."
+        },
+        {
+          q: "Số ghi ở trên đỉnh mỗi cột của biểu đồ cho ta biết:",
+          options: [
+            "Thứ tự của cột",
+            "Số lượng cụ thể của đối tượng ở cột đó",
+            "Năm sinh của học sinh",
+            "Số trang sách"
+          ],
+          correct: 1,
+          explain: "Số ở đỉnh cột cho biết chính xác giá trị số lượng của cột đó."
+        }
+      ],
+      2: [
+        {
+          q: "Biểu đồ cột chỉ số cây trồng được của 3 lớp: 4A (35 cây), 4B (40 cây), 4C (30 cây). Lớp nào trồng được nhiều cây nhất?",
+          options: ["Lớp 4A", "Lớp 4B", "Lớp 4C", "Cả ba lớp bằng nhau"],
+          correct: 1,
+          explain: "Lớp 4B có cột cao nhất với 40 cây."
+        },
+        {
+          q: "Từ số liệu trên (4A: 35 cây, 4B: 40 cây, 4C: 30 cây), cả ba lớp trồng được tất cả bao nhiêu cây?",
+          options: ["100 cây", "105 cây", "110 cây", "95 cây"],
+          correct: 1,
+          explain: "Tổng số cây = 35 + 40 + 30 = 105 (cây)."
+        },
+        {
+          q: "Lớp 4B trồng được nhiều hơn lớp 4C bao nhiêu cây?",
+          options: ["5 cây", "10 cây", "15 cây", "8 cây"],
+          correct: 1,
+          explain: "40 - 30 = 10 (cây)."
+        }
+      ],
+      3: [
+        {
+          q: "Biểu đồ điểm kiểm tra Toán của tổ 1: An (9), Bình (10), Cúc (8), Dũng (9). Điểm trung bình cộng của cả tổ là:",
+          options: ["8.5 điểm", "9 điểm", "9.5 điểm", "10 điểm"],
+          correct: 1,
+          explain: "Tổng điểm = 9 + 10 + 8 + 9 = 36. Điểm TBC = 36 : 4 = 9 (điểm)."
+        },
+        {
+          q: "Nếu muốn biểu diễn số học sinh giỏi của 5 khối lớp trong trường, biểu đồ phù hợp và trực quan nhất là:",
+          options: ["Bảng chữ cái", "Biểu đồ cột", "Đoạn văn miêu tả", "Hình vẽ tròn đơn lẻ"],
+          correct: 1,
+          explain: "Biểu đồ cột giúp so sánh độ chênh lệch giữa các khối lớp một cách trực quan, rõ ràng nhất!"
+        },
+        {
+          q: "Trên biểu đồ, hai cột có chiều cao bằng nhau chứng tỏ điều gì?",
+          options: ["Hai đối tượng có số lượng bằng nhau", "Một đối tượng hơn đối tượng kia", "Biểu đồ vẽ sai", "Không có ý nghĩa gì"],
+          correct: 0,
+          explain: "Chiều cao bằng nhau chứng tỏ hai đối tượng có cùng số lượng."
+        }
+      ],
+      4: [
+        {
+          q: "Biểu đồ phong trào Kế hoạch nhỏ trường TH & THCS Thụy Lâm: Khối 1 (120kg), Khối 2 (140kg), Khối 3 (150kg), Khối 4 (180kg). Khối nào thu gom được nhiều giấy vụn nhất?",
+          options: ["Khối 1", "Khối 2", "Khối 3", "Khối 4"],
+          correct: 3,
+          explain: "Khối 4 dẫn đầu với 180kg giấy vụn, cột cao nhất trên biểu đồ!"
+        },
+        {
+          q: "Khối 4 thu gom được nhiều hơn khối 1 bao nhiêu ki-lô-gam giấy vụn?",
+          options: ["50kg", "60kg", "40kg", "70kg"],
+          correct: 1,
+          explain: "180 - 120 = 60 (kg)."
+        },
+        {
+          q: "Tổng số giấy vụn của cả hai khối 3 và khối 4 là bao nhiêu ki-lô-gam?",
+          options: ["320kg", "330kg", "340kg", "310kg"],
+          correct: 1,
+          explain: "150 + 180 = 330 (kg)."
+        }
+      ]
+    };
+
+    let currentStage = 1;
+    let currentQIdx = 0;
+    let gemCount = 0;
+    let unlockedStages = [1];
+
+    function renderQuestion() {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+
+      document.getElementById('stage-badge').textContent = `Chặng ${currentStage}: ${getStageName(currentStage)}`;
+      document.getElementById('question-progress').textContent = `Câu ${currentQIdx + 1} / ${qList.length}`;
+      document.getElementById('question-text').textContent = q.q;
+
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-btn p-3.5 bg-slate-50 hover:bg-purple-50 border-2 border-slate-200 hover:border-purple-400 rounded-2xl font-bold text-xs sm:text-sm text-left transition flex items-center justify-between cursor-pointer';
+        btn.innerHTML = `<span>${String.fromCharCode(65 + idx)}. ${opt}</span><span class="icon-indicator"></span>`;
+        btn.addEventListener('click', () => handleAnswer(idx, btn));
+        grid.appendChild(btn);
+      });
+
+      document.getElementById('quiz-feedback').classList.add('hidden');
+      document.getElementById('btn-next-question').classList.add('hidden');
+    }
+
+    function getStageName(stg) {
+      const names = { 1: 'Khởi Động', 2: 'Khám Phá', 3: 'Luyện Tập', 4: 'Thực Tế Thụy Lâm', 5: 'Vinh Danh' };
+      return names[stg] || '';
+    }
+
+    function handleAnswer(choiceIdx, btnEl) {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+      const allBtns = document.querySelectorAll('.opt-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      const feedback = document.getElementById('quiz-feedback');
+      const title = document.getElementById('feedback-title');
+      const detail = document.getElementById('feedback-detail');
+
+      if (choiceIdx === q.correct) {
+        sound.playRight();
+        try { confetti({ particleCount: 30, spread: 60, origin: { y: 0.7 } }); } catch (e) {}
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-purple-100', 'border-purple-500', 'text-purple-900');
+        btnEl.querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-purple-50 border-2 border-purple-300 text-purple-900';
+        title.textContent = '🎉 CHÍNH XÁC!';
+        detail.textContent = q.explain;
+
+        gemCount += 20;
+        document.getElementById('header-gem-count').textContent = gemCount;
+      } else {
+        sound.playWrong();
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-900');
+        btnEl.querySelector('.icon-indicator').textContent = '❌';
+
+        allBtns[q.correct].classList.add('bg-purple-50', 'border-purple-400');
+        allBtns[q.correct].querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-rose-50 border-2 border-rose-300 text-rose-900';
+        title.textContent = '💡 CỐ GẮNG LÊN EM NHÉ!';
+        detail.textContent = q.explain;
+      }
+
+      feedback.classList.remove('hidden');
+      document.getElementById('btn-next-question').classList.remove('hidden');
+    }
+
+    document.getElementById('btn-next-question').addEventListener('click', () => {
+      sound.playPop();
+      const qList = STAGE_QUESTIONS[currentStage];
+      if (currentQIdx < qList.length - 1) {
+        currentQIdx++;
+        renderQuestion();
+      } else {
+        sound.playRight();
+        try { confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } }); } catch (e) {}
+        if (currentStage < 4) {
+          currentStage++;
+          currentQIdx = 0;
+          unlockedStages.push(currentStage);
+          updateRoadmap();
+          renderQuestion();
+        } else {
+          currentStage = 5;
+          updateRoadmap();
+          document.getElementById('quiz-card').classList.add('hidden');
+          document.getElementById('stage5-cert').classList.remove('hidden');
+          try { confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } }); } catch (e) {}
+        }
+      }
+    });
+
+    function updateRoadmap() {
+      const truck = document.getElementById('truck-indicator');
+      const positions = { 1: '10%', 2: '30%', 3: '50%', 4: '70%', 5: '90%' };
+      if (truck) truck.style.left = positions[currentStage] || '10%';
+
+      document.querySelectorAll('.road-stop').forEach(btn => {
+        const stg = parseInt(btn.dataset.stage, 10);
+        btn.classList.remove('active', 'locked');
+        if (stg === currentStage) btn.classList.add('active');
+        else if (unlockedStages.includes(stg)) {}
+        else btn.classList.add('locked');
+      });
+    }
+
+    // Init
+    renderQuestion();
+    updateChart();
+  </script>
+</body>
+</html>

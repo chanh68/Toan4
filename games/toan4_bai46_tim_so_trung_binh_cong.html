@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 46: Tìm Số Trung Bình Cộng - Toán Lớp 4 Thụy Lâm</title>
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Lexend', 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 40%, #fffbeb 75%, #f0fdf4 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .text-balance { text-wrap: balance; }
+    .cute-card {
+      border-radius: 28px;
+      box-shadow: 0 16px 36px -8px rgba(225, 29, 72, 0.08);
+      border: 3px solid rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+    }
+    .journey-road {
+      position: relative; height: 440px; margin: 18px 0 14px; border-radius: 28px;
+      background: linear-gradient(155deg, #fce7f3 0% 25%, #fed7aa 26% 50%, #fef08a 51% 75%, #bbf7d0 76% 100%);
+      overflow: hidden; border: 4px solid #f43f5e; box-shadow: inset 0 0 24px rgba(0,0,0,0.05);
+    }
+    @media (max-width: 760px) { .journey-road { height: 500px; } }
+    .road-curve {
+      position: absolute; top: 47%; left: -6%; right: -5%; height: 76px;
+      border-top: 6px dashed #ffffff; border-bottom: 6px dashed #ffffff;
+      border-radius: 50%; background: #ec4899; transform: rotate(-3deg); z-index: 1;
+    }
+    .road-truck {
+      position: absolute; top: 42%; font-size: 52px;
+      filter: drop-shadow(0 8px 4px rgba(15, 23, 42, 0.25));
+      transform: translate(-50%) scaleX(-1); transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5; pointer-events: none;
+    }
+    .road-stop {
+      position: absolute; width: 126px; border: 0; background: transparent;
+      color: #0f172a; text-align: center; transform: translate(-50%);
+      cursor: pointer; z-index: 4; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .road-stop:hover:not([disabled]) { transform: translate(-50%) scale(1.1); z-index: 6; }
+    .road-stop span.icon-wrap {
+      display: grid; place-items: center; width: 66px; height: 66px; margin: auto;
+      border-radius: 50%; border: 4px solid #f43f5e; background: #ffffff;
+      font-size: 32px; box-shadow: 0 8px 16px rgba(244, 63, 94, 0.25);
+    }
+    .road-stop.active span.icon-wrap {
+      border-color: #be123c; background: #fff1f2;
+      box-shadow: 0 0 0 8px rgba(244, 63, 94, 0.35);
+    }
+    .road-stop.locked { opacity: 0.55; cursor: not-allowed; }
+    .jar-liquid { transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-rose-100 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="flex items-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-800 px-3 py-1.5 rounded-2xl border border-rose-200 text-xs font-bold transition">
+          <span>🏠</span> <span>Về Trang Chủ</span>
+        </a>
+        <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+        <div>
+          <h1 class="text-sm sm:text-base font-extrabold text-slate-800 leading-tight">Bài 46: Tìm Số Trung Bình Cộng</h1>
+          <p class="text-[11px] text-rose-700 font-semibold hidden sm:block">Cỗ Máy San Đều Kẹo Ngọt • Trường TH &amp; THCS Thụy Lâm</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="bg-rose-50 border border-rose-200 px-3 py-1 rounded-2xl flex items-center gap-1.5 shadow-2xs">
+          <span class="text-lg">💎</span>
+          <span id="header-gem-count" class="text-sm font-black text-rose-800">0</span>
+          <span class="text-[10px] font-bold text-rose-600 uppercase">Kim Cương</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="max-w-6xl mx-auto px-4 pt-4">
+    <div class="bg-white/80 p-1.5 rounded-2xl border border-rose-100 shadow-xs flex gap-2">
+      <button type="button" id="tab-btn-explore" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-rose-500 text-white shadow-md">
+        <span>🍧</span> <span>Khám Phá Cỗ Máy San Đều Kẹo</span>
+      </button>
+      <button type="button" id="tab-btn-arena" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-rose-50">
+        <span>🏆</span> <span>Đấu Trường 5 Chặng (Săn 100 Kim Cương)</span>
+      </button>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 py-4 flex-1 w-full">
+
+    <!-- PANE 1: EXPLORE -->
+    <div id="pane-explore" class="space-y-6">
+      
+      <!-- Theory Rule -->
+      <div class="bg-white rounded-3xl p-6 border-2 border-rose-200 shadow-sm space-y-4">
+        <div class="flex items-center gap-3 border-b pb-3 border-rose-100">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-400 text-white flex items-center justify-center text-2xl shadow-md">
+            🍧
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-black text-slate-900">Quy Tắc Vàng Tìm Số Trung Bình Cộng</h2>
+            <p class="text-xs text-slate-500 font-medium">Bí kíp 2 bước đơn giản chuẩn SGK Toán 4</p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-gradient-to-r from-rose-50 to-pink-50 border-2 border-rose-200 rounded-2xl text-center space-y-2">
+          <p class="text-xs uppercase font-extrabold text-rose-800">CÔNG THỨC TRỌNG TÂM:</p>
+          <p class="text-base sm:text-lg font-black text-rose-950 font-mono bg-white py-2 px-4 rounded-xl border border-rose-300 inline-block shadow-sm">
+            Muốn tìm số trung bình cộng của nhiều số = (Tổng các số) : (Số các số hạng)
+          </p>
+          <p class="text-xs text-slate-600 font-bold">
+            Ví dụ: TBC của 12, 14, 16 là: (12 + 14 + 16) : 3 = 42 : 3 = 14
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Machine: 3 Candy Jars Leveler -->
+      <div class="bg-gradient-to-br from-rose-500 via-pink-600 to-orange-500 rounded-3xl p-6 text-white shadow-xl space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🍬</span>
+            <h3 class="text-lg font-black uppercase tracking-wide">Cỗ Máy San Đều 3 Lọ Kẹo Ma Thuật</h3>
+          </div>
+          <span class="text-xs bg-white/20 px-3 py-1 rounded-full font-bold">Trực Quan Sinh Động</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-extrabold mb-1 text-rose-100">Lọ Kẹo A:</label>
+            <input id="jar-val-1" type="number" value="12" class="w-full px-3 py-2 rounded-xl bg-white text-slate-900 font-black text-center text-base focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold mb-1 text-rose-100">Lọ Kẹo B:</label>
+            <input id="jar-val-2" type="number" value="20" class="w-full px-3 py-2 rounded-xl bg-white text-slate-900 font-black text-center text-base focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold mb-1 text-rose-100">Lọ Kẹo C:</label>
+            <input id="jar-val-3" type="number" value="28" class="w-full px-3 py-2 rounded-xl bg-white text-slate-900 font-black text-center text-base focus:outline-none" />
+          </div>
+        </div>
+
+        <button id="btn-san-deu" type="button" class="w-full bg-amber-300 hover:bg-amber-200 text-slate-900 font-black py-3 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer text-base">
+          <span>🪄 Phép Màu: San Đều Kẹo Vào 3 Lọ!</span>
+        </button>
+
+        <!-- Visual Jars -->
+        <div class="bg-white/95 rounded-2xl p-5 text-slate-800 space-y-4 shadow-inner">
+          <div class="grid grid-cols-3 gap-4 h-48 items-end justify-items-center pt-2 border-b-4 border-slate-300">
+            <!-- Jar 1 -->
+            <div class="w-20 sm:w-24 h-44 border-4 border-slate-300 border-t-0 rounded-b-2xl bg-slate-100 relative overflow-hidden flex flex-col justify-end">
+              <div id="liquid-1" class="jar-liquid w-full bg-gradient-to-t from-rose-500 to-pink-400 flex items-center justify-center text-white font-black text-sm" style="height: 40%;">
+                <span id="txt-jar-1">12</span>
+              </div>
+            </div>
+            <!-- Jar 2 -->
+            <div class="w-20 sm:w-24 h-44 border-4 border-slate-300 border-t-0 rounded-b-2xl bg-slate-100 relative overflow-hidden flex flex-col justify-end">
+              <div id="liquid-2" class="jar-liquid w-full bg-gradient-to-t from-rose-500 to-pink-400 flex items-center justify-center text-white font-black text-sm" style="height: 60%;">
+                <span id="txt-jar-2">20</span>
+              </div>
+            </div>
+            <!-- Jar 3 -->
+            <div class="w-20 sm:w-24 h-44 border-4 border-slate-300 border-t-0 rounded-b-2xl bg-slate-100 relative overflow-hidden flex flex-col justify-end">
+              <div id="liquid-3" class="jar-liquid w-full bg-gradient-to-t from-rose-500 to-pink-400 flex items-center justify-center text-white font-black text-sm" style="height: 80%;">
+                <span id="txt-jar-3">28</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 text-xs sm:text-sm font-bold text-slate-700 text-center">
+            Tổng số kẹo = <span id="calc-sum">60</span> viên | Sau khi san đều, mỗi lọ có: <b class="text-rose-600 text-base" id="calc-tbc">20</b> viên kẹo!
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANE 2: ARENA -->
+    <div id="pane-arena" class="hidden space-y-6">
+
+      <!-- Stage Roadmap -->
+      <div class="journey-road">
+        <div class="road-curve"></div>
+        <div id="truck-indicator" class="road-truck" style="left: 10%;">🍧</div>
+
+        <button type="button" class="road-stop active" style="top: 18%; left: 10%;" data-stage="1">
+          <span class="icon-wrap">🌱</span>
+          <p class="font-extrabold text-xs mt-1 text-rose-900">1. Khởi Động</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 68%; left: 30%;" data-stage="2">
+          <span class="icon-wrap">🧭</span>
+          <p class="font-extrabold text-xs mt-1 text-pink-900">2. Khám Phá</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 18%; left: 50%;" data-stage="3">
+          <span class="icon-wrap">⚔️</span>
+          <p class="font-extrabold text-xs mt-1 text-orange-900">3. Luyện Tập</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 68%; left: 70%;" data-stage="4">
+          <span class="icon-wrap">🌾</span>
+          <p class="font-extrabold text-xs mt-1 text-amber-900">4. Thụy Lâm</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 18%; left: 90%;" data-stage="5">
+          <span class="icon-wrap">👑</span>
+          <p class="font-extrabold text-xs mt-1 text-emerald-900">5. Vinh Danh</p>
+        </button>
+      </div>
+
+      <!-- Question Player Card -->
+      <div id="quiz-card" class="bg-white rounded-3xl p-6 border-2 border-rose-200 shadow-lg space-y-5">
+        <div class="flex items-center justify-between border-b pb-3 border-rose-100">
+          <div class="flex items-center gap-2">
+            <span id="stage-badge" class="bg-rose-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase">Chặng 1: Khởi Động</span>
+            <span id="question-progress" class="text-xs font-bold text-slate-500">Câu 1 / 3</span>
+          </div>
+          <span class="text-xs font-extrabold text-rose-700 bg-rose-50 px-2.5 py-1 rounded-xl">+20 💎 mỗi câu đúng</span>
+        </div>
+
+        <h3 id="question-text" class="text-base sm:text-lg font-black text-slate-900 leading-snug">
+          Đang nạp câu hỏi...
+        </h3>
+
+        <div id="options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"></div>
+
+        <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-bold transition-all">
+          <p id="feedback-title" class="text-base font-black mb-1"></p>
+          <p id="feedback-detail" class="text-slate-700"></p>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button id="btn-next-question" type="button" class="hidden bg-rose-600 hover:bg-rose-700 text-white font-black text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer">
+            Tiếp Tục ➜
+          </button>
+        </div>
+      </div>
+
+      <!-- Stage 5 Cert -->
+      <div id="stage5-cert" class="hidden bg-white rounded-3xl p-6 sm:p-8 border-4 border-amber-300 shadow-2xl space-y-6 text-center">
+        <div class="text-5xl animate-bounce">🏆</div>
+        <h2 class="text-2xl font-black text-rose-700 uppercase">CHÚC MỪNG EM ĐÃ HOÀN THÀNH XUẤT SẮC!</h2>
+        <p class="text-sm text-slate-600 font-bold">Em đã đạt danh hiệu: <b>Vua San Đều - Kiện Tướng Trung Bình Cộng</b> và săn trọn 100 Kim Cương! 💎</p>
+
+        <div class="p-6 bg-gradient-to-br from-rose-50 to-amber-50 border-4 border-dashed border-rose-300 rounded-3xl max-w-lg mx-auto space-y-3">
+          <p class="text-xs uppercase font-extrabold text-rose-800">GIẤY KHEN DANH DỰ</p>
+          <h3 class="text-2xl font-black text-rose-800">Em Học Sinh Thông Thái Lớp 4</h3>
+          <p class="text-xs text-slate-600">Đã làm chủ kiến thức bài học: <b>Tìm Số Trung Bình Cộng</b></p>
+          <p class="text-[11px] text-slate-400 font-bold">Trường TH &amp; THCS Thụy Lâm - Đông Anh, Hà Nội</p>
+        </div>
+
+        <div class="flex justify-center gap-3">
+          <button type="button" onclick="window.print()" class="bg-rose-500 hover:bg-rose-600 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md cursor-pointer">
+            🖨️ In Giấy Khen
+          </button>
+          <a href="../index.html" class="bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md">
+            🏠 Trở Về Vương Quốc
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    class SoundEngine {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playPop() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.06);
+        gain.gain.setValueAtTime(0.18, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(now); osc.stop(now + 0.08);
+      }
+      playRight() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523, 659, 783, 1046].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.2);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.22);
+        });
+      }
+      playWrong() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [280, 220].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.14, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.18);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.12); osc.stop(now + idx * 0.12 + 0.2);
+        });
+      }
+    }
+    const sound = new SoundEngine();
+
+    // Tabs
+    const tabBtnExplore = document.getElementById('tab-btn-explore');
+    const tabBtnArena = document.getElementById('tab-btn-arena');
+    const paneExplore = document.getElementById('pane-explore');
+    const paneArena = document.getElementById('pane-arena');
+
+    tabBtnExplore.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-rose-500 text-white shadow-md';
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-rose-50';
+      paneExplore.classList.remove('hidden');
+      paneArena.classList.add('hidden');
+    });
+
+    tabBtnArena.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-rose-500 text-white shadow-md';
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-rose-50';
+      paneArena.classList.remove('hidden');
+      paneExplore.classList.add('hidden');
+    });
+
+    // San Deu Simulation
+    function runSanDeu() {
+      const v1 = parseFloat(document.getElementById('jar-val-1').value) || 0;
+      const v2 = parseFloat(document.getElementById('jar-val-2').value) || 0;
+      const v3 = parseFloat(document.getElementById('jar-val-3').value) || 0;
+      const sum = v1 + v2 + v3;
+      const tbc = Math.round((sum / 3) * 10) / 10;
+
+      document.getElementById('calc-sum').textContent = sum;
+      document.getElementById('calc-tbc').textContent = tbc;
+
+      document.getElementById('txt-jar-1').textContent = tbc;
+      document.getElementById('txt-jar-2').textContent = tbc;
+      document.getElementById('txt-jar-3').textContent = tbc;
+
+      const maxH = Math.max(v1, v2, v3, 30);
+      const hPercent = Math.min((tbc / maxH) * 85, 95);
+
+      document.getElementById('liquid-1').style.height = hPercent + '%';
+      document.getElementById('liquid-2').style.height = hPercent + '%';
+      document.getElementById('liquid-3').style.height = hPercent + '%';
+
+      sound.playRight();
+      try { confetti({ particleCount: 35, spread: 60, origin: { y: 0.6 } }); } catch (e) {}
+    }
+    document.getElementById('btn-san-deu').addEventListener('click', runSanDeu);
+
+    // ==========================================
+    // QUESTIONS
+    // ==========================================
+    const STAGE_QUESTIONS = {
+      1: [
+        {
+          q: "Để tìm số trung bình cộng của nhiều số, ta làm như sau:",
+          options: [
+            "Lấy số lớn nhất cộng số bé nhất rồi chia cho 2",
+            "Tính tổng các số rồi chia tổng đó cho số các số hạng",
+            "Lấy tổng các số nhân với số các số hạng",
+            "Lấy số lớn nhất trừ số bé nhất"
+          ],
+          correct: 1,
+          explain: "Đúng rồi! Quy tắc: Số TBC = (Tổng các số) : (Số các số hạng)."
+        },
+        {
+          q: "Số trung bình cộng của 20 và 40 là:",
+          options: ["30", "25", "35", "60"],
+          correct: 0,
+          explain: "(20 + 40) : 2 = 60 : 2 = 30."
+        },
+        {
+          q: "Số trung bình cộng của ba số 10, 20, 30 là:",
+          options: ["15", "20", "25", "30"],
+          correct: 1,
+          explain: "(10 + 20 + 30) : 3 = 60 : 3 = 20."
+        }
+      ],
+      2: [
+        {
+          q: "Bốn bạn có số nhãn vở lần lượt là: 12, 14, 16, 18. Trung bình mỗi bạn có số nhãn vở là:",
+          options: ["14 cái", "15 cái", "16 cái", "17 cái"],
+          correct: 1,
+          explain: "Tổng = 12 + 14 + 16 + 18 = 60. TBC = 60 : 4 = 15 (cái nhãn vở)."
+        },
+        {
+          q: "Biết trung bình cộng của hai số là 25, một số là 20. Số còn lại là:",
+          options: ["25", "30", "35", "45"],
+          correct: 1,
+          explain: "Tổng của hai số = 25 x 2 = 50. Số còn lại = 50 - 20 = 30."
+        },
+        {
+          q: "Trung bình cộng của ba số tự nhiên liên tiếp chính là:",
+          options: ["Số bé nhất", "Số ở chính giữa", "Số lớn nhất", "Tổng của ba số"],
+          correct: 1,
+          explain: "Rất thông minh! Với các số cách đều nhau lẻ số hạng, TBC chính là số ở chính giữa."
+        }
+      ],
+      3: [
+        {
+          q: "Xe thứ nhất chở 25 tấn hàng, xe thứ hai chở 35 tấn hàng. Xe thứ ba chở bằng trung bình cộng của hai xe đầu. Xe thứ ba chở:",
+          options: ["30 tấn", "28 tấn", "32 tấn", "35 tấn"],
+          correct: 0,
+          explain: "Xe thứ ba chở = (25 + 35) : 2 = 30 (tấn)."
+        },
+        {
+          q: "Một cửa hàng ngày thứ nhất bán 40kg gạo, ngày thứ hai bán 50kg, ngày thứ ba bán 60kg. Trung bình mỗi ngày bán được:",
+          options: ["45kg", "50kg", "55kg", "60kg"],
+          correct: 1,
+          explain: "TBC = (40 + 50 + 60) : 3 = 150 : 3 = 50 (kg)."
+        },
+        {
+          q: "Tìm số thứ ba, biết trung bình cộng của 3 số là 50 và tổng của 2 số đầu là 90:",
+          options: ["40", "50", "60", "70"],
+          correct: 2,
+          explain: "Tổng 3 số = 50 x 3 = 150. Số thứ ba = 150 - 90 = 60."
+        }
+      ],
+      4: [
+        {
+          q: "Ba tổ học sinh lớp 4A trường TH & THCS Thụy Lâm trồng được số cây lần lượt là 24, 26, 28 cây. Hỏi trung bình mỗi tổ trồng được bao nhiêu cây?",
+          options: ["25 cây", "26 cây", "27 cây", "28 cây"],
+          correct: 1,
+          explain: "TBC = (24 + 26 + 28) : 3 = 78 : 3 = 26 (cây)."
+        },
+        {
+          q: "Gia đình bác nông dân ở Thụy Lâm thu hoạch thóc: vụ xuân được 45 tạ, vụ mùa được 55 tạ. Trung bình mỗi vụ thu hoạch được:",
+          options: ["48 tạ", "50 tạ", "52 tạ", "55 tạ"],
+          correct: 1,
+          explain: "TBC = (45 + 55) : 2 = 100 : 2 = 50 (tạ)."
+        },
+        {
+          q: "Bốn ngày hội làng Thụy Lâm thu hút lượt du khách: 120, 140, 150, 190 người. Trung bình mỗi ngày có bao nhiêu du khách?",
+          options: ["145 người", "150 người", "155 người", "160 người"],
+          correct: 1,
+          explain: "Tổng = 120 + 140 + 150 + 190 = 600. TBC = 600 : 4 = 150 (người)."
+        }
+      ]
+    };
+
+    let currentStage = 1;
+    let currentQIdx = 0;
+    let gemCount = 0;
+    let unlockedStages = [1];
+
+    function renderQuestion() {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+
+      document.getElementById('stage-badge').textContent = `Chặng ${currentStage}: ${getStageName(currentStage)}`;
+      document.getElementById('question-progress').textContent = `Câu ${currentQIdx + 1} / ${qList.length}`;
+      document.getElementById('question-text').textContent = q.q;
+
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-btn p-3.5 bg-slate-50 hover:bg-rose-50 border-2 border-slate-200 hover:border-rose-400 rounded-2xl font-bold text-xs sm:text-sm text-left transition flex items-center justify-between cursor-pointer';
+        btn.innerHTML = `<span>${String.fromCharCode(65 + idx)}. ${opt}</span><span class="icon-indicator"></span>`;
+        btn.addEventListener('click', () => handleAnswer(idx, btn));
+        grid.appendChild(btn);
+      });
+
+      document.getElementById('quiz-feedback').classList.add('hidden');
+      document.getElementById('btn-next-question').classList.add('hidden');
+    }
+
+    function getStageName(stg) {
+      const names = { 1: 'Khởi Động', 2: 'Khám Phá', 3: 'Luyện Tập', 4: 'Thực Tế Thụy Lâm', 5: 'Vinh Danh' };
+      return names[stg] || '';
+    }
+
+    function handleAnswer(choiceIdx, btnEl) {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+      const allBtns = document.querySelectorAll('.opt-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      const feedback = document.getElementById('quiz-feedback');
+      const title = document.getElementById('feedback-title');
+      const detail = document.getElementById('feedback-detail');
+
+      if (choiceIdx === q.correct) {
+        sound.playRight();
+        try { confetti({ particleCount: 30, spread: 60, origin: { y: 0.7 } }); } catch (e) {}
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        btnEl.querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-rose-50 border-2 border-rose-300 text-rose-900';
+        title.textContent = '🎉 CHÍNH XÁC!';
+        detail.textContent = q.explain;
+
+        gemCount += 20;
+        document.getElementById('header-gem-count').textContent = gemCount;
+      } else {
+        sound.playWrong();
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-amber-100', 'border-amber-400', 'text-amber-900');
+        btnEl.querySelector('.icon-indicator').textContent = '❌';
+
+        allBtns[q.correct].classList.add('bg-rose-50', 'border-rose-400');
+        allBtns[q.correct].querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-amber-50 border-2 border-amber-300 text-amber-900';
+        title.textContent = '💡 CỐ GẮNG LÊN EM NHÉ!';
+        detail.textContent = q.explain;
+      }
+
+      feedback.classList.remove('hidden');
+      document.getElementById('btn-next-question').classList.remove('hidden');
+    }
+
+    document.getElementById('btn-next-question').addEventListener('click', () => {
+      sound.playPop();
+      const qList = STAGE_QUESTIONS[currentStage];
+      if (currentQIdx < qList.length - 1) {
+        currentQIdx++;
+        renderQuestion();
+      } else {
+        sound.playRight();
+        try { confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } }); } catch (e) {}
+        if (currentStage < 4) {
+          currentStage++;
+          currentQIdx = 0;
+          unlockedStages.push(currentStage);
+          updateRoadmap();
+          renderQuestion();
+        } else {
+          currentStage = 5;
+          updateRoadmap();
+          document.getElementById('quiz-card').classList.add('hidden');
+          document.getElementById('stage5-cert').classList.remove('hidden');
+          try { confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } }); } catch (e) {}
+        }
+      }
+    });
+
+    function updateRoadmap() {
+      const truck = document.getElementById('truck-indicator');
+      const positions = { 1: '10%', 2: '30%', 3: '50%', 4: '70%', 5: '90%' };
+      if (truck) truck.style.left = positions[currentStage] || '10%';
+
+      document.querySelectorAll('.road-stop').forEach(btn => {
+        const stg = parseInt(btn.dataset.stage, 10);
+        btn.classList.remove('active', 'locked');
+        if (stg === currentStage) btn.classList.add('active');
+        else if (unlockedStages.includes(stg)) {}
+        else btn.classList.add('locked');
+      });
+    }
+
+    // Init
+    renderQuestion();
+  </script>
+</body>
+</html>

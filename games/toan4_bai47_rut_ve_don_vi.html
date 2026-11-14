@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 47: Bài Toán Rút Về Đơn Vị - Toán Lớp 4 Thụy Lâm</title>
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Lexend', 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 40%, #ffedd5 75%, #ecfdf5 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .text-balance { text-wrap: balance; }
+    .cute-card {
+      border-radius: 28px;
+      box-shadow: 0 16px 36px -8px rgba(217, 119, 6, 0.08);
+      border: 3px solid rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+    }
+    .journey-road {
+      position: relative; height: 440px; margin: 18px 0 14px; border-radius: 28px;
+      background: linear-gradient(155deg, #fef08a 0% 25%, #fed7aa 26% 50%, #fde047 51% 75%, #bbf7d0 76% 100%);
+      overflow: hidden; border: 4px solid #f59e0b; box-shadow: inset 0 0 24px rgba(0,0,0,0.05);
+    }
+    @media (max-width: 760px) { .journey-road { height: 500px; } }
+    .road-curve {
+      position: absolute; top: 47%; left: -6%; right: -5%; height: 76px;
+      border-top: 6px dashed #ffffff; border-bottom: 6px dashed #ffffff;
+      border-radius: 50%; background: #d97706; transform: rotate(-3deg); z-index: 1;
+    }
+    .road-truck {
+      position: absolute; top: 42%; font-size: 52px;
+      filter: drop-shadow(0 8px 4px rgba(15, 23, 42, 0.25));
+      transform: translate(-50%) scaleX(-1); transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5; pointer-events: none;
+    }
+    .road-stop {
+      position: absolute; width: 126px; border: 0; background: transparent;
+      color: #0f172a; text-align: center; transform: translate(-50%);
+      cursor: pointer; z-index: 4; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .road-stop:hover:not([disabled]) { transform: translate(-50%) scale(1.1); z-index: 6; }
+    .road-stop span.icon-wrap {
+      display: grid; place-items: center; width: 66px; height: 66px; margin: auto;
+      border-radius: 50%; border: 4px solid #f59e0b; background: #ffffff;
+      font-size: 32px; box-shadow: 0 8px 16px rgba(245, 158, 11, 0.25);
+    }
+    .road-stop.active span.icon-wrap {
+      border-color: #b45309; background: #fffbeb;
+      box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.35);
+    }
+    .road-stop.locked { opacity: 0.55; cursor: not-allowed; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-amber-100 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-800 px-3 py-1.5 rounded-2xl border border-amber-200 text-xs font-bold transition">
+          <span>🏠</span> <span>Về Trang Chủ</span>
+        </a>
+        <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+        <div>
+          <h1 class="text-sm sm:text-base font-extrabold text-slate-800 leading-tight">Bài 47: Bài Toán Rút Về Đơn Vị</h1>
+          <p class="text-[11px] text-amber-700 font-semibold hidden sm:block">Đóng Gói Nông Sản Thụy Lâm • Trường TH &amp; THCS Thụy Lâm</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="bg-amber-50 border border-amber-200 px-3 py-1 rounded-2xl flex items-center gap-1.5 shadow-2xs">
+          <span class="text-lg">💎</span>
+          <span id="header-gem-count" class="text-sm font-black text-amber-800">0</span>
+          <span class="text-[10px] font-bold text-amber-600 uppercase">Kim Cương</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="max-w-6xl mx-auto px-4 pt-4">
+    <div class="bg-white/80 p-1.5 rounded-2xl border border-amber-100 shadow-xs flex gap-2">
+      <button type="button" id="tab-btn-explore" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-amber-500 text-white shadow-md">
+        <span>🌾</span> <span>Khám Phá Cỗ Máy 2 Bước Giải</span>
+      </button>
+      <button type="button" id="tab-btn-arena" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-amber-50">
+        <span>🏆</span> <span>Đấu Trường 5 Chặng (Săn 100 Kim Cương)</span>
+      </button>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 py-4 flex-1 w-full">
+
+    <!-- PANE 1: EXPLORE -->
+    <div id="pane-explore" class="space-y-6">
+      
+      <!-- Theory Rule -->
+      <div class="bg-white rounded-3xl p-6 border-2 border-amber-200 shadow-sm space-y-4">
+        <div class="flex items-center gap-3 border-b pb-3 border-amber-100">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-400 text-white flex items-center justify-center text-2xl shadow-md">
+            🌾
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-black text-slate-900">Bí Kíp 2 Bước Rút Về Đơn Vị Chuẩn SGK</h2>
+            <p class="text-xs text-slate-500 font-medium">Bất kỳ bài toán nào dạng này đều giải êm ru trong 2 bước!</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-amber-50 p-4 rounded-2xl border-2 border-amber-200 space-y-2">
+            <span class="text-xs font-black bg-amber-600 text-white px-2.5 py-0.5 rounded-full uppercase">Bước 1: Rút Về Đơn Vị (Phép Chia)</span>
+            <p class="text-xs sm:text-sm font-bold text-amber-950">
+              Tìm giá trị của <b>1 đơn vị</b> (1 túi, 1 bao, 1 người, 1 ngày...).<br>
+              <span class="text-amber-800 font-mono bg-white px-2 py-0.5 rounded border border-amber-300 mt-1 inline-block">Ta thực hiện phép tính CHIA ( : )</span>
+            </p>
+          </div>
+
+          <div class="bg-orange-50 p-4 rounded-2xl border-2 border-orange-200 space-y-2">
+            <span class="text-xs font-black bg-orange-600 text-white px-2.5 py-0.5 rounded-full uppercase">Bước 2: Tìm Giá Trị Nhiều Phần (Phép Nhân)</span>
+            <p class="text-xs sm:text-sm font-bold text-orange-950">
+              Lấy giá trị của 1 đơn vị vừa tìm được nhân với số lượng cần tìm.<br>
+              <span class="text-orange-800 font-mono bg-white px-2 py-0.5 rounded border border-orange-300 mt-1 inline-block">Ta thực hiện phép tính NHÂN ( x )</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Machine: Nông Sản Thụy Lâm -->
+      <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 rounded-3xl p-6 text-white shadow-xl space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">📦</span>
+            <h3 class="text-lg font-black uppercase tracking-wide">Cỗ Máy Đóng Gói Nông Sản Thụy Lâm</h3>
+          </div>
+          <span class="text-xs bg-white/20 px-3 py-1 rounded-full font-bold">Thử Nghiệm Mọi Đề Bài</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-extrabold mb-1 text-amber-100">Số túi ban đầu:</label>
+            <input id="input-bags" type="number" value="4" class="w-full px-3 py-2 rounded-xl bg-white text-slate-900 font-black text-center text-base focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold mb-1 text-amber-100">Chứa số kg gạo nếp:</label>
+            <input id="input-kg" type="number" value="20" class="w-full px-3 py-2 rounded-xl bg-white text-slate-900 font-black text-center text-base focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold mb-1 text-amber-100">Hỏi số túi cần mua:</label>
+            <input id="input-target-bags" type="number" value="7" class="w-full px-3 py-2 rounded-xl bg-white text-slate-900 font-black text-center text-base focus:outline-none" />
+          </div>
+        </div>
+
+        <button id="btn-calc-steps" type="button" class="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-black py-3 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer text-base">
+          <span>⚡ Giải Tự Động Từng Bước Trực Quan</span>
+        </button>
+
+        <div class="bg-white/95 rounded-2xl p-5 text-slate-800 space-y-3 shadow-inner">
+          <h4 class="text-xs font-black uppercase text-amber-800 border-b pb-2 border-amber-100">Bài giải chi tiết của cô giáo Thụy Lâm:</h4>
+          
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-1 text-xs sm:text-sm font-bold text-slate-700">
+            <p>🌾 <b>Bước 1 (Rút về đơn vị):</b> Mỗi túi đựng số ki-lô-gam gạo là:</p>
+            <p class="font-mono text-amber-800 text-sm pl-4"><span id="txt-calc-step1">20 : 4 = 5 (kg)</span></p>
+          </div>
+
+          <div class="p-3 bg-orange-50 border border-orange-200 rounded-xl space-y-1 text-xs sm:text-sm font-bold text-slate-700">
+            <p>📦 <b>Bước 2 (Tính nhiều phần):</b> Số túi cần tính (<span id="txt-calc-target">7</span> túi) đựng số ki-lô-gam gạo là:</p>
+            <p class="font-mono text-orange-800 text-base font-black pl-4"><span id="txt-calc-step2">5 x 7 = 35 (kg)</span></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANE 2: ARENA -->
+    <div id="pane-arena" class="hidden space-y-6">
+
+      <div class="journey-road">
+        <div class="road-curve"></div>
+        <div id="truck-indicator" class="road-truck" style="left: 10%;">🌾</div>
+
+        <button type="button" class="road-stop active" style="top: 18%; left: 10%;" data-stage="1">
+          <span class="icon-wrap">🌱</span>
+          <p class="font-extrabold text-xs mt-1 text-amber-900">1. Khởi Động</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 68%; left: 30%;" data-stage="2">
+          <span class="icon-wrap">🧭</span>
+          <p class="font-extrabold text-xs mt-1 text-orange-900">2. Khám Phá</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 18%; left: 50%;" data-stage="3">
+          <span class="icon-wrap">⚔️</span>
+          <p class="font-extrabold text-xs mt-1 text-yellow-900">3. Luyện Tập</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 68%; left: 70%;" data-stage="4">
+          <span class="icon-wrap">🌾</span>
+          <p class="font-extrabold text-xs mt-1 text-rose-900">4. Thụy Lâm</p>
+        </button>
+        <button type="button" class="road-stop locked" style="top: 18%; left: 90%;" data-stage="5">
+          <span class="icon-wrap">👑</span>
+          <p class="font-extrabold text-xs mt-1 text-emerald-900">5. Vinh Danh</p>
+        </button>
+      </div>
+
+      <div id="quiz-card" class="bg-white rounded-3xl p-6 border-2 border-amber-200 shadow-lg space-y-5">
+        <div class="flex items-center justify-between border-b pb-3 border-amber-100">
+          <div class="flex items-center gap-2">
+            <span id="stage-badge" class="bg-amber-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase">Chặng 1: Khởi Động</span>
+            <span id="question-progress" class="text-xs font-bold text-slate-500">Câu 1 / 3</span>
+          </div>
+          <span class="text-xs font-extrabold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-xl">+20 💎 mỗi câu đúng</span>
+        </div>
+
+        <h3 id="question-text" class="text-base sm:text-lg font-black text-slate-900 leading-snug">
+          Đang nạp câu hỏi...
+        </h3>
+
+        <div id="options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"></div>
+
+        <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-bold transition-all">
+          <p id="feedback-title" class="text-base font-black mb-1"></p>
+          <p id="feedback-detail" class="text-slate-700"></p>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button id="btn-next-question" type="button" class="hidden bg-amber-600 hover:bg-amber-700 text-white font-black text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer">
+            Tiếp Tục ➜
+          </button>
+        </div>
+      </div>
+
+      <!-- Stage 5 Cert -->
+      <div id="stage5-cert" class="hidden bg-white rounded-3xl p-6 sm:p-8 border-4 border-amber-300 shadow-2xl space-y-6 text-center">
+        <div class="text-5xl animate-bounce">🏆</div>
+        <h2 class="text-2xl font-black text-amber-700 uppercase">CHÚC MỪNG EM ĐÃ HOÀN THÀNH XUẤT SẮC!</h2>
+        <p class="text-sm text-slate-600 font-bold">Em đã đạt danh hiệu: <b>Bậc Thầy Rút Về Đơn Vị</b> và săn trọn 100 Kim Cương! 💎</p>
+
+        <div class="p-6 bg-gradient-to-br from-amber-50 to-orange-50 border-4 border-dashed border-amber-300 rounded-3xl max-w-lg mx-auto space-y-3">
+          <p class="text-xs uppercase font-extrabold text-amber-800">GIẤY KHEN DANH DỰ</p>
+          <h3 class="text-2xl font-black text-amber-800">Em Học Sinh Thông Thái Lớp 4</h3>
+          <p class="text-xs text-slate-600">Đã làm chủ kiến thức bài học: <b>Bài Toán Rút Về Đơn Vị</b></p>
+          <p class="text-[11px] text-slate-400 font-bold">Trường TH &amp; THCS Thụy Lâm - Đông Anh, Hà Nội</p>
+        </div>
+
+        <div class="flex justify-center gap-3">
+          <button type="button" onclick="window.print()" class="bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md cursor-pointer">
+            🖨️ In Giấy Khen
+          </button>
+          <a href="../index.html" class="bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md">
+            🏠 Trở Về Vương Quốc
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    class SoundEngine {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playPop() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.06);
+        gain.gain.setValueAtTime(0.18, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(now); osc.stop(now + 0.08);
+      }
+      playRight() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523, 659, 783, 1046].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.2);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.22);
+        });
+      }
+      playWrong() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [280, 220].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.14, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.18);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.12); osc.stop(now + idx * 0.12 + 0.2);
+        });
+      }
+    }
+    const sound = new SoundEngine();
+
+    // Tabs
+    const tabBtnExplore = document.getElementById('tab-btn-explore');
+    const tabBtnArena = document.getElementById('tab-btn-arena');
+    const paneExplore = document.getElementById('pane-explore');
+    const paneArena = document.getElementById('pane-arena');
+
+    tabBtnExplore.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-amber-500 text-white shadow-md';
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-amber-50';
+      paneExplore.classList.remove('hidden');
+      paneArena.classList.add('hidden');
+    });
+
+    tabBtnArena.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-amber-500 text-white shadow-md';
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-amber-50';
+      paneArena.classList.remove('hidden');
+      paneExplore.classList.add('hidden');
+    });
+
+    function calcSteps() {
+      const b1 = parseFloat(document.getElementById('input-bags').value) || 1;
+      const kg1 = parseFloat(document.getElementById('input-kg').value) || 0;
+      const b2 = parseFloat(document.getElementById('input-target-bags').value) || 1;
+
+      const unit = Math.round((kg1 / b1) * 100) / 100;
+      const total = Math.round((unit * b2) * 100) / 100;
+
+      document.getElementById('txt-calc-step1').textContent = `${kg1} : ${b1} = ${unit} (kg)`;
+      document.getElementById('txt-calc-target').textContent = b2;
+      document.getElementById('txt-calc-step2').textContent = `${unit} x ${b2} = ${total} (kg)`;
+
+      sound.playRight();
+      try { confetti({ particleCount: 35, spread: 60, origin: { y: 0.6 } }); } catch (e) {}
+    }
+    document.getElementById('btn-calc-steps').addEventListener('click', calcSteps);
+
+    // ==========================================
+    // QUESTIONS
+    // ==========================================
+    const STAGE_QUESTIONS = {
+      1: [
+        {
+          q: "Bước 'Rút về đơn vị' trong bài toán thường thực hiện phép tính gì?",
+          options: ["Phép tính Cộng (+)", "Phép tính Trừ (-)", "Phép tính Chia (:)", "Phép tính Nhân (x)"],
+          correct: 2,
+          explain: "Chính xác! Bước rút về đơn vị là tìm giá trị của 1 phần, nên luôn dùng phép tính CHIA."
+        },
+        {
+          q: "Mua 3 quyển vở hết 15 000 đồng. Giá tiền 1 quyển vở là:",
+          options: ["3 000 đồng", "5 000 đồng", "6 000 đồng", "4 000 đồng"],
+          correct: 1,
+          explain: "15 000 : 3 = 5 000 (đồng)."
+        },
+        {
+          q: "Có 5 hộp bút đựng được 50 cái bút. Hỏi 1 hộp bút đựng được bao nhiêu cái bút?",
+          options: ["8 cái", "10 cái", "12 cái", "5 cái"],
+          correct: 1,
+          explain: "50 : 5 = 10 (cái bút)."
+        }
+      ],
+      2: [
+        {
+          q: "Có 24 lít mật ong rót đều vào 4 can. Hỏi 3 can như thế có bao nhiêu lít mật ong?",
+          options: ["12 lít", "16 lít", "18 lít", "20 lít"],
+          correct: 2,
+          explain: "Bước 1: 1 can có 24 : 4 = 6 lít. Bước 2: 3 can có 6 x 3 = 18 (lít mật ong)."
+        },
+        {
+          q: "May 5 bộ quần áo hết 15m vải. Hỏi may 8 bộ quần áo như thế hết bao nhiêu mét vải?",
+          options: ["20m", "24m", "25m", "30m"],
+          correct: 1,
+          explain: "Bước 1: 1 bộ hết 15 : 5 = 3m. Bước 2: 8 bộ hết 3 x 8 = 24 (m vải)."
+        },
+        {
+          q: "Một ô tô chạy 2 giờ được 90km. Hỏi ô tô đó chạy trong 4 giờ được bao nhiêu ki-lô-mét?",
+          options: ["160km", "170km", "180km", "200km"],
+          correct: 2,
+          explain: "1 giờ chạy được: 90 : 2 = 45km. 4 giờ chạy được: 45 x 4 = 180 (km)."
+        }
+      ],
+      3: [
+        {
+          q: "Một tổ công nhân đắp 36m đường trong 4 ngày. Hỏi trong 6 ngày tổ đó đắp được bao nhiêu mét đường?",
+          options: ["48m", "50m", "54m", "60m"],
+          correct: 2,
+          explain: "1 ngày đắp: 36 : 4 = 9m. 6 ngày đắp: 9 x 6 = 54 (m đường)."
+        },
+        {
+          q: "Có 54 viên kẹo chia đều vào 6 túi. Bạn Minh lấy 4 túi kẹo. Hỏi Minh có bao nhiêu viên kẹo?",
+          options: ["32 viên", "36 viên", "40 viên", "28 viên"],
+          correct: 1,
+          explain: "1 túi có: 54 : 6 = 9 viên. 4 túi có: 9 x 4 = 36 (viên kẹo)."
+        },
+        {
+          q: "Có 40 bao xi măng xếp đều lên 4 chuyến xe. Hỏi 9 chuyến xe như thế chở được bao nhiêu bao xi măng?",
+          options: ["80 bao", "85 bao", "90 bao", "100 bao"],
+          correct: 2,
+          explain: "1 chuyến chở: 40 : 4 = 10 bao. 9 chuyến chở: 10 x 9 = 90 (bao)."
+        }
+      ],
+      4: [
+        {
+          q: "Bác Lan ở xã Thụy Lâm đóng 35kg gạo nếp vào 7 túi đều nhau. Bác bán được 5 túi. Hỏi bác đã bán được bao nhiêu ki-lô-gam gạo nếp?",
+          options: ["20kg", "25kg", "30kg", "15kg"],
+          correct: 1,
+          explain: "1 túi có: 35 : 7 = 5kg. 5 túi có: 5 x 5 = 25 (kg gạo nếp)."
+        },
+        {
+          q: "Đội văn nghệ trường TH & THCS Thụy Lâm may 6 bộ trang phục múa hết 18m lụa. Hỏi may 9 bộ như thế cần bao nhiêu mét lụa?",
+          options: ["24m", "27m", "30m", "21m"],
+          correct: 1,
+          explain: "1 bộ hết: 18 : 6 = 3m. 9 bộ hết: 3 x 9 = 27 (m lụa)."
+        },
+        {
+          q: "Một vườn ươm cây xanh Thụy Lâm xếp 48 chậu hoa vào 6 luống. Hỏi 8 luống như thế xếp được bao nhiêu chậu hoa?",
+          options: ["56 chậu", "64 chậu", "72 chậu", "60 chậu"],
+          correct: 1,
+          explain: "1 luống có: 48 : 6 = 8 chậu. 8 luống có: 8 x 8 = 64 (chậu hoa)."
+        }
+      ]
+    };
+
+    let currentStage = 1;
+    let currentQIdx = 0;
+    let gemCount = 0;
+    let unlockedStages = [1];
+
+    function renderQuestion() {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+
+      document.getElementById('stage-badge').textContent = `Chặng ${currentStage}: ${getStageName(currentStage)}`;
+      document.getElementById('question-progress').textContent = `Câu ${currentQIdx + 1} / ${qList.length}`;
+      document.getElementById('question-text').textContent = q.q;
+
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-btn p-3.5 bg-slate-50 hover:bg-amber-50 border-2 border-slate-200 hover:border-amber-400 rounded-2xl font-bold text-xs sm:text-sm text-left transition flex items-center justify-between cursor-pointer';
+        btn.innerHTML = `<span>${String.fromCharCode(65 + idx)}. ${opt}</span><span class="icon-indicator"></span>`;
+        btn.addEventListener('click', () => handleAnswer(idx, btn));
+        grid.appendChild(btn);
+      });
+
+      document.getElementById('quiz-feedback').classList.add('hidden');
+      document.getElementById('btn-next-question').classList.add('hidden');
+    }
+
+    function getStageName(stg) {
+      const names = { 1: 'Khởi Động', 2: 'Khám Phá', 3: 'Luyện Tập', 4: 'Nông Sản Thụy Lâm', 5: 'Vinh Danh' };
+      return names[stg] || '';
+    }
+
+    function handleAnswer(choiceIdx, btnEl) {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+      const allBtns = document.querySelectorAll('.opt-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      const feedback = document.getElementById('quiz-feedback');
+      const title = document.getElementById('feedback-title');
+      const detail = document.getElementById('feedback-detail');
+
+      if (choiceIdx === q.correct) {
+        sound.playRight();
+        try { confetti({ particleCount: 30, spread: 60, origin: { y: 0.7 } }); } catch (e) {}
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-amber-100', 'border-amber-500', 'text-amber-900');
+        btnEl.querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-amber-50 border-2 border-amber-300 text-amber-900';
+        title.textContent = '🎉 CHÍNH XÁC!';
+        detail.textContent = q.explain;
+
+        gemCount += 20;
+        document.getElementById('header-gem-count').textContent = gemCount;
+      } else {
+        sound.playWrong();
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-900');
+        btnEl.querySelector('.icon-indicator').textContent = '❌';
+
+        allBtns[q.correct].classList.add('bg-amber-50', 'border-amber-400');
+        allBtns[q.correct].querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-rose-50 border-2 border-rose-300 text-rose-900';
+        title.textContent = '💡 CỐ GẮNG LÊN EM NHÉ!';
+        detail.textContent = q.explain;
+      }
+
+      feedback.classList.remove('hidden');
+      document.getElementById('btn-next-question').classList.remove('hidden');
+    }
+
+    document.getElementById('btn-next-question').addEventListener('click', () => {
+      sound.playPop();
+      const qList = STAGE_QUESTIONS[currentStage];
+      if (currentQIdx < qList.length - 1) {
+        currentQIdx++;
+        renderQuestion();
+      } else {
+        sound.playRight();
+        try { confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } }); } catch (e) {}
+        if (currentStage < 4) {
+          currentStage++;
+          currentQIdx = 0;
+          unlockedStages.push(currentStage);
+          updateRoadmap();
+          renderQuestion();
+        } else {
+          currentStage = 5;
+          updateRoadmap();
+          document.getElementById('quiz-card').classList.add('hidden');
+          document.getElementById('stage5-cert').classList.remove('hidden');
+          try { confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } }); } catch (e) {}
+        }
+      }
+    });
+
+    function updateRoadmap() {
+      const truck = document.getElementById('truck-indicator');
+      const positions = { 1: '10%', 2: '30%', 3: '50%', 4: '70%', 5: '90%' };
+      if (truck) truck.style.left = positions[currentStage] || '10%';
+
+      document.querySelectorAll('.road-stop').forEach(btn => {
+        const stg = parseInt(btn.dataset.stage, 10);
+        btn.classList.remove('active', 'locked');
+        if (stg === currentStage) btn.classList.add('active');
+        else if (unlockedStages.includes(stg)) {}
+        else btn.classList.add('locked');
+      });
+    }
+
+    // Init
+    renderQuestion();
+  </script>
+</body>
+</html>

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 25: Tìm Hai Số Khi Biết Tổng Và Hiệu - Toán Lớp 4</title>
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Lexend', 'Quicksand', 'sans-serif'],
+          },
+          boxShadow: {
+            'card': '0 12px 30px -6px rgba(16, 185, 129, 0.18), 0 8px 12px -4px rgba(16, 185, 129, 0.08)',
+            'pop-emerald': '0 6px 0 #059669',
+            'pop-teal': '0 6px 0 #0d9488',
+            'pop-cyan': '0 6px 0 #0891b2',
+            'pop-amber': '0 6px 0 #d97706',
+            'pop-rose': '0 6px 0 #e11d48',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Lexend', 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 45%, #eff6ff 80%, #fefce8 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .text-balance { text-wrap: balance; }
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(1.5deg); }
+    }
+    .animate-float { animation: gentleFloat 3s infinite ease-in-out; }
+
+    .cute-card {
+      border-radius: 28px;
+      box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.08);
+      border: 3px solid rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+    }
+    .journey-road {
+      position: relative;
+      height: 440px;
+      margin: 18px 0 14px;
+      border-radius: 28px;
+      background: linear-gradient(155deg, #d1fae5 0% 25%, #ccfbf1 26% 50%, #e0e7ff 51% 75%, #fef3c7 76% 100%);
+      overflow: hidden;
+      border: 4px solid #10b981;
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.05);
+    }
+    @media (max-width: 760px) { .journey-road { height: 500px; } }
+    .road-curve {
+      position: absolute;
+      top: 47%; left: -6%; right: -5%;
+      height: 76px;
+      border-top: 6px dashed #ffffff; border-bottom: 6px dashed #ffffff;
+      border-radius: 50%;
+      background: #f59e0b;
+      transform: rotate(-3deg);
+      z-index: 1;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    }
+    .road-truck {
+      position: absolute; top: 42%;
+      font-size: 52px;
+      filter: drop-shadow(0 8px 4px rgba(15, 23, 42, 0.25));
+      transform: translate(-50%) scaleX(-1);
+      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5; pointer-events: none;
+    }
+    .road-stop {
+      position: absolute; width: 126px; border: 0; background: transparent;
+      color: #0f172a; text-align: center; transform: translate(-50%);
+      cursor: pointer; z-index: 4; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .road-stop:hover:not([disabled]) { transform: translate(-50%) scale(1.1); z-index: 6; }
+    .road-stop span.icon-wrap {
+      display: grid; place-items: center; width: 66px; height: 66px; margin: auto;
+      border-radius: 50%; border: 4px solid #10b981; background: #ffffff;
+      font-size: 32px; box-shadow: 0 8px 16px rgba(16, 185, 129, 0.25);
+    }
+    .road-stop.active span.icon-wrap {
+      border-color: #059669; background: #ecfdf5;
+      box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.35);
+    }
+    .road-stop.locked { opacity: 0.55; cursor: not-allowed; }
+    .opt-btn { transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .opt-btn:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-emerald-100 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-2xl border border-emerald-200 text-xs font-bold transition">
+          <span>🏠</span> <span>Về Trang Chủ</span>
+        </a>
+        <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+        <div>
+          <h1 class="text-sm sm:text-base font-extrabold text-slate-800 leading-tight">Bài 25: Tìm Hai Số Khi Biết Tổng Và Hiệu</h1>
+          <p class="text-[11px] text-emerald-700 font-semibold hidden sm:block">Chủ đề Cân Thăng Bằng &amp; Sơ Đồ Đoạn Thẳng • Trường TH &amp; THCS Thụy Lâm</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-2xl flex items-center gap-1.5 shadow-2xs">
+          <span class="text-lg">💎</span>
+          <span id="header-gem-count" class="text-sm font-black text-emerald-800">0</span>
+          <span class="text-[10px] font-bold text-emerald-600 uppercase">Kim Cương</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="max-w-6xl mx-auto px-4 pt-4">
+    <div class="bg-white/80 p-1.5 rounded-2xl border border-emerald-100 shadow-xs flex gap-2">
+      <button type="button" id="tab-btn-explore" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-emerald-600 text-white shadow-md">
+        <span>⚖️</span> <span>Khám Phá Sơ Đồ &amp; Cỗ Máy Tính</span>
+      </button>
+      <button type="button" id="tab-btn-arena" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-emerald-50">
+        <span>🏆</span> <span>Đấu Trường 5 Chặng (Săn 100 Kim Cương)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 py-4 flex-1 w-full">
+
+    <!-- PANE 1: EXPLORE & VISUAL TOOL -->
+    <div id="pane-explore" class="space-y-6">
+      
+      <!-- Theory Card -->
+      <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-sm space-y-4">
+        <div class="flex items-center gap-3 border-b pb-3 border-emerald-100">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white flex items-center justify-center text-2xl shadow-md">
+            ⚖️
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-black text-slate-900">Bí Quyết 2 Cách Giải Chuẩn SGK</h2>
+            <p class="text-xs text-slate-500 font-medium">Quy tắc vàng của cô giáo Thụy Lâm giúp em không bao giờ nhầm lẫn!</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-emerald-50/80 p-4 rounded-2xl border-2 border-emerald-200 space-y-2">
+            <span class="text-xs font-black bg-emerald-600 text-white px-2.5 py-0.5 rounded-full uppercase">Cách 1: Tìm Số Bé Trước</span>
+            <div class="text-sm font-bold text-emerald-950 space-y-1">
+              <p class="p-2 bg-white rounded-xl border border-emerald-300 font-mono text-center text-emerald-800">
+                Số bé = (Tổng - Hiệu) : 2
+              </p>
+              <p class="text-xs text-slate-600">Sau đó: <b>Số lớn = Số bé + Hiệu</b> (hoặc Tổng - Số bé)</p>
+            </div>
+          </div>
+
+          <div class="bg-teal-50/80 p-4 rounded-2xl border-2 border-teal-200 space-y-2">
+            <span class="text-xs font-black bg-teal-600 text-white px-2.5 py-0.5 rounded-full uppercase">Cách 2: Tìm Số Lớn Trước</span>
+            <div class="text-sm font-bold text-teal-950 space-y-1">
+              <p class="p-2 bg-white rounded-xl border border-teal-300 font-mono text-center text-teal-800">
+                Số lớn = (Tổng + Hiệu) : 2
+              </p>
+              <p class="text-xs text-slate-600">Sau đó: <b>Số bé = Số lớn - Hiệu</b> (hoặc Tổng - Số lớn)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Machine: Sơ Đồ Đoạn Thẳng Động -->
+      <div class="bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-600 rounded-3xl p-6 text-white shadow-xl space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🪄</span>
+            <h3 class="text-lg font-black uppercase tracking-wide">Cỗ Máy Vẽ Sơ Đồ Đoạn Thẳng Trực Quan</h3>
+          </div>
+          <span class="text-xs bg-white/20 px-3 py-1 rounded-full font-bold">Thử Nghiệm Mọi Số</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-extrabold uppercase mb-1 text-emerald-100">Nhập Tổng của hai số:</label>
+            <input id="sim-tong" type="number" value="70" class="w-full px-4 py-2.5 rounded-xl bg-white text-slate-900 font-black text-lg focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold uppercase mb-1 text-emerald-100">Nhập Hiệu của hai số:</label>
+            <input id="sim-hieu" type="number" value="10" class="w-full px-4 py-2.5 rounded-xl bg-white text-slate-900 font-black text-lg focus:outline-none" />
+          </div>
+        </div>
+
+        <button id="btn-calc-sim" type="button" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-900 font-black py-3 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer text-base">
+          <span>⚡ Phân Tích &amp; Tự Động Vẽ Sơ Đồ Ngay</span>
+        </button>
+
+        <!-- Dynamic Visualization Diagram -->
+        <div id="sim-result-box" class="bg-white/95 rounded-2xl p-5 text-slate-800 space-y-4 shadow-inner">
+          <h4 class="text-sm font-black text-emerald-800 uppercase border-b pb-2 border-emerald-100">Sơ đồ trực quan:</h4>
+          
+          <!-- Bars -->
+          <div class="space-y-3 font-bold text-xs sm:text-sm">
+            <div class="flex items-center gap-3">
+              <span class="w-16 shrink-0 text-slate-600">Số lớn:</span>
+              <div class="flex-1 flex items-center">
+                <div id="bar-so-lon" class="h-8 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-lg flex items-center justify-end pr-2 text-white font-extrabold shadow-sm transition-all duration-500" style="width: 70%;">
+                  <span id="txt-so-lon">40</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <span class="w-16 shrink-0 text-slate-600">Số bé:</span>
+              <div class="flex-1 flex items-center">
+                <div id="bar-so-be" class="h-8 bg-gradient-to-r from-amber-400 to-orange-400 rounded-lg flex items-center justify-end pr-2 text-white font-extrabold shadow-sm transition-all duration-500" style="width: 50%;">
+                  <span id="txt-so-be">30</span>
+                </div>
+                <div id="diff-bracket" class="ml-2 text-xs text-rose-600 font-extrabold">
+                  (Hơn kém: <span id="txt-diff">10</span>)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-xs sm:text-sm font-bold text-slate-700 space-y-1">
+            <p>💡 <b>Giải theo Cách 1:</b> Số bé = (<span id="calc-tong">70</span> - <span id="calc-hieu">10</span>) : 2 = <b class="text-amber-600 text-base" id="calc-res-be">30</b></p>
+            <p>🌟 <b>Số lớn:</b> <span id="calc-res-be2">30</span> + <span id="calc-hieu2">10</span> = <b class="text-emerald-700 text-base" id="calc-res-lon">40</b></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANE 2: ARENA 5 STAGES -->
+    <div id="pane-arena" class="hidden space-y-6">
+
+      <!-- Stage Roadmap -->
+      <div class="journey-road">
+        <div class="road-curve"></div>
+        <div id="truck-indicator" class="road-truck" style="left: 10%;">🚜</div>
+
+        <!-- 5 Stops -->
+        <button type="button" class="road-stop active" style="top: 18%; left: 10%;" data-stage="1">
+          <span class="icon-wrap">🌱</span>
+          <p class="font-extrabold text-xs mt-1 text-emerald-900">1. Khởi Động</p>
+        </button>
+
+        <button type="button" class="road-stop locked" style="top: 68%; left: 30%;" data-stage="2">
+          <span class="icon-wrap">🧭</span>
+          <p class="font-extrabold text-xs mt-1 text-teal-900">2. Khám Phá</p>
+        </button>
+
+        <button type="button" class="road-stop locked" style="top: 18%; left: 50%;" data-stage="3">
+          <span class="icon-wrap">⚔️</span>
+          <p class="font-extrabold text-xs mt-1 text-cyan-900">3. Luyện Tập</p>
+        </button>
+
+        <button type="button" class="road-stop locked" style="top: 68%; left: 70%;" data-stage="4">
+          <span class="icon-wrap">🌾</span>
+          <p class="font-extrabold text-xs mt-1 text-amber-900">4. Thụy Lâm</p>
+        </button>
+
+        <button type="button" class="road-stop locked" style="top: 18%; left: 90%;" data-stage="5">
+          <span class="icon-wrap">👑</span>
+          <p class="font-extrabold text-xs mt-1 text-rose-900">5. Vinh Danh</p>
+        </button>
+      </div>
+
+      <!-- Question Player Card -->
+      <div id="quiz-card" class="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-lg space-y-5">
+        <div class="flex items-center justify-between border-b pb-3 border-emerald-100">
+          <div class="flex items-center gap-2">
+            <span id="stage-badge" class="bg-emerald-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase">Chặng 1: Khởi Động</span>
+            <span id="question-progress" class="text-xs font-bold text-slate-500">Câu 1 / 3</span>
+          </div>
+          <span class="text-xs font-extrabold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl">+20 💎 mỗi câu đúng</span>
+        </div>
+
+        <!-- Question text -->
+        <h3 id="question-text" class="text-base sm:text-lg font-black text-slate-900 leading-snug">
+          Đang nạp câu hỏi...
+        </h3>
+
+        <!-- Options Container -->
+        <div id="options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <!-- Dynamic Buttons -->
+        </div>
+
+        <!-- Feedback & Explanations -->
+        <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-bold transition-all">
+          <p id="feedback-title" class="text-base font-black mb-1"></p>
+          <p id="feedback-detail" class="text-slate-700"></p>
+        </div>
+
+        <!-- Next / Action Button -->
+        <div class="flex justify-end pt-2">
+          <button id="btn-next-question" type="button" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer">
+            Tiếp Tục ➜
+          </button>
+        </div>
+      </div>
+
+      <!-- Stage 5: Certificate & Celebration Screen (Hidden until finished) -->
+      <div id="stage5-cert" class="hidden bg-white rounded-3xl p-6 sm:p-8 border-4 border-amber-300 shadow-2xl space-y-6 text-center">
+        <div class="text-5xl animate-bounce">🏆</div>
+        <h2 class="text-2xl font-black text-amber-700 uppercase">CHÚC MỪNG EM ĐÃ HOÀN THÀNH XUẤT SẮC!</h2>
+        <p class="text-sm text-slate-600 font-bold">Em đã đạt danh hiệu: <b>Kiện Tướng Toán Học Thụy Lâm</b> và săn trọn 100 Kim Cương! 💎</p>
+
+        <div class="p-6 bg-gradient-to-br from-amber-50 to-orange-50 border-4 border-dashed border-amber-300 rounded-3xl max-w-lg mx-auto space-y-3">
+          <p class="text-xs uppercase font-extrabold text-amber-800">GIẤY KHEN DANH DỰ</p>
+          <h3 class="text-2xl font-black text-emerald-800">Em Học Sinh Thông Thái Lớp 4</h3>
+          <p class="text-xs text-slate-600">Đã làm chủ kiến thức bài học: <b>Tìm Hai Số Khi Biết Tổng Và Hiệu</b></p>
+          <p class="text-[11px] text-slate-400 font-bold">Trường TH &amp; THCS Thụy Lâm - Đông Anh, Hà Nội</p>
+        </div>
+
+        <div class="flex justify-center gap-3">
+          <button type="button" onclick="window.print()" class="bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md cursor-pointer">
+            🖨️ In Giấy Khen
+          </button>
+          <a href="../index.html" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md">
+            🏠 Trở Về Vương Quốc
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    // Audio synthesis for super responsive sounds
+    class SoundEngine {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playPop() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.06);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(now); osc.stop(now + 0.08);
+      }
+      playRight() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523, 659, 783, 1046].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.2);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.22);
+        });
+      }
+      playWrong() {
+        this.init(); if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [280, 220].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.14, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.18);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.12); osc.stop(now + idx * 0.12 + 0.2);
+        });
+      }
+    }
+    const sound = new SoundEngine();
+
+    // Tab Switching
+    const tabBtnExplore = document.getElementById('tab-btn-explore');
+    const tabBtnArena = document.getElementById('tab-btn-arena');
+    const paneExplore = document.getElementById('pane-explore');
+    const paneArena = document.getElementById('pane-arena');
+
+    tabBtnExplore.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-emerald-600 text-white shadow-md';
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-emerald-50';
+      paneExplore.classList.remove('hidden');
+      paneArena.classList.add('hidden');
+    });
+
+    tabBtnArena.addEventListener('click', () => {
+      sound.playPop();
+      tabBtnArena.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 bg-emerald-600 text-white shadow-md';
+      tabBtnExplore.className = 'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 text-slate-600 hover:bg-emerald-50';
+      paneArena.classList.remove('hidden');
+      paneExplore.classList.add('hidden');
+    });
+
+    // Simulation Machine Logic
+    function updateSimulation() {
+      const tong = parseFloat(document.getElementById('sim-tong').value) || 0;
+      const hieu = parseFloat(document.getElementById('sim-hieu').value) || 0;
+      if (tong < hieu) { alert('Tổng phải lớn hơn hoặc bằng Hiệu chứ em ơi!'); return; }
+
+      const soBe = (tong - hieu) / 2;
+      const soLon = soBe + hieu;
+
+      document.getElementById('txt-so-lon').textContent = soLon;
+      document.getElementById('txt-so-be').textContent = soBe;
+      document.getElementById('txt-diff').textContent = hieu;
+
+      document.getElementById('calc-tong').textContent = tong;
+      document.getElementById('calc-hieu').textContent = hieu;
+      document.getElementById('calc-res-be').textContent = soBe;
+      document.getElementById('calc-res-be2').textContent = soBe;
+      document.getElementById('calc-hieu2').textContent = hieu;
+      document.getElementById('calc-res-lon').textContent = soLon;
+
+      const maxVal = Math.max(soLon, 1);
+      document.getElementById('bar-so-lon').style.width = '85%';
+      document.getElementById('bar-so-be').style.width = ((soBe / maxVal) * 85) + '%';
+      sound.playRight();
+    }
+    document.getElementById('btn-calc-sim').addEventListener('click', updateSimulation);
+
+    // ==========================================
+    // 5 STAGES QUESTIONS DATA
+    // ==========================================
+    const STAGE_QUESTIONS = {
+      1: [
+        {
+          q: "Công thức chuẩn để tìm SỐ BÉ khi biết Tổng và Hiệu là:",
+          options: ["(Tổng + Hiệu) : 2", "(Tổng - Hiệu) : 2", "Tổng : Hiệu", "Tổng - Hiệu"],
+          correct: 1,
+          explain: "Đúng rồi! Số bé = (Tổng - Hiệu) : 2. Em nhớ rất chắc quy tắc!"
+        },
+        {
+          q: "Công thức chuẩn để tìm SỐ LỚN khi biết Tổng và Hiệu là:",
+          options: ["(Tổng - Hiệu) : 2", "(Tổng + Hiệu) : 2", "Tổng x Hiệu", "Tổng + Hiệu"],
+          correct: 1,
+          explain: "Chính xác! Số lớn = (Tổng + Hiệu) : 2."
+        },
+        {
+          q: "Cho hai số có Tổng là 20 và Hiệu là 4. Số bé là:",
+          options: ["12", "8", "10", "6"],
+          correct: 1,
+          explain: "Số bé = (20 - 4) : 2 = 16 : 2 = 8."
+        }
+      ],
+      2: [
+        {
+          q: "Tổng hai số là 50, Hiệu là 10. Tìm Số lớn:",
+          options: ["20", "25", "30", "35"],
+          correct: 2,
+          explain: "Số lớn = (50 + 10) : 2 = 60 : 2 = 30."
+        },
+        {
+          q: "Tuổi bố và con cộng lại là 42 tuổi, bố hơn con 28 tuổi. Hỏi con bao nhiêu tuổi?",
+          options: ["7 tuổi", "8 tuổi", "14 tuổi", "10 tuổi"],
+          correct: 0,
+          explain: "Tuổi con là số bé = (42 - 28) : 2 = 14 : 2 = 7 (tuổi)."
+        },
+        {
+          q: "Hai bạn An và Bình có tất cả 45 viên bi. An có nhiều hơn Bình 5 viên. Hỏi An có bao nhiêu viên bi?",
+          options: ["20 viên", "25 viên", "30 viên", "15 viên"],
+          correct: 1,
+          explain: "An có nhiều hơn nên An là số lớn = (45 + 5) : 2 = 25 viên bi."
+        }
+      ],
+      3: [
+        {
+          q: "Một hình chữ nhật có nửa chu vi là 36cm, chiều dài hơn chiều rộng 8cm. Chiều dài là:",
+          options: ["22cm", "14cm", "20cm", "18cm"],
+          correct: 0,
+          explain: "Nửa chu vi chính là Tổng = 36cm. Chiều dài là số lớn = (36 + 8) : 2 = 22cm."
+        },
+        {
+          q: "Tổng của hai số chẵn liên tiếp là 26. Tìm số bé trong hai số đó:",
+          options: ["11", "12", "14", "10"],
+          correct: 1,
+          explain: "Hai số chẵn liên tiếp hơn kém nhau 2 đơn vị (Hiệu = 2). Số bé = (26 - 2) : 2 = 12."
+        },
+        {
+          q: "Tìm hai số có Tổng là 100 và Hiệu là 0:",
+          options: ["100 và 0", "60 và 40", "50 và 50", "55 và 45"],
+          correct: 2,
+          explain: "Khi Hiệu = 0 tức là hai số bằng nhau = 100 : 2 = 50."
+        }
+      ],
+      4: [
+        {
+          q: "Lớp 4A và lớp 4B trường TH & THCS Thụy Lâm trồng được tất cả 120 cây xanh. Lớp 4A trồng nhiều hơn lớp 4B là 20 cây. Hỏi lớp 4A trồng được bao nhiêu cây?",
+          options: ["50 cây", "70 cây", "60 cây", "80 cây"],
+          correct: 1,
+          explain: "Số cây lớp 4A (số lớn) = (120 + 20) : 2 = 70 (cây)."
+        },
+        {
+          q: "Hợp tác xã nông nghiệp Thụy Lâm thu hoạch được 5 tạ thóc nếp và thóc tẻ. Số thóc tẻ nhiều hơn thóc nếp 1 tạ. Hỏi thu hoạch được bao nhiêu tạ thóc nếp?",
+          options: ["2 tạ", "3 tạ", "1.5 tạ", "4 tạ"],
+          correct: 0,
+          explain: "Thóc nếp là số bé = (5 - 1) : 2 = 2 tạ."
+        },
+        {
+          q: "Đội múa rồng thiếu nhi thôn Biểu Khê Thụy Lâm có 24 bạn nam và nữ. Số bạn nam hơn số bạn nữ 6 bạn. Hỏi đội có bao nhiêu bạn nữ?",
+          options: ["15 bạn", "9 bạn", "12 bạn", "18 bạn"],
+          correct: 1,
+          explain: "Số bạn nữ = (24 - 6) : 2 = 18 : 2 = 9 (bạn)."
+        }
+      ]
+    };
+
+    let currentStage = 1;
+    let currentQIdx = 0;
+    let gemCount = 0;
+    let unlockedStages = [1];
+
+    function renderQuestion() {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+
+      document.getElementById('stage-badge').textContent = `Chặng ${currentStage}: ${getStageName(currentStage)}`;
+      document.getElementById('question-progress').textContent = `Câu ${currentQIdx + 1} / ${qList.length}`;
+      document.getElementById('question-text').textContent = q.q;
+
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-btn p-3.5 bg-slate-50 hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-400 rounded-2xl font-bold text-xs sm:text-sm text-left transition flex items-center justify-between cursor-pointer';
+        btn.innerHTML = `<span>${String.fromCharCode(65 + idx)}. ${opt}</span><span class="icon-indicator"></span>`;
+        btn.addEventListener('click', () => handleAnswer(idx, btn));
+        grid.appendChild(btn);
+      });
+
+      document.getElementById('quiz-feedback').classList.add('hidden');
+      document.getElementById('btn-next-question').classList.add('hidden');
+    }
+
+    function getStageName(stg) {
+      const names = { 1: 'Khởi Động', 2: 'Khám Phá', 3: 'Luyện Tập', 4: 'Thực Tế Thụy Lâm', 5: 'Vinh Danh' };
+      return names[stg] || '';
+    }
+
+    function handleAnswer(choiceIdx, btnEl) {
+      const qList = STAGE_QUESTIONS[currentStage];
+      const q = qList[currentQIdx];
+      const allBtns = document.querySelectorAll('.opt-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      const feedback = document.getElementById('quiz-feedback');
+      const title = document.getElementById('feedback-title');
+      const detail = document.getElementById('feedback-detail');
+
+      if (choiceIdx === q.correct) {
+        sound.playRight();
+        try { confetti({ particleCount: 30, spread: 60, origin: { y: 0.7 } }); } catch (e) {}
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+        btnEl.querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-emerald-50 border-2 border-emerald-300 text-emerald-900';
+        title.textContent = '🎉 CHÍNH XÁC!';
+        detail.textContent = q.explain;
+
+        gemCount += 20;
+        document.getElementById('header-gem-count').textContent = gemCount;
+      } else {
+        sound.playWrong();
+        btnEl.classList.remove('bg-slate-50', 'border-slate-200');
+        btnEl.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-900');
+        btnEl.querySelector('.icon-indicator').textContent = '❌';
+
+        // Highlight correct one
+        allBtns[q.correct].classList.add('bg-emerald-50', 'border-emerald-400');
+        allBtns[q.correct].querySelector('.icon-indicator').textContent = '✅';
+
+        feedback.className = 'p-4 rounded-2xl text-xs sm:text-sm font-bold bg-rose-50 border-2 border-rose-300 text-rose-900';
+        title.textContent = '💡 CỐ GẮNG LÊN EM NHÉ!';
+        detail.textContent = q.explain;
+      }
+
+      feedback.classList.remove('hidden');
+      document.getElementById('btn-next-question').classList.remove('hidden');
+    }
+
+    document.getElementById('btn-next-question').addEventListener('click', () => {
+      sound.playPop();
+      const qList = STAGE_QUESTIONS[currentStage];
+      if (currentQIdx < qList.length - 1) {
+        currentQIdx++;
+        renderQuestion();
+      } else {
+        // Stage Complete
+        sound.playRight();
+        try { confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } }); } catch (e) {}
+        if (currentStage < 4) {
+          currentStage++;
+          currentQIdx = 0;
+          unlockedStages.push(currentStage);
+          updateRoadmap();
+          renderQuestion();
+        } else {
+          // Finish Stage 4 -> Show Stage 5 Cert
+          currentStage = 5;
+          updateRoadmap();
+          document.getElementById('quiz-card').classList.add('hidden');
+          document.getElementById('stage5-cert').classList.remove('hidden');
+          try { confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } }); } catch (e) {}
+        }
+      }
+    });
+
+    function updateRoadmap() {
+      const truck = document.getElementById('truck-indicator');
+      const positions = { 1: '10%', 2: '30%', 3: '50%', 4: '70%', 5: '90%' };
+      if (truck) truck.style.left = positions[currentStage] || '10%';
+
+      document.querySelectorAll('.road-stop').forEach(btn => {
+        const stg = parseInt(btn.dataset.stage, 10);
+        btn.classList.remove('active', 'locked');
+        if (stg === currentStage) btn.classList.add('active');
+        else if (unlockedStages.includes(stg)) { /* unlocked */ }
+        else btn.classList.add('locked');
+      });
+    }
+
+    // Init
+    renderQuestion();
+    updateSimulation();
+  </script>
+</body>
+</html>
