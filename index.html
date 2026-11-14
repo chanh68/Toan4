@@ -1901,16 +1901,32 @@
     }
 
     function buildDirectUrl(g) {
-      if (g.isStudioLesson || (Array.isArray(g.stages) && g.stages.length > 0) || (g.id && (g.id.startsWith('lesson_') || g.id.startsWith('studio_')))) {
+      if (!g) return resolveBaseUrl();
+
+      // 1. Nếu là bài học liên kết ngoài (Google Sites, Form, Quizizz...) -> LUÔN MỞ TRỰC TIẾP externalUrl!
+      if (g.externalUrl && typeof g.externalUrl === 'string' && g.externalUrl.trim()) {
+        return g.externalUrl.trim();
+      }
+
+      // 2. Nếu là bài học soạn từ Studio (hoặc có các chặng thử thách stages)
+      if (g.isStudioLesson || (Array.isArray(g.stages) && g.stages.length > 0)) {
         return new URL(`games/lesson_player.html?id=${encodeURIComponent(g.id)}`, resolveBaseUrl()).href;
       }
-      if (g.externalUrl) return g.externalUrl;
+
+      // 3. Nếu là file HTML có sẵn trong thư mục games/
+      if (g.filename && typeof g.filename === 'string' && g.filename.trim()) {
+        return new URL(`games/${encodeURIComponent(g.filename.trim())}`, resolveBaseUrl()).href;
+      }
+
+      // 4. Các bài học studio theo ID
+      if (g.id && (g.id.startsWith('lesson_') || g.id.startsWith('studio_'))) {
+        return new URL(`games/lesson_player.html?id=${encodeURIComponent(g.id)}`, resolveBaseUrl()).href;
+      }
+
       if (isServerMode) {
         return new URL(`bai-hoc/${encodeURIComponent(g.id)}`, resolveBaseUrl()).href;
       }
-      if (g.filename) {
-        return new URL(`games/${encodeURIComponent(g.filename)}`, resolveBaseUrl()).href;
-      }
+
       return new URL(`games/lesson_player.html?id=${encodeURIComponent(g.id)}`, resolveBaseUrl()).href;
     }
 
@@ -2333,7 +2349,7 @@
     // ==========================================
     async function saveGameEntry(payload) {
       const newEntry = {
-        id: payload.id || ('lesson_' + Date.now()),
+        id: payload.id || ((payload.externalUrl ? 'link_' : 'lesson_') + Date.now()),
         title: payload.title || 'Bài học tương tác 5 chặng',
         subtitle: payload.subtitle || 'Hành trình 5 chặng chinh phục kiến thức',
         category: payload.category || 'Bài học',
